@@ -1,0 +1,52 @@
+ <!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+
+<web-app >  
+
+<servlet>
+  	<servlet-name>PerformTransactions</servlet-name>
+  	<display-name>PerformTransactions</display-name>
+  	<description></description>
+  	<servlet-class>BusinessLogic.PerformTransactions</servlet-class>
+  </servlet>
+<servlet>
+	<servlet-name>LoginPage</servlet-name>
+	<display-name>LoginPage</display-name>
+	<description></description>
+	<servlet-class>Login.LoginPage</servlet-class>
+</servlet>
+<servlet>
+	<servlet-name>BankingSystem</servlet-name>
+	<display-name>BankingSystem</display-name>
+	<description></description>
+	<servlet-class>Login.BankingSystem</servlet-class>
+</servlet>
+<servlet>
+	<servlet-name>TransactionsPage</servlet-name>
+	<display-name>TransactionsPage</display-name>
+	<description></description>
+	<servlet-class>Transactions.TransactionsPage</servlet-class>
+</servlet>
+  <servlet-mapping>
+  	<servlet-name>PerformTransactions</servlet-name>
+  	<url-pattern>/PerformTransactions</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>LoginPage</servlet-name>
+  	<url-pattern>/LoginPage</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>BankingSystem</servlet-name>
+  	<url-pattern>/BankingSystem</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>TransactionsPage</servlet-name>
+  	<url-pattern>/TransactionsPage</url-pattern>
+  </servlet-mapping>
+
+  <welcome-file-list>
+   <welcome-file>loginPage.html</welcome-file>
+  </welcome-file-list>
+</web-app>

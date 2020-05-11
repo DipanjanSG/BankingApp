@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+
+   <class name = "Transactions.AccountsBean" table = "accounts">
+      <meta attribute = "class-description">
+         This class contains the credit-card details with holder id. 
+      </meta>
+      <!-- <cache usage = "read-only"/>-->
+      <id name = "accountNumber" type = "int" column = "accountNumber">
+         <generator class="increment"/>
+      </id>
+      
+      <property name = "accountBalance" column = "amount" type = "double"/>
+      
+      <many-to-one name="customerBean" class= "CreateAccount.CustomerBean" not-null="true">
+      		<column name = "customerId"/>
+      </many-to-one>
+       
+      <property name = "bankAccountType" column = "bankAccountType" type = "string"/>
+   </class>
+   
+</hibernate-mapping>

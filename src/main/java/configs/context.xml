@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+<bean id = "credentials" class="Login.Credentials"/>
+<bean id = "transactionDetailsBean" class=" TransactionDetails.TransactionDetailsBean"/>
+<bean id = "creditCardBean" class="AuthorizeCCTransactions.CreditCardBean"/>
+<bean id = "customerBean" class="CreateAccount.CustomerBean" autowire="byName"/>
+<bean id = "loginBean" class="Login.LoginBean"/>
+<bean id = "accountsBean" class="Transactions.AccountsBean"/>
+<bean id = "authorizeCCTransactionsLogs" class="Logger.AuthorizeCCTransactionsLogs"/>
+
+<aop:config>
+	    <aop:aspect id="beforeTransactions" ref="authorizeCCTransactionsLogs">
+	    <aop:pointcut expression="execution(void AuthorizeCCTransactions.CreditCardHelper.creditCardAmountBorrowedUpdation(..))" id="beforeDepositing"/>	
+			<aop:before method = "beforeApprovingCCTransactions" pointcut-ref = "beforeDepositing"/>
+			<aop:after method =  "afterApprovingCCTransactions"  pointcut-ref = "beforeDepositing" />
+		</aop:aspect>
+</aop:config>
+		
+</beans>
