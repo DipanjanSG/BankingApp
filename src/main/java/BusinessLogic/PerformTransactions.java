@@ -38,9 +38,8 @@ public class PerformTransactions extends HttpServlet {
 		AccountsBean accountsBean = ContextBeans.getAccountsBean();
 		accountsBean.setAccountNumber(accountNumber);
 		accountsBean.setAccountBalance(amount);
-		
-		
-		TransactionsDao transactionsDao = new TransactionsDao();
+				
+		TransactionsDao transactionsDao = ContextBeans.getTransactionsDao();
 		try {
 			response.setContentType("text/html");
 			int loggedInUsersAccountNumber = transactionsDao.getAccountNumber(customerId);

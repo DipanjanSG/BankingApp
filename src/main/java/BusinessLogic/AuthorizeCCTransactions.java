@@ -79,7 +79,7 @@ public class AuthorizeCCTransactions extends HttpServlet {
 			CustomerBean retrievedCustomerBean = customersDao.fetchRecordWithUserName(customerBean);
 			if (amount < 100000 && nameOnCreditCard.equals(retrievedCustomerBean.getUserName())) {
 				out.println("Transaction Successful");
-				CreditCardHelper creditCardHelper = new CreditCardHelper();
+				CreditCardHelper creditCardHelper = ContextBeans.getCreditCardHelper();
 				creditCardHelper.creditCardAmountBorrowedUpdation(retievedCreditCardBean, amount);
 			} else {
 				out.println("Invalid Details for Credit Card entered");

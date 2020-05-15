@@ -4,12 +4,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import AuthorizeCCTransactions.CreditCardBean;
+import AuthorizeCCTransactions.CreditCardHelper;
 import CreateAccount.CreateAccount;
+import CreateAccount.CreateAccountDao;
 import CreateAccount.CustomerBean;
 import Login.Credentials;
 import Login.LoginBean;
 import TransactionDetails.TransactionDetailsBean;
 import Transactions.AccountsBean;
+import Transactions.TransactionsDao;
 
 public class ContextBeans {
 	
@@ -21,7 +24,9 @@ public class ContextBeans {
 	private static LoginBean loginBean = null;
 	private static AccountsBean accountsBean = null;
 	private static Credentials credentials = null;
-	
+	private static CreditCardHelper creditCardHelper = null;
+	private static CreateAccountDao createAccountDao = null;
+	private static TransactionsDao transactionsDao = null;
 	
 	public static ApplicationContext getContext() {
 		if (context == null ) {
@@ -91,5 +96,29 @@ public class ContextBeans {
 	
 		
 		return customerBean;
+	}
+	
+	public static CreditCardHelper getCreditCardHelper() {
+		if (creditCardHelper == null ) {
+			creditCardHelper =  (CreditCardHelper)getContext().getBean("creditCardHelperBean");
+		}
+		
+		return creditCardHelper;
+	}
+	
+	public static CreateAccountDao getCreateAccountDao() {
+		if (createAccountDao == null ) {
+			createAccountDao =  (CreateAccountDao)getContext().getBean("createAccountDaoBean");
+		}
+		
+		return createAccountDao;
+	}
+	
+	public static TransactionsDao getTransactionsDao() {
+		if (transactionsDao == null ) {
+			transactionsDao =  (TransactionsDao)getContext().getBean("createTransactionsDaoBean");
+		}
+		
+		return transactionsDao;
 	}
 }

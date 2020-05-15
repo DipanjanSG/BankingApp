@@ -16,7 +16,7 @@ import Login.Credentials;
 import configs.HibernateUtils;
 
 public class CreateAccountDao {
-	public boolean validate(CustomerBean createAccountBeanDetails) throws ClassNotFoundException {
+	public boolean createNewAccount(CustomerBean createAccountBeanDetails) throws ClassNotFoundException {
                 
 		Session session = SessionFactoryCreation.getSessionInstance();
         
