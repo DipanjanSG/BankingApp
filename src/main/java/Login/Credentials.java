@@ -2,7 +2,7 @@ package Login;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import CreateAccount.CustomerBean;
+import CreateAccount.Customer;
 
 public class Credentials {
 	
@@ -11,7 +11,7 @@ public class Credentials {
 	int customerId;
 	
 	@Autowired
-	CustomerBean customerBean;
+	Customer customerBean;
 	
 	public Credentials() {
 		
@@ -39,10 +39,10 @@ public class Credentials {
 	public void setCustomerId(int customerId) {
 		this.customerId = customerId;
 	}
-	public CustomerBean getCustomerBean() {
+	public Customer getCustomerBean() {
 		return customerBean;
 	}
-	public void setCustomerBean(CustomerBean customerBean) {
+	public void setCustomerBean(Customer customerBean) {
 		this.customerBean = customerBean;
 	}
 	

@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import CreateAccount.CustomerBean;
-import CreateAccount.CreateAccountDao;
+import CreateAccount.Customer;
+import CreateAccount.CustomerDaoImpl;
 import Login.LoginBean;
 import Login.LoginDao;
 import java.sql.ResultSet;

@@ -11,7 +11,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import BusinessLogic.SessionFactoryCreation;
-import CreateAccount.CustomerBean;
+import CreateAccount.Customer;
 import Login.LoginBean;
 import configs.HibernateUtils;
 

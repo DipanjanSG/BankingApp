@@ -10,7 +10,7 @@ import AuthorizeCCTransactions.CreditCardBean;
 import Login.Credentials;
 import Transactions.AccountsBean;
 
-public class CustomerBean {
+public class Customer {
 	
 	int customerId;
 	String userName ;
@@ -41,7 +41,7 @@ public class CustomerBean {
 		this.allAccountsHeld = allAccountsHeld;
 	}
 
-	public CustomerBean(String userName, Date dateOfBirth, String address, String emailId,
+	public Customer(String userName, Date dateOfBirth, String address, String emailId,
 			Set <AccountsBean> allAccountsHeld, Credentials credentials) {
 		super();
 		this.userName = userName;
@@ -52,17 +52,17 @@ public class CustomerBean {
 		this.credentials = credentials;
 	}
 
-	public CustomerBean(String userName, Date dateOfBirth, String address, String emailId) {
+	public Customer(String userName, Date dateOfBirth, String address, String emailId) {
 		this.userName = userName;
 		this.dateOfBirth = dateOfBirth;
 		this.address = address;
 		this.emailId = emailId;
 	}
 	
-	public CustomerBean() {
+	public Customer() {
 		
 	}
-	public CustomerBean(int customerId) {
+	public Customer(int customerId) {
 		this.customerId = customerId;
 	}
 	

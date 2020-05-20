@@ -4,17 +4,19 @@
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+		
+<import resource="classpath:configs/hibernateTemplate.xml"/>
 
 <aop:aspectj-autoproxy />  
 <bean id = "credentials" class="Login.Credentials"/>
 <bean id = "transactionDetailsBean" class=" TransactionDetails.TransactionDetailsBean"/>
 <bean id = "creditCardBean" class="AuthorizeCCTransactions.CreditCardBean"/>
-<bean id = "customerBean" class="CreateAccount.CustomerBean" autowire="byName"/>
+<bean id = "customerBean" class="CreateAccount.Customer" autowire="byName"/>
 <bean id = "loginBean" class="Login.LoginBean"/>
 <bean id = "accountsBean" class="Transactions.AccountsBean"/>
 <bean id = "authorizeCCTransactionsLogs" class="Logger.AuthorizeCCTransactionsLogs"/>
 <bean id = "creditCardHelperBean" class = "AuthorizeCCTransactions.CreditCardHelper"/>
-<bean id = "createAccountDaoBean" class = "CreateAccount.CreateAccountDao"/>
+<bean id = "createAccountDaoBean" class = "CreateAccount.CustomerDaoImpl"/>
 <bean id = "createAccountLogs" class = "Logger.CreateAccountLogs"/>
 <bean id = "transactionDaoLogs" class = "Logger.TransactionDaoLogs"/>
 <bean id = "createTransactionsDaoBean" class = "Transactions.TransactionsDao"/>
@@ -29,7 +31,7 @@
 		
 <aop:config>
 	    <aop:aspect id="accountCreationLogs" ref="createAccountLogs">
-	    <aop:pointcut expression="execution(boolean CreateAccount.CreateAccountDao.createNewAccount(..))" id="accountCreation"/>	
+	    <aop:pointcut expression="execution(boolean CreateAccount.CustomerDaoImpl.save(..))" id="accountCreation"/>	
 			<aop:before method = "beforeCreateNewAccount" pointcut-ref = "accountCreation"/>
 			<aop:after method =  "afterCreateNewAccount"  pointcut-ref = "accountCreation" />
 		</aop:aspect>

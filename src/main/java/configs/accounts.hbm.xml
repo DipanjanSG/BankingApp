@@ -16,7 +16,7 @@
       
       <property name = "accountBalance" column = "amount" type = "double"/>
       
-      <many-to-one name="customerBean" class= "CreateAccount.CustomerBean" not-null="true">
+      <many-to-one name="customerBean" class= "CreateAccount.Customer" not-null="true">
       		<column name = "customerId"/>
       </many-to-one>
        

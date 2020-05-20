@@ -12,7 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import BusinessLogic.SessionFactoryCreation;
-import CreateAccount.CustomerBean;
+import CreateAccount.Customer;
 import configs.HibernateUtils;
 
 public class LoginDao {

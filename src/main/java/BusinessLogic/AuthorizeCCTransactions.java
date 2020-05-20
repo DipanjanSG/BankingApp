@@ -17,7 +17,7 @@ import AuthorizeCCTransactions.CreditCardBean;
 import AuthorizeCCTransactions.CreditCardHelper;
 import AuthorizeCCTransactions.CreditCardTransactionsDao;
 import AuthorizeCCTransactions.CustomersDao;
-import CreateAccount.CustomerBean;
+import CreateAccount.Customer;
 import Login.LoginBean;
 import Login.LoginDao;
 import Transactions.AccountsBean;
@@ -73,10 +73,10 @@ public class AuthorizeCCTransactions extends HttpServlet {
 		    if (retievedCreditCardBean == null ) {
 	        	System.out.println("Invalid Credit Card Details");
 	        }
-		    CustomerBean customerBean = ContextBeans.getCustomerBean();
+		    Customer customerBean = ContextBeans.getCustomerBean();
 
 		    
-			CustomerBean retrievedCustomerBean = customersDao.fetchRecordWithUserName(customerBean);
+			Customer retrievedCustomerBean = customersDao.fetchRecordWithUserName(customerBean);
 			if (amount < 100000 && nameOnCreditCard.equals(retrievedCustomerBean.getUserName())) {
 				out.println("Transaction Successful");
 				CreditCardHelper creditCardHelper = ContextBeans.getCreditCardHelper();

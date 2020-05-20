@@ -7,11 +7,11 @@
     http://www.springframework.org/schema/aop   
     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd ">  
 
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">  
-        <property name="driverClassName"  value="com.mysql.jdbc.Driver"></property>  
-        <property name="url" value="jdbc:mysql://localhost:3306/Banking"></property>  
-        <property name="username" value="root"></property>  
-        <property name="password" value="root"></property>  
+<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>  
+        <property name="url" value="jdbc:mysql://localhost:3306/Banking"/>  
+        <property name="username" value="root"/>  
+        <property name="password" value="root"/>  
     </bean>  
 
 
@@ -21,6 +21,11 @@
     <property name = "mappingResources">
     <list>
         <value>credentials.hbm.xml</value>
+        <value>credentials.hbm.xml</value>
+        <value>customers.hbm.xml</value>
+        <value>credit_card.hbm.xml</value>
+        <value>accounts.hbm.xml</value>
+        <value>transactions.hbm.xml</value>
     </list> 
     </property>
 
@@ -34,11 +39,12 @@
 
 </bean>
 
-<bean id="template" class="org.springframework.orm.hibernate3.HibernateTemplate">  
+<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">  
     <property name="sessionFactory" ref="mysessionFactory"></property>  
-    </bean>  
-
-<bean id="d" class="com.javatpoint.EmployeeDao">  
-    <property name="template" ref="template"></property>  
-    </bean>  
+    </bean>
+    
+<!-- <bean id = "customerBean" class="CreateAccount.Customer">
+	<property name="hibernateTemplate" ref="template"></property>  
+</bean>
+-->
 </beans>

@@ -6,8 +6,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import AuthorizeCCTransactions.CreditCardBean;
 import AuthorizeCCTransactions.CreditCardHelper;
 import CreateAccount.CreateAccount;
-import CreateAccount.CreateAccountDao;
-import CreateAccount.CustomerBean;
+import CreateAccount.CustomerDaoImpl;
+import CreateAccount.Customer;
 import Login.Credentials;
 import Login.LoginBean;
 import TransactionDetails.TransactionDetailsBean;
@@ -18,14 +18,14 @@ public class ContextBeans {
 	
 	private static ApplicationContext context = null;
 	private static TransactionDetailsBean transactionDetailsBean = null;
-	private static CustomerBean customerBean = null;
+	private static Customer customerBean = null;
 	private static CreditCardBean creditCardBean = null;
 	private static CreateAccount createAccount = null;
 	private static LoginBean loginBean = null;
 	private static AccountsBean accountsBean = null;
 	private static Credentials credentials = null;
 	private static CreditCardHelper creditCardHelper = null;
-	private static CreateAccountDao createAccountDao = null;
+	private static CustomerDaoImpl createAccountDao = null;
 	private static TransactionsDao transactionsDao = null;
 	
 	public static ApplicationContext getContext() {
@@ -82,17 +82,17 @@ public class ContextBeans {
 		return accountsBean;
 	}
 	
-	public static CustomerBean getCustomerBean() {
+	public static Customer getCustomerBean() {
 		if (customerBean == null ) {
-			customerBean =  (CustomerBean)getContext().getBean("customerBean");
+			customerBean =  (Customer)getContext().getBean("customerBean");
 		}
 		
 		return customerBean;
 	}
 	
-	public static CustomerBean getNewCustomerBean() {
+	public static Customer getNewCustomerBean() {
 		
-		customerBean =  (CustomerBean)getContext().getBean("customerBean");
+		customerBean =  (Customer)getContext().getBean("customerBean");
 	
 		
 		return customerBean;
@@ -106,9 +106,9 @@ public class ContextBeans {
 		return creditCardHelper;
 	}
 	
-	public static CreateAccountDao getCreateAccountDao() {
+	public static CustomerDaoImpl getCreateAccountDao() {
 		if (createAccountDao == null ) {
-			createAccountDao =  (CreateAccountDao)getContext().getBean("createAccountDaoBean");
+			createAccountDao =  (CustomerDaoImpl)getContext().getBean("createAccountDaoBean");
 		}
 		
 		return createAccountDao;

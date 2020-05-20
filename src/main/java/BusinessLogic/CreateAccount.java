@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import AuthorizeCCTransactions.CreditCardBean;
-import CreateAccount.CustomerBean;
-import CreateAccount.CreateAccountDao;
+import CreateAccount.Customer;
+import CreateAccount.CustomerDaoImpl;
 import Login.Credentials;
 import Login.LoginBean;
 import Login.LoginDao;
@@ -54,7 +54,7 @@ public class CreateAccount extends HttpServlet {
 		String emailId = request.getParameter("emailId");
 		String bankAccountType = request.getParameter("bankAccountType");
 		
-		CreateAccountDao createAccountDao = ContextBeans.getCreateAccountDao();
+		CustomerDaoImpl createAccountDao = ContextBeans.getCreateAccountDao();
 		AccountsBean accountsBean = ContextBeans.getAccountsBean();
 		accountsBean.setAccountBalance(0.0);
 		accountsBean.setBankAccountType(bankAccountType);
@@ -65,18 +65,15 @@ public class CreateAccount extends HttpServlet {
 		Credentials credentials = ContextBeans.getCredentials();
 		credentials.createUserIdAndPassword(userName);
 
-		try {
-			CustomerBean customerBean = ContextBeans.getCustomerBean();
-			customerBean.setUserName(userName);
-			customerBean.setDateOfBirth(dateOfBirth);
-			customerBean.setAddress(address);
-			customerBean.setEmailId(emailId);
-			customerBean.setAllAccountsHeld(allAccountsHeld);
-			customerBean.setCredentials(credentials);
-			createAccountDao.createNewAccount(customerBean);
+	
+		Customer customerBean = ContextBeans.getCustomerBean();
+		customerBean.setUserName(userName);
+		customerBean.setDateOfBirth(dateOfBirth);
+		customerBean.setAddress(address);
+		customerBean.setEmailId(emailId);
+		customerBean.setAllAccountsHeld(allAccountsHeld);
+		customerBean.setCredentials(credentials);
+		createAccountDao.save(customerBean);
 		
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		}
 	}
 }

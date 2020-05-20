@@ -12,16 +12,16 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import BusinessLogic.SessionFactoryCreation;
-import CreateAccount.CustomerBean;
+import CreateAccount.Customer;
 import configs.HibernateUtils;
 
 public class CustomersDao {
-	public CustomerBean fetchRecordWithUserName(CustomerBean customerBean) throws ClassNotFoundException {
+	public Customer fetchRecordWithUserName(Customer customerBean) throws ClassNotFoundException {
                 
 		Session session = SessionFactoryCreation.getSessionInstance();
         
         Transaction tx = session.beginTransaction();
-        CustomerBean retrivedCustomerBean = (CustomerBean)session.get(CustomerBean.class, new Integer(customerBean.getCreditCardBean().getCardOwner()));
+        Customer retrivedCustomerBean = (Customer)session.get(Customer.class, new Integer(customerBean.getCreditCardBean().getCardOwner()));
         
         tx.commit();
         

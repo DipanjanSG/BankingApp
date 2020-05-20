@@ -2,7 +2,7 @@ package Transactions;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import CreateAccount.CustomerBean;
+import CreateAccount.Customer;
 
 public class AccountsBean {
 	
@@ -10,7 +10,7 @@ public class AccountsBean {
 	double accountBalance;
 	
 	@Autowired
-	CustomerBean customerBean;
+	Customer customerBean;
 	
 	String bankAccountType;
 	
@@ -27,11 +27,11 @@ public class AccountsBean {
 		this.accountBalance = accountBalance;
 	}
 	
-	public CustomerBean getCustomerBean() {
+	public Customer getCustomerBean() {
 		return customerBean;
 	}
 
-	public void setCustomerBean(CustomerBean customerBean) {
+	public void setCustomerBean(Customer customerBean) {
 		this.customerBean = customerBean;
 	}
 
