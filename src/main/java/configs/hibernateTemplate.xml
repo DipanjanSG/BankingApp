@@ -8,24 +8,22 @@
     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd ">  
 
 <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
-        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>  
         <property name="url" value="jdbc:mysql://localhost:3306/Banking"/>  
         <property name="username" value="root"/>  
         <property name="password" value="root"/>  
     </bean>  
 
 
-<bean id = "mysessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+<bean id = "mysessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
     <property name="dataSource" ref="dataSource" ></property>  
 
     <property name = "mappingResources">
     <list>
-        <value>credentials.hbm.xml</value>
-        <value>credentials.hbm.xml</value>
-        <value>customers.hbm.xml</value>
-        <value>credit_card.hbm.xml</value>
-        <value>accounts.hbm.xml</value>
-        <value>transactions.hbm.xml</value>
+        <value>configs/credentials.hbm.xml</value>
+        <value>configs/customers.hbm.xml</value>
+        <value>configs/credit_card.hbm.xml</value>
+        <value>configs/accounts.hbm.xml</value>
+        <value>configs/transactions.hbm.xml</value>
     </list> 
     </property>
 
@@ -34,13 +32,17 @@
           <prop key="hibernate.hbm.ddl.auto">update</prop>
           <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>  
           <prop key="hibernate.show_sql">true</prop>
+          <prop key="hibernate.connection.autocommit">true</prop>
+          
         </props>
     </property>
 
 </bean>
 
-<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">  
-    <property name="sessionFactory" ref="mysessionFactory"></property>  
+<bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">  
+    <property name="sessionFactory" ref="mysessionFactory"></property>
+    <property name="checkWriteOperations" value="false"></property> 
+    
     </bean>
     
 <!-- <bean id = "customerBean" class="CreateAccount.Customer">

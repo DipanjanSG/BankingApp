@@ -1,26 +1,26 @@
 package CreateAccount;
 
-import java.sql.Connection;
-
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.springframework.orm.hibernate.HibernateTemplate;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.*;
 import BusinessLogic.SessionFactoryCreation;
-import Login.Credentials;
-import configs.HibernateUtils;
 
 public class CustomerDaoImpl implements CustomerDao{
 	
-	private HibernateTemplate hibernateTemplate;
+	@Autowired
+	HibernateTemplate hibernateTemplate;
 	
+	public HibernateTemplate getHibernateTemplate() {
+		return hibernateTemplate;
+	}
+
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
+		this.hibernateTemplate = hibernateTemplate;
+	}
+
 	public boolean createNewAccount(Customer createAccountBeanDetails) throws ClassNotFoundException {
                 
 		Session session = SessionFactoryCreation.getSessionInstance();
@@ -34,8 +34,8 @@ public class CustomerDaoImpl implements CustomerDao{
 	}
 
 	public void save(Customer customer) {
-		hibernateTemplate.save(customer);
-		
+		hibernateTemplate.save(customer).toString();
+
 	}
 
 	public void update(Customer customer) {
