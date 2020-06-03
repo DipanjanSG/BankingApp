@@ -1,17 +1,13 @@
-package CreateAccount;
+package Transactions;
 
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
-import AuthorizeCCTransactions.CreditCard;
-import BusinessLogic.SessionFactoryCreation;
+public class AccountsDaoImpl implements AccountsDao{
 
-public class CustomerDaoImpl implements CustomerDao{
 	
 	@Autowired
 	HibernateTemplate hibernateTemplate;
@@ -23,28 +19,32 @@ public class CustomerDaoImpl implements CustomerDao{
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
 		this.hibernateTemplate = hibernateTemplate;
 	}
-
-	@Transactional(readOnly = false)
-	public void save(Customer customer) {
-		hibernateTemplate.save(customer);
-	}
 	
 	@Transactional(readOnly = false)
-	public void update(Customer customer) {
-		hibernateTemplate.update(customer);
+	public Accounts get(Accounts accountsBean) {
+		return hibernateTemplate.get(Accounts.class, accountsBean.accountNumber);
 		
 	}
-	
+
 	@Transactional(readOnly = false)
-	public void delete(Customer customer) {
-		hibernateTemplate.delete(customer);
-	}
-	
-	@Transactional(readOnly = false)
-	public List<Customer> getCustomers() {
-		return hibernateTemplate.loadAll(Customer.class);
+	public void save(Accounts accountsBean) {
+		hibernateTemplate.save(accountsBean);		
 	}
 
-	
-	
+	@Transactional(readOnly = false)
+	public void update(Accounts accountsBean) {
+		hibernateTemplate.update(accountsBean);
+	}
+
+	@Transactional(readOnly = false)
+	public void delete(Accounts accountsBean) {
+		hibernateTemplate.delete(accountsBean);
+		
+	}
+
+	@Transactional(readOnly = false)
+	public List<Accounts> getAllAccounts() {
+		return hibernateTemplate.loadAll(Accounts.class);
+	}
+
 }

@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-   <class name = "TransactionDetails.TransactionDetailsBean" table = "transactions">
+   <class name = "TransactionDetails.Transaction" table = "transactions">
       <meta attribute = "class-description">
          This class contains the credit-card details with holder id. 
       </meta>
@@ -17,7 +17,7 @@
       <property name = "fromAccount" column = "fromAccount" type = "int"/>
       <property name = "toAccount" column = "toAccount" type = "int"/>
       <property name = "transactionType" column = "transactionType" type = "string"/>
-      <property name = "dateOfTransaction" column = "dateOfTransaction" type = "timestamp"/>
+      <property name = "dateOfTransaction" column = "dateOfTransaction" type = "timestamp" generated="always"/>
       <property name = "description" column = "description" type = "string"/>
       <property name = "checqueNumber" column = "checqueNumber" type = "string"/>      
 	  <property name = "amount" column = "amount" type = "double"/>

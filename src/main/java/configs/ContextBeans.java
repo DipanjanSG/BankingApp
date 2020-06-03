@@ -1,33 +1,44 @@
 package configs;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import AuthorizeCCTransactions.CreditCardBean;
+import AuthorizeCCTransactions.CreditCard;
 import AuthorizeCCTransactions.CreditCardHelper;
+import AuthorizeCCTransactions.CreditCardTransactionsDaoImpl;
 import CreateAccount.CreateAccount;
 import CreateAccount.CustomerDaoImpl;
 import CreateAccount.Customer;
+import CreateAccount.CustomerDao;
 import Login.Credentials;
 import Login.LoginBean;
-import TransactionDetails.TransactionDetailsBean;
-import Transactions.AccountsBean;
+import TransactionDetails.Transaction;
+import TransactionDetails.TransactionDaoImpl;
+import Transactions.Accounts;
+import Transactions.AccountsDaoImpl;
 import Transactions.TransactionsDao;
 
 public class ContextBeans {
 	
 	private static ApplicationContext context = null;
-	private static TransactionDetailsBean transactionDetailsBean = null;
+	private static Transaction transactionBean = null;
 	private static Customer customerBean = null;
-	private static CreditCardBean creditCardBean = null;
+	private static CreditCard creditCardBean = null;
 	private static CreateAccount createAccount = null;
 	private static LoginBean loginBean = null;
-	private static AccountsBean accountsBean = null;
+	private static Accounts accountsBean = null;
 	private static Credentials credentials = null;
 	private static CreditCardHelper creditCardHelper = null;
 	private static CustomerDaoImpl createAccountDao = null;
 	private static TransactionsDao transactionsDao = null;
-	
+	private static CreditCardTransactionsDaoImpl createCreditCardTransactionsDaoBean = null;
+	private static AccountsDaoImpl accountsDaoImpl = null;
+	private static TransactionDaoImpl transactionDaoImpl = null;
+	private static SessionFactory sFactory = null ;
+	private static Session session = null;
+	 
 	public static ApplicationContext getContext() {
 		if (context == null ) {
 			context = new ClassPathXmlApplicationContext("configs/context.xml");
@@ -43,17 +54,17 @@ public class ContextBeans {
 		return credentials;
 	}
 
-	public static TransactionDetailsBean getTransactionDetailsBean() {
-		if (transactionDetailsBean == null ) {
-	        transactionDetailsBean = (TransactionDetailsBean)getContext().getBean("transactionDetailsBean");
+	public static Transaction getTransactionDetailsBean() {
+		if (transactionBean == null ) {
+	        transactionBean = (Transaction)getContext().getBean("transactionBean");
 		}
 		
-		return transactionDetailsBean;
+		return transactionBean;
 	}
 	
-	public static CreditCardBean getCreditCardBean() {
+	public static CreditCard getCreditCardBean() {
 		if (creditCardBean == null ) {
-			creditCardBean = (CreditCardBean)getContext().getBean("creditCardBean");
+			creditCardBean = (CreditCard)getContext().getBean("creditCardBean");
 		}
 		
 		return creditCardBean;
@@ -75,9 +86,9 @@ public class ContextBeans {
 	}
 
 
-	public static AccountsBean getAccountsBean() {
+	public static Accounts getAccountsBean() {
 		if (accountsBean == null ) {
-			accountsBean = (AccountsBean)getContext().getBean("accountsBean");
+			accountsBean = (Accounts)getContext().getBean("accountsBean");
 		}
 		return accountsBean;
 	}
@@ -89,7 +100,7 @@ public class ContextBeans {
 		
 		return customerBean;
 	}
-	
+
 	public static Customer getNewCustomerBean() {
 		
 		customerBean =  (Customer)getContext().getBean("customerBean");
@@ -108,10 +119,18 @@ public class ContextBeans {
 	
 	public static CustomerDaoImpl getCreateAccountDao() {
 		if (createAccountDao == null ) {
-			createAccountDao =  (CustomerDaoImpl)getContext().getBean("createAccountDaoBean");
+			createAccountDao = (CustomerDaoImpl)getContext().getBean("createAccountDaoBean");
 		}
 		
 		return createAccountDao;
+	}
+	
+	public static CreditCardTransactionsDaoImpl getcreateCreditCardTransactionsDao() {
+		if (createCreditCardTransactionsDaoBean == null ) {
+			createCreditCardTransactionsDaoBean = (CreditCardTransactionsDaoImpl)getContext().getBean("createCreditCardTransactionsDaoBean");
+		}
+		
+		return createCreditCardTransactionsDaoBean;
 	}
 	
 	public static TransactionsDao getTransactionsDao() {
@@ -121,4 +140,20 @@ public class ContextBeans {
 		
 		return transactionsDao;
 	}
+	public static AccountsDaoImpl getAcountsDaoImpl() {
+		if (accountsDaoImpl == null ) {
+			accountsDaoImpl =  (AccountsDaoImpl)getContext().getBean("accountsDaoImplBean");
+		}
+		
+		return accountsDaoImpl;
+	}
+	
+	public static TransactionDaoImpl getTransactionDaoImpl() {
+		if (transactionDaoImpl == null ) {
+			transactionDaoImpl =  (TransactionDaoImpl)getContext().getBean("transactionDaoImpl");
+		}
+		
+		return transactionDaoImpl;
+	}
+
 }

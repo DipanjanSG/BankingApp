@@ -2,7 +2,7 @@ package TransactionDetails;
 
 import java.sql.Timestamp;
 
-public class TransactionDetailsBean {
+public class Transaction {
 	
 	int transactionId; 
 	int fromAccount;
@@ -17,7 +17,7 @@ public class TransactionDetailsBean {
 	
 	
 	
-	public TransactionDetailsBean(int transactionId, int fromAccount, int toAccount, String transactionType,
+	public Transaction(int transactionId, int fromAccount, int toAccount, String transactionType,
 			Timestamp dateOfTransaction, String description, String checqueNumber, double amount, double fromAccountAmt,
 			double toAccountAmt) {
 		super();
@@ -33,7 +33,7 @@ public class TransactionDetailsBean {
 		this.toAccountAmt = toAccountAmt;
 	}
 
-	public TransactionDetailsBean( int fromAccount, int toAccount, String transactionType,
+	public Transaction( int fromAccount, int toAccount, String transactionType,
 			 double amount, double fromAccountAmt, double toAccountAmt) {
 
 		this.fromAccount = fromAccount;
@@ -44,7 +44,7 @@ public class TransactionDetailsBean {
 		this.toAccountAmt = toAccountAmt;
 	}
 	
-	public TransactionDetailsBean() {
+	public Transaction() {
 		super();
 	}
 

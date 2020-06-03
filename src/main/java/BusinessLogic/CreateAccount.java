@@ -2,10 +2,7 @@ package BusinessLogic;
 
 
 import java.io.IOException;
-
-
 import java.io.PrintWriter;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,13 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import AuthorizeCCTransactions.CreditCardBean;
+import AuthorizeCCTransactions.CreditCard;
 import CreateAccount.Customer;
 import CreateAccount.CustomerDaoImpl;
 import Login.Credentials;
 import Login.LoginBean;
 import Login.LoginDao;
-import Transactions.AccountsBean;
+import Transactions.Accounts;
 import configs.ContextBeans;
 
 import java.sql.ResultSet;
@@ -55,12 +52,12 @@ public class CreateAccount extends HttpServlet {
 		String emailId = request.getParameter("emailId");
 		String bankAccountType = request.getParameter("bankAccountType");
 		
-		CustomerDaoImpl createAccountDao = ContextBeans.getCreateAccountDao();
-		AccountsBean accountsBean = ContextBeans.getAccountsBean();
+		CustomerDaoImpl createAccountDao =  ContextBeans.getCreateAccountDao();
+		Accounts accountsBean = ContextBeans.getAccountsBean();
 		accountsBean.setAccountBalance(0.0);
 		accountsBean.setBankAccountType(bankAccountType);
 		
-		Set <AccountsBean> allAccountsHeld = new HashSet();
+		Set <Accounts> allAccountsHeld = new HashSet();
 		allAccountsHeld.add(accountsBean);
 		
 		Credentials credentials = ContextBeans.getCredentials();

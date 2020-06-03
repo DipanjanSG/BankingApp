@@ -24,13 +24,14 @@ Date Range: <br>
 </p>
 </form>
 <table id = "accountDetails" border="1">
-<tr> <th> Sl No.</th>  <th>Date</th>  <th>Description</th>  <th>Cheque No.</th> <th>Deposit</th>  <th>Available Balance </th> </tr>
+<tr> <th> Sl No.</th>  <th>Date</th>  <th>Description</th>  <th>Cheque No.</th> <th>Deposit</th>  <th>Available Balance</th> </tr>
 
- <c:forEach var ="transactionDetailsBean" begin="1" end="10">
-      <tr>
-        <td> <c:out value="${transactionDetailsBean}"/></td>
-      </tr> 
-   </c:forEach>
+ <c:forEach items="${bankStatements}" var ="bankStatement" >
+      
+       <tr><td>${bankStatement.transactionId}</tr></td>
+       
+ </c:forEach>
+ 
 </table>
 
  

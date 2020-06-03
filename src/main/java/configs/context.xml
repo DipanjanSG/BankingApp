@@ -6,18 +6,31 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 		
 <import resource="classpath:configs/hibernateTemplate.xml"/>
-<aop:aspectj-autoproxy />  
+<aop:aspectj-autoproxy proxy-target-class="true"/>
 <bean id = "credentials" class="Login.Credentials"/>
-<bean id = "transactionDetailsBean" class=" TransactionDetails.TransactionDetailsBean"/>
-<bean id = "creditCardBean" class="AuthorizeCCTransactions.CreditCardBean"/>
+<bean id = "transactionBean" class="TransactionDetails.Transaction"/>
+<bean id = "creditCardBean" class="AuthorizeCCTransactions.CreditCard"/>
 <bean id = "customerBean" class="CreateAccount.Customer" autowire="byName"/>
 <bean id = "loginBean" class="Login.LoginBean"/>
-<bean id = "accountsBean" class="Transactions.AccountsBean"/>
+<bean id = "accountsBean" class="Transactions.Accounts"/>
 <bean id = "authorizeCCTransactionsLogs" class="Logger.AuthorizeCCTransactionsLogs"/>
 <bean id = "creditCardHelperBean" class = "AuthorizeCCTransactions.CreditCardHelper"/>
 <bean id = "createAccountDaoBean" class = "CreateAccount.CustomerDaoImpl">
 	<property name="hibernateTemplate" ref="hibernateTemplate" />  
 </bean>
+
+<bean id = "createCreditCardTransactionsDaoBean" class = "AuthorizeCCTransactions.CreditCardTransactionsDaoImpl">
+	<property name="hibernateTemplate" ref="hibernateTemplate" />  
+</bean>
+
+<bean id = "accountsDaoImplBean" class = "Transactions.AccountsDaoImpl">
+	<property name="hibernateTemplate" ref="hibernateTemplate" />  
+</bean>
+
+<bean id = "transactionDaoImpl" class = "TransactionDetails.TransactionDaoImpl">
+	<property name="hibernateTemplate" ref="hibernateTemplate" />  
+</bean>
+
 <bean id = "createAccountLogs" class = "Logger.CreateAccountLogs"/>
 <bean id = "transactionDaoLogs" class = "Logger.TransactionDaoLogs"/>
 <bean id = "createTransactionsDaoBean" class = "Transactions.TransactionsDao"/>

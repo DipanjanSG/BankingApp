@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-   <class name = "Transactions.AccountsBean" table = "accounts">
+   <class name = "Transactions.Accounts" table = "accounts">
       <meta attribute = "class-description">
          This class contains the credit-card details with holder id. 
       </meta>

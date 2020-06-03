@@ -6,9 +6,9 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import AuthorizeCCTransactions.CreditCardBean;
+import AuthorizeCCTransactions.CreditCard;
 import Login.Credentials;
-import Transactions.AccountsBean;
+import Transactions.Accounts;
 
 public class Customer {
 	
@@ -17,13 +17,13 @@ public class Customer {
 	Date dateOfBirth;
 	String address;
 	String emailId;
-	Set <AccountsBean> allAccountsHeld;
+	Set <Accounts> allAccountsHeld;
 	
 	@Autowired
 	Credentials credentials;
 	
 	@Autowired
-	CreditCardBean creditCardBean;
+	CreditCard creditCardBean;
 	
 	public Credentials getCredentials() {
 		return credentials;
@@ -33,16 +33,16 @@ public class Customer {
 		this.credentials = credentials;
 	}
 
-	public Set<AccountsBean> getAllAccountsHeld() {
+	public Set<Accounts> getAllAccountsHeld() {
 		return allAccountsHeld;
 	}
 
-	public void setAllAccountsHeld(Set<AccountsBean> allAccountsHeld) {
+	public void setAllAccountsHeld(Set<Accounts> allAccountsHeld) {
 		this.allAccountsHeld = allAccountsHeld;
 	}
 
 	public Customer(String userName, Date dateOfBirth, String address, String emailId,
-			Set <AccountsBean> allAccountsHeld, Credentials credentials) {
+			Set <Accounts> allAccountsHeld, Credentials credentials) {
 		super();
 		this.userName = userName;
 		this.dateOfBirth = dateOfBirth;
@@ -97,11 +97,11 @@ public class Customer {
 		this.emailId = emailId;
 	}
 
-	public CreditCardBean getCreditCardBean() {
+	public CreditCard getCreditCardBean() {
 		return creditCardBean;
 	}
 
-	public void setCreditCardBean(CreditCardBean creditCardBean) {
+	public void setCreditCardBean(CreditCard creditCardBean) {
 		this.creditCardBean = creditCardBean;
 	}
 }

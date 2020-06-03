@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-   <class name = "AuthorizeCCTransactions.CreditCardBean" table = "credit_card">
+   <class name = "AuthorizeCCTransactions.CreditCard" table = "credit_card">
       <meta attribute = "class-description">
          This class contains the credit-card details with holder id. 
       </meta>

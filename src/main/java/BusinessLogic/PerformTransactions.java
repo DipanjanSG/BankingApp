@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import Login.LoginBean;
 import Login.LoginDao;
-import Transactions.AccountsBean;
+import Transactions.Accounts;
 import Transactions.TransactionsDao;
 import configs.ContextBeans;
 
@@ -35,15 +35,15 @@ public class PerformTransactions extends HttpServlet {
 		Cookie[] allCookies = request.getCookies();
 		int customerId = Integer.parseInt(allCookies[0].getValue());
 		
-		AccountsBean accountsBean = ContextBeans.getAccountsBean();
-		accountsBean.setAccountNumber(accountNumber);
-		accountsBean.setAccountBalance(amount);
+		Accounts accounts = ContextBeans.getAccountsBean();
+		accounts.setAccountNumber(accountNumber);
+		accounts.setAccountBalance(amount);
 				
 		TransactionsDao transactionsDao = ContextBeans.getTransactionsDao();
 		try {
 			response.setContentType("text/html");
 			int loggedInUsersAccountNumber = transactionsDao.getAccountNumber(customerId);
-			if (!transactionsDao.performTransaction( accountsBean, transactionType, loggedInUsersAccountNumber )) {
+			if (!transactionsDao.performTransaction( accounts, transactionType, loggedInUsersAccountNumber )) {
 				PrintWriter out = response.getWriter();
 				out.println("<h2>Invalid Details<h2>");
 			} else {

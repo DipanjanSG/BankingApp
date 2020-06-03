@@ -13,6 +13,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import BusinessLogic.SessionFactoryCreation;
 import CreateAccount.Customer;
+import configs.ContextBeans;
 import configs.HibernateUtils;
 
 public class LoginDao {
@@ -23,7 +24,7 @@ public class LoginDao {
 			query.setParameter("userName",credentials.userName);
 			query.setParameter("password",credentials.password);
 			List <Credentials> retrievedCredentials = query.getResultList();
-			if ( retrievedCredentials.size() >= 1 ) {
+			if ( retrievedCredentials.size() == 1 ) {
 				return retrievedCredentials.get(0).getCustomerId();
 			}
 			

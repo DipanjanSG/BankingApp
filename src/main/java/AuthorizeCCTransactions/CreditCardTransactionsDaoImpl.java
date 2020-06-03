@@ -1,4 +1,4 @@
-package CreateAccount;
+package AuthorizeCCTransactions;
 
 import java.util.List;
 
@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
-import AuthorizeCCTransactions.CreditCard;
 import BusinessLogic.SessionFactoryCreation;
+import CreateAccount.Customer;
 
-public class CustomerDaoImpl implements CustomerDao{
-	
+public class CreditCardTransactionsDaoImpl implements CretditCardTransactions{
+
 	@Autowired
 	HibernateTemplate hibernateTemplate;
 	
@@ -25,26 +25,32 @@ public class CustomerDaoImpl implements CustomerDao{
 	}
 
 	@Transactional(readOnly = false)
-	public void save(Customer customer) {
-		hibernateTemplate.save(customer);
+	public CreditCard get(CreditCard creditCardBean) {
+		
+		return hibernateTemplate.get(CreditCard.class, creditCardBean.creditCardNumber);
+
+
 	}
 	
 	@Transactional(readOnly = false)
-	public void update(Customer customer) {
-		hibernateTemplate.update(customer);
+	public void save(CreditCard creditCardBean) {
+		hibernateTemplate.save(creditCardBean);
+
+	}
+	
+	@Transactional(readOnly = false)
+	public void update(CreditCard creditCardBean) {
+		hibernateTemplate.update(creditCardBean);
 		
 	}
 	
 	@Transactional(readOnly = false)
-	public void delete(Customer customer) {
-		hibernateTemplate.delete(customer);
+	public void delete(CreditCard creditCardBean) {
+		hibernateTemplate.delete(creditCardBean);
 	}
 	
 	@Transactional(readOnly = false)
-	public List<Customer> getCustomers() {
-		return hibernateTemplate.loadAll(Customer.class);
+	public List<CreditCard> getAllCreditCards() {
+		return hibernateTemplate.loadAll(CreditCard.class);
 	}
-
-	
-	
 }

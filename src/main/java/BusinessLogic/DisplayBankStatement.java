@@ -2,6 +2,7 @@ package BusinessLogic;
 
 import java.io.IOException;
 
+
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +11,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,13 +18,14 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.swing.plaf.synth.SynthSeparatorUI;
 import Login.LoginBean;
 import Login.LoginDao;
-import TransactionDetails.TransactionDetailsBean;
-import TransactionDetails.TransactionDetailsDao;
-import Transactions.AccountsBean;
+import TransactionDetails.Transaction;
+import TransactionDetails.TransactionDaoImpl;
+import Transactions.Accounts;
 import Transactions.TransactionsDao;
+import configs.ContextBeans;
 
 /**
  * Servlet implementation class PerformTransactions
@@ -33,14 +34,6 @@ import Transactions.TransactionsDao;
 public class DisplayBankStatement extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public DisplayBankStatement() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -60,20 +53,21 @@ public class DisplayBankStatement extends HttpServlet {
 		    int customerId = Integer.parseInt(cookie[0].getValue());
 		    TransactionsDao transactionsDao = new TransactionsDao();
 		    int loggedInUsersAccountNumber = transactionsDao.getAccountNumber(customerId);
-			TransactionDetailsDao transactionDetailsDao = new TransactionDetailsDao();
-			List <TransactionDetailsBean> transactionDetailsBeanList = transactionDetailsDao.getTransactionDetails(loggedInUsersAccountNumber,loggedInUsersAccountNumber,timestampDateFrom, timestampDateTo);
-			
+		    TransactionDaoImpl transactionDaoImpl = ContextBeans.getTransactionDaoImpl();
+		    Transaction transaction = ContextBeans.getTransactionDetailsBean();		
+			List <Transaction> transactionDetailsBeanList = transactionDaoImpl.getTransactionDetails(
+					loggedInUsersAccountNumber,loggedInUsersAccountNumber,timestampDateFrom, timestampDateTo);
 			response.setContentType("text/html");
 			PrintWriter out = response.getWriter();
 
 				
-			for (TransactionDetailsBean transactionDetailsBean : transactionDetailsBeanList ) {
-				out.println("<h2>"+ transactionDetailsBean.toString()+ "<h2>");
-			}
-			
-//			request.setAttribute("bankStatement", transactionDetailsBeanList); 
-//			RequestDispatcher rd = getServletContext().getRequestDispatcher("/displayBankStatement.jsp");
-//			rd.forward(request, response);
+//			for (Transaction transactionDetailsBean : transactionDetailsBeanList ) {
+//				out.println("<h2>"+ transactionDetailsBean.toString()+ "<h2>");
+//			}
+//			
+			request.setAttribute("bankStatements", transactionDetailsBeanList); 
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/displayBankStatement.jsp");
+			rd.forward(request, response);
 			
 		}
 		

@@ -2,6 +2,7 @@ package Transactions;
 
 import java.sql.Connection;
 
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,72 +13,59 @@ import javax.persistence.TypedQuery;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import AuthorizeCCTransactions.CreditCardBean;
+import AuthorizeCCTransactions.CreditCard;
 import BusinessLogic.SessionFactoryCreation;
 import Login.Credentials;
 import Login.LoginBean;
-import TransactionDetails.TransactionDetailsBean;
+import TransactionDetails.Transaction;
+import TransactionDetails.TransactionDaoImpl;
 import configs.ContextBeans;
 import configs.HibernateUtils;
 
 public class TransactionsDao {
 
-	public boolean performTransaction(AccountsBean accountsBean, String transactionType, int loggedInUsersAccountNumber) throws ClassNotFoundException {
-		
-	        boolean hasRecordBeenFound = false;
-	        
-	        SessionFactory sFactory = HibernateUtils.getSessionFactory();
-	 
-	   	    Session session = sFactory.openSession();
-	       
-	        Transaction tx = session.beginTransaction();	        
-	        AccountsBean accountsBeanFromDatabase = session.get(AccountsBean.class, new Integer(accountsBean.accountNumber));
-	        AccountsBean loggednInUsersaccounts = session.get(AccountsBean.class, new Integer(loggedInUsersAccountNumber));
-	       
+	public boolean performTransaction(Accounts accountsBean, String transactionType, int loggedInUsersAccountNumber) throws ClassNotFoundException {
+	        AccountsDaoImpl accountsDaoImpl = ContextBeans.getAcountsDaoImpl();
+	        Transaction transaction = ContextBeans.getTransactionDetailsBean();
+	        Accounts accountsBeanFromDatabase = accountsDaoImpl.get(accountsBean);
+	        Accounts loggednInUsersaccounts = accountsDaoImpl.get(accountsBean);
 	        double oldAccountBalance = accountsBeanFromDatabase.getAccountBalance();
 	        if ( transactionType.equals("credit") ) {
 	        	accountsBeanFromDatabase.incrementAccountBalance(accountsBean.accountBalance);
 	        	loggednInUsersaccounts.decrementAccountBalance(accountsBean.accountBalance);
+	        	transaction.setFromAccount(loggedInUsersAccountNumber);
+		        transaction.setToAccount(accountsBean.accountNumber);
 			} else {
 				accountsBeanFromDatabase.decrementAccountBalance(accountsBean.accountBalance);
-				loggednInUsersaccounts.incrementAccountBalance(accountsBean.accountBalance);				
+				loggednInUsersaccounts.incrementAccountBalance(accountsBean.accountBalance);
+				transaction.setFromAccount(accountsBean.accountNumber);
+		        transaction.setToAccount(loggedInUsersAccountNumber);
 			}
 	        
-	        session.update(accountsBeanFromDatabase);
-	        session.update(loggednInUsersaccounts);
-	        tx.commit();
+	        accountsDaoImpl.update(accountsBeanFromDatabase);
+	        accountsDaoImpl.update(loggednInUsersaccounts);
 	        
-	        if ( session.getTransaction().getStatus().toString() == "COMMITTED") {
-		        tx = session.beginTransaction();
-		        
-		        TransactionDetailsBean transactionDetailsBean = ContextBeans.getTransactionDetailsBean();
-		        transactionDetailsBean.setFromAccount(accountsBean.accountNumber);
-		        transactionDetailsBean.setToAccount(loggedInUsersAccountNumber);
-		        transactionDetailsBean.setTransactionType(transactionType);
-		        
-		        transactionDetailsBean.setAmount(accountsBean.accountBalance);
-		        transactionDetailsBean.setFromAccountAmt(accountsBeanFromDatabase.accountBalance);
-		        transactionDetailsBean.setToAccountAmt(loggednInUsersaccounts.accountBalance);
-		        session.save(transactionDetailsBean);
-		        tx.commit();
-	        }
-	                
-	        session.close();
-	        sFactory.close();
+	        TransactionDaoImpl transactionDaoImpl = ContextBeans.getTransactionDaoImpl();
+	        
+		    transaction.setTransactionType(transactionType);
+		    transaction.setAmount(accountsBean.accountBalance);
+		    transaction.setFromAccountAmt(accountsBeanFromDatabase.accountBalance);
+		    transaction.setToAccountAmt(loggednInUsersaccounts.accountBalance);
+		    transactionDaoImpl.save(transaction);
+
 		return true;
 	}
 
 	public int getAccountNumber(int customerId) throws ClassNotFoundException {
 		
 			Session session = SessionFactoryCreation.getSessionInstance();
-        	String hql = "from Transactions.AccountsBean where customerId = :customerId";
-			TypedQuery<AccountsBean> query = session.createQuery(hql);
+        	String hql = "from Transactions.Accounts where customerId = :customerId";
+			TypedQuery<Accounts> query = session.createQuery(hql);
 			query.setParameter("customerId",customerId);
-			List <AccountsBean> retrievedCredentials = query.getResultList();
+			List <Accounts> retrievedCredentials = query.getResultList();
 			
 			if ( retrievedCredentials.size() == 1 ) {
 				return retrievedCredentials.get(0).getAccountNumber();

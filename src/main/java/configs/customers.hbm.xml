@@ -24,7 +24,7 @@
       		<key>
       			<column name = "customerId"/>
       		</key>
-      	<one-to-many class = "Transactions.AccountsBean"/>
+      	<one-to-many class = "Transactions.Accounts"/>
       	
       </set>   
      

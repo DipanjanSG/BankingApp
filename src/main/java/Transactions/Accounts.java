@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import CreateAccount.Customer;
 
-public class AccountsBean {
+public class Accounts {
 	
 	int accountNumber;
 	double accountBalance;
@@ -14,15 +14,15 @@ public class AccountsBean {
 	
 	String bankAccountType;
 	
-	public AccountsBean() {
+	public Accounts() {
 	}
 	
-	public AccountsBean( double accountBalance, String bankAccountType) {
+	public Accounts( double accountBalance, String bankAccountType) {
 		this.accountBalance = accountBalance;
 		this.bankAccountType = bankAccountType;
 	}
 
-	public AccountsBean(int accountNumber, double accountBalance) {
+	public Accounts(int accountNumber, double accountBalance) {
 		this.accountNumber = accountNumber;
 		this.accountBalance = accountBalance;
 	}

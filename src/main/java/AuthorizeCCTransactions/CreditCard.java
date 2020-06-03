@@ -6,28 +6,28 @@ import org.springframework.context.annotation.ComponentScan;
 import lombok.ToString;
 
 @ToString
-public class CreditCardBean {
+public class CreditCard {
 	
 	String creditCardNumber;
 	String cvvCode;
 	int cardOwner;
 	double amount;
 	
-	public CreditCardBean(String creditCardNumber, String cvvCode, int cardOwner, double amount) {
+	public CreditCard(String creditCardNumber, String cvvCode, int cardOwner, double amount) {
 		this.creditCardNumber = creditCardNumber;
 		this.cvvCode = cvvCode;
 		this.cardOwner = cardOwner;
 		this.amount = amount;
 	}
 	
-	public CreditCardBean(String creditCardNumber, String cvvCode, double amount) {
+	public CreditCard(String creditCardNumber, String cvvCode, double amount) {
 		super();
 		this.creditCardNumber = creditCardNumber;
 		this.cvvCode = cvvCode;
 		this.amount = amount;
 	}
 	
-	public CreditCardBean() {
+	public CreditCard() {
 		
 	}
 	public String getCreditCardNumber() {

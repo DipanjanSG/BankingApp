@@ -16,16 +16,11 @@ import CreateAccount.Customer;
 import configs.HibernateUtils;
 
 public class CustomersDao {
-	public Customer fetchRecordWithUserName(Customer customerBean) throws ClassNotFoundException {
-                
+	public Customer fetchRecordWithUserName(Customer customerBean) throws ClassNotFoundException {        
 		Session session = SessionFactoryCreation.getSessionInstance();
-        
         Transaction tx = session.beginTransaction();
         Customer retrivedCustomerBean = (Customer)session.get(Customer.class, new Integer(customerBean.getCreditCardBean().getCardOwner()));
-        
         tx.commit();
-        
 	    return retrivedCustomerBean;
 	}
-	
 }
