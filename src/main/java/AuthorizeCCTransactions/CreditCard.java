@@ -1,10 +1,10 @@
 package AuthorizeCCTransactions;
 
-import org.springframework.context.annotation.ComponentScan;
-
-
 import lombok.ToString;
-
+/**
+ * @author Dipanjan Sengupta
+ * @purpose - This POJO represents the CreditCard Object and is mapped to credit_card class
+ */
 @ToString
 public class CreditCard {
 	

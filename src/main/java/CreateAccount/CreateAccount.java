@@ -1,33 +1,20 @@
 package CreateAccount;
 
 import java.io.IOException;
-
 import java.io.PrintWriter;
-
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import CreateAccount.Customer;
-import CreateAccount.CustomerDaoImpl;
-import Login.LoginBean;
-import Login.LoginDao;
-import java.sql.ResultSet;
-
 /**
- * Servlet implementation class createAccount
+ * @author Dipanjan Sengupta
+ * @purpose - This servlet is for accepting Account details for account creation
  */
 @WebServlet("/enterAccountDetailsServlet")
 public class CreateAccount extends HttpServlet {
-	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -38,7 +25,7 @@ public class CreateAccount extends HttpServlet {
 		out.println("<title> Bank of Edureka</title>");
 		out.println("</head>");
 		out.println("<body style='background-color:orange;'>");
-		out.println("<form action='createAccountServlet'>");
+		out.println("<form action='createAccountServlet' method=\"post\">");
 		out.println("<h2> Account Creation Screen </h2>");
 		out.println("<pre>");
 		out.println("<label for='uname'>Name:     </label>  <input type = 'text' id ='uName' name ='uName'> <br> <br>");
@@ -58,6 +45,5 @@ public class CreateAccount extends HttpServlet {
 		out.println("</pre>");
 		out.println("</form>");
 		out.println("</body>");
-
 	}
 }

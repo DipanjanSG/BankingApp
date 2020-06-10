@@ -1,9 +1,14 @@
 package Transactions;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import CreateAccount.Customer;
+import lombok.ToString;
 
+/**
+ * @author Dipanjan Sengupta
+ * @purpose - PoJo representing Accounts table
+ */
+@ToString
 public class Accounts {
 	
 	int accountNumber;

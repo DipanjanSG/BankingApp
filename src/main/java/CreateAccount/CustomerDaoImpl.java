@@ -1,16 +1,15 @@
 package CreateAccount;
 
-import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
-import AuthorizeCCTransactions.CreditCard;
-import BusinessLogic.SessionFactoryCreation;
-
+/**
+ * @author Dipanjan Sengupta
+ * @purpose - HibernateTemplate for operations on customer table
+ */
 public class CustomerDaoImpl implements CustomerDao{
 	
 	@Autowired
@@ -25,8 +24,9 @@ public class CustomerDaoImpl implements CustomerDao{
 	}
 
 	@Transactional(readOnly = false)
-	public void save(Customer customer) {
-		hibernateTemplate.save(customer);
+	public Integer save(Customer customer) {
+		return (Integer)hibernateTemplate.save(customer);
+		
 	}
 	
 	@Transactional(readOnly = false)
@@ -45,6 +45,8 @@ public class CustomerDaoImpl implements CustomerDao{
 		return hibernateTemplate.loadAll(Customer.class);
 	}
 
-	
-	
+	@Transactional(readOnly = false)
+	public Customer get(Customer customer) {
+		return hibernateTemplate.get(Customer.class, customer.getCustomerId());
+	}
 }

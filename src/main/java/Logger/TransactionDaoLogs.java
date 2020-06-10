@@ -1,16 +1,20 @@
 package Logger;
 
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Before;
-import org.springframework.stereotype.Component;
+import org.apache.log4j.Logger;
 
+/**
+ * @author Dipanjan Sengupta
+ * @purpose - Logs for money Transactions 
+ */
 public class TransactionDaoLogs {
 
+	final static Logger logger = Logger.getLogger(TransactionDaoLogs.class);
+	
 	public void beforePerformTransaction() {
-		System.out.println("Starting Amount Transfer");
+		logger.info("Starting Amount Transfer");
 	}
 	
 	public void afterPerformTransaction() {
-		System.out.println("Amount Transfer completed");
+		logger.info("Amount Transfer completed");
 	}
 }

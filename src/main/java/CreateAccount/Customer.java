@@ -9,7 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import AuthorizeCCTransactions.CreditCard;
 import Login.Credentials;
 import Transactions.Accounts;
+import lombok.ToString;
 
+/**
+ * @author Dipanjan Sengupta
+ * @purpose - This POJO represents the Customer Object and is mapped to customer class
+ */
+
+@ToString
 public class Customer {
 	
 	int customerId;

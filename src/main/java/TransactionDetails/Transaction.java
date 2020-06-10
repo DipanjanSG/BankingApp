@@ -2,6 +2,13 @@ package TransactionDetails;
 
 import java.sql.Timestamp;
 
+import lombok.ToString;
+
+/**
+ * @author Dipanjan Sengupta
+ * @purpose - PoJo for representing transaction table
+ */
+@ToString
 public class Transaction {
 	
 	int transactionId; 
@@ -14,8 +21,6 @@ public class Transaction {
 	double amount;
 	double fromAccountAmt;
 	double toAccountAmt;
-	
-	
 	
 	public Transaction(int transactionId, int fromAccount, int toAccount, String transactionType,
 			Timestamp dateOfTransaction, String description, String checqueNumber, double amount, double fromAccountAmt,

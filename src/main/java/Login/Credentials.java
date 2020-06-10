@@ -1,9 +1,14 @@
 package Login;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import CreateAccount.Customer;
+import lombok.ToString;
 
+/**
+ * @author Dipanjan Sengupta
+ * @purpose - POJO representing values in credentials table
+ */
+@ToString
 public class Credentials {
 	
 	String userName;

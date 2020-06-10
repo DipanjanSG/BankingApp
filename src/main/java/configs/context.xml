@@ -11,10 +11,10 @@
 <bean id = "transactionBean" class="TransactionDetails.Transaction"/>
 <bean id = "creditCardBean" class="AuthorizeCCTransactions.CreditCard"/>
 <bean id = "customerBean" class="CreateAccount.Customer" autowire="byName"/>
-<bean id = "loginBean" class="Login.LoginBean"/>
 <bean id = "accountsBean" class="Transactions.Accounts"/>
-<bean id = "authorizeCCTransactionsLogs" class="Logger.AuthorizeCCTransactionsLogs"/>
 <bean id = "creditCardHelperBean" class = "AuthorizeCCTransactions.CreditCardHelper"/>
+<bean id = "createTransactionsDaoBean" class = "Transactions.TransactionsDao"/>
+
 <bean id = "createAccountDaoBean" class = "CreateAccount.CustomerDaoImpl">
 	<property name="hibernateTemplate" ref="hibernateTemplate" />  
 </bean>
@@ -31,9 +31,15 @@
 	<property name="hibernateTemplate" ref="hibernateTemplate" />  
 </bean>
 
+<bean id = "credentialsDaoImpl" class = "Login.CredentialsDaoImpl">
+	<property name="hibernateTemplate" ref="hibernateTemplate" />  
+</bean>
+
+<bean id = "authorizeCCTransactionsLogs" class="Logger.AuthorizeCCTransactionsLogs"/>
 <bean id = "createAccountLogs" class = "Logger.CreateAccountLogs"/>
 <bean id = "transactionDaoLogs" class = "Logger.TransactionDaoLogs"/>
-<bean id = "createTransactionsDaoBean" class = "Transactions.TransactionsDao"/>
+<bean id = "displayBankStatementLogs" class = "Logger.DisplayBankStatementLogs"/>
+
 
 <aop:config>
 	    <aop:aspect id="creditCardAmountUpdationLogs" ref="authorizeCCTransactionsLogs">
@@ -45,7 +51,7 @@
 		
 <aop:config>
 	    <aop:aspect id="accountCreationLogs" ref="createAccountLogs">
-	    <aop:pointcut expression="execution(boolean CreateAccount.CustomerDaoImpl.save(..))" id="accountCreation"/>	
+	    <aop:pointcut expression="execution(Integer CreateAccount.CustomerDaoImpl.save(..))" id="accountCreation"/>	
 			<aop:before method = "beforeCreateNewAccount" pointcut-ref = "accountCreation"/>
 			<aop:after method =  "afterCreateNewAccount"  pointcut-ref = "accountCreation" />
 		</aop:aspect>
@@ -56,6 +62,14 @@
 	    <aop:pointcut expression="execution(boolean Transactions.TransactionsDao.performTransaction(..))" id="performTransactionFromAccount"/>	
 			<aop:before method = "beforePerformTransaction" pointcut-ref = "performTransactionFromAccount"/>
 			<aop:after method =  "afterPerformTransaction"  pointcut-ref = "performTransactionFromAccount" />
+		</aop:aspect>
+</aop:config>
+
+<aop:config>
+	    <aop:aspect id="bankStatementLogs" ref="displayBankStatementLogs">
+	    <aop:pointcut expression="execution(* TransactionDetails.TransactionDaoImpl.getTransactionDetails(..))" id="getBankStatement"/>	
+			<aop:before method = "beforeFetchingTransactionDetails" pointcut-ref = "getBankStatement"/>
+			<aop:after method =  "afterFetchingTransactionDetails"  pointcut-ref = "getBankStatement" />
 		</aop:aspect>
 </aop:config>
 		

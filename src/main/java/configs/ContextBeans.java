@@ -1,25 +1,28 @@
 package configs;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import AuthorizeCCTransactions.CreditCard;
 import AuthorizeCCTransactions.CreditCardHelper;
 import AuthorizeCCTransactions.CreditCardTransactionsDaoImpl;
 import CreateAccount.CreateAccount;
 import CreateAccount.CustomerDaoImpl;
 import CreateAccount.Customer;
-import CreateAccount.CustomerDao;
 import Login.Credentials;
-import Login.LoginBean;
+import Login.CredentialsDaoImpl;
 import TransactionDetails.Transaction;
 import TransactionDetails.TransactionDaoImpl;
 import Transactions.Accounts;
 import Transactions.AccountsDaoImpl;
 import Transactions.TransactionsDao;
 
+/**
+ * @author Dipanjan Sengupta
+ * @purpose - This class is the used for creating beans, to be called when when we need objects created 
+ */
 public class ContextBeans {
 	
 	private static ApplicationContext context = null;
@@ -27,21 +30,23 @@ public class ContextBeans {
 	private static Customer customerBean = null;
 	private static CreditCard creditCardBean = null;
 	private static CreateAccount createAccount = null;
-	private static LoginBean loginBean = null;
 	private static Accounts accountsBean = null;
 	private static Credentials credentials = null;
 	private static CreditCardHelper creditCardHelper = null;
 	private static CustomerDaoImpl createAccountDao = null;
 	private static TransactionsDao transactionsDao = null;
 	private static CreditCardTransactionsDaoImpl createCreditCardTransactionsDaoBean = null;
-	private static AccountsDaoImpl accountsDaoImpl = null;
+	private AccountsDaoImpl accountsDaoImpl = null;
 	private static TransactionDaoImpl transactionDaoImpl = null;
 	private static SessionFactory sFactory = null ;
 	private static Session session = null;
-	 
+	private static CredentialsDaoImpl credentialsDaoImpl = null;
+	final static Logger logger = Logger.getLogger(CreditCardTransactionsDaoImpl.class);
+ 
 	public static ApplicationContext getContext() {
 		if (context == null ) {
 			context = new ClassPathXmlApplicationContext("configs/context.xml");
+			logger.info("context.xml file initialized for Hibernate beans");
 		}
 		
 		return context;
@@ -78,18 +83,17 @@ public class ContextBeans {
 		return createAccount;
 	}
 
-	public static LoginBean getLoginBean() {
-		if (loginBean == null ) {
-			loginBean = (LoginBean)getContext().getBean("loginBean");
-		}
-		return loginBean;
-	}
-
-
 	public static Accounts getAccountsBean() {
 		if (accountsBean == null ) {
 			accountsBean = (Accounts)getContext().getBean("accountsBean");
 		}
+		return accountsBean;
+	}
+	
+	public static Accounts getNewAccountsBean() {
+		
+		accountsBean = (Accounts)getContext().getBean("accountsBean");
+		
 		return accountsBean;
 	}
 	
@@ -140,12 +144,8 @@ public class ContextBeans {
 		
 		return transactionsDao;
 	}
-	public static AccountsDaoImpl getAcountsDaoImpl() {
-		if (accountsDaoImpl == null ) {
-			accountsDaoImpl =  (AccountsDaoImpl)getContext().getBean("accountsDaoImplBean");
-		}
-		
-		return accountsDaoImpl;
+	public static AccountsDaoImpl getAcountsDaoImpl() {		
+		return (AccountsDaoImpl)getContext().getBean("accountsDaoImplBean");
 	}
 	
 	public static TransactionDaoImpl getTransactionDaoImpl() {
@@ -156,4 +156,11 @@ public class ContextBeans {
 		return transactionDaoImpl;
 	}
 
+	public static CredentialsDaoImpl getCredentialsDaoImpl() {
+		if (credentialsDaoImpl == null ) {
+			credentialsDaoImpl =  (CredentialsDaoImpl)getContext().getBean("credentialsDaoImpl");
+		}
+		
+		return credentialsDaoImpl;
+	}
 }

@@ -1,9 +1,7 @@
-package BusinessLogic;
+package CustomerActivities;
 
 import java.io.IOException;
-
 import java.io.PrintWriter;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -11,21 +9,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import Login.LoginBean;
-import Login.LoginDao;
+import org.apache.log4j.Logger;
+
 import Transactions.Accounts;
+import Transactions.AccountsDaoImpl;
 import Transactions.TransactionsDao;
 import configs.ContextBeans;
 
 /**
- * Servlet implementation class PerformTransactions
+ * @author Dipanjan Sengupta
+ * @purpose - Servlet for performing money transactions from one servlet to other
  */
 @WebServlet("/PerformTransactionsServlet")
 public class PerformTransactions extends HttpServlet {
-	private static final long serialVersionUID = 1L;
 
+	final static Logger logger = Logger.getLogger(PerformTransactions.class);
 
-	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		int accountNumber = Integer.parseInt(request.getParameter("accountNumber"));
@@ -41,28 +40,22 @@ public class PerformTransactions extends HttpServlet {
 				
 		TransactionsDao transactionsDao = ContextBeans.getTransactionsDao();
 		try {
-			response.setContentType("text/html");
-			int loggedInUsersAccountNumber = transactionsDao.getAccountNumber(customerId);
-			if (!transactionsDao.performTransaction( accounts, transactionType, loggedInUsersAccountNumber )) {
-				PrintWriter out = response.getWriter();
+			response.setContentType("text/html");				
+			PrintWriter out = response.getWriter();
+			out.println("<body style=background-color:orange;>");
+			
+			if (!transactionsDao.performTransaction( accounts, transactionType, customerId )) {
 				out.println("<h2>Invalid Details<h2>");
 			} else {
-				PrintWriter out = response.getWriter();
-				out.println("<h2>Transaction successful1<h2>");
+				out.println("<h2>Transaction successful<h2>");
 			}
+			out.println("</body>");
+
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 
-	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
 	}
 
 }

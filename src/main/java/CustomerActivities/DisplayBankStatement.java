@@ -1,11 +1,7 @@
-package BusinessLogic;
+package CustomerActivities;
 
 import java.io.IOException;
-
-
 import java.io.PrintWriter;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,25 +14,23 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.plaf.synth.SynthSeparatorUI;
-import Login.LoginBean;
-import Login.LoginDao;
+
+import org.apache.log4j.Logger;
+
 import TransactionDetails.Transaction;
 import TransactionDetails.TransactionDaoImpl;
-import Transactions.Accounts;
+import Transactions.AccountsDaoImpl;
 import Transactions.TransactionsDao;
 import configs.ContextBeans;
-
 /**
- * Servlet implementation class PerformTransactions
+ * @author Dipanjan Sengupta
+ * @purpose - Servlet for creating a fetching Bank Transactions 
  */
 @WebServlet("/displayStatementServlet")
 public class DisplayBankStatement extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+   
+	final static Logger logger = Logger.getLogger(DisplayBankStatement.class);
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String dateFrom = request.getParameter("dateFrom");
 		String dateTo = request.getParameter("dateTo");
@@ -52,30 +46,30 @@ public class DisplayBankStatement extends HttpServlet {
 		    Cookie[] cookie = request.getCookies();
 		    int customerId = Integer.parseInt(cookie[0].getValue());
 		    TransactionsDao transactionsDao = new TransactionsDao();
-		    int loggedInUsersAccountNumber = transactionsDao.getAccountNumber(customerId);
+            AccountsDaoImpl accountsDaoImplLoggedInUser = ContextBeans.getAcountsDaoImpl();
+            int loggedInUsersAccountNumber =  accountsDaoImplLoggedInUser.getAccountWithCustomerId(customerId).getAccountNumber();
+	        
 		    TransactionDaoImpl transactionDaoImpl = ContextBeans.getTransactionDaoImpl();
 		    Transaction transaction = ContextBeans.getTransactionDetailsBean();		
 			List <Transaction> transactionDetailsBeanList = transactionDaoImpl.getTransactionDetails(
 					loggedInUsersAccountNumber,loggedInUsersAccountNumber,timestampDateFrom, timestampDateTo);
+			logger.info("Number of transactions retrieved in date range - " + dateFrom + " to " + dateTo + " is - " + transactionDetailsBeanList.size());
 			response.setContentType("text/html");
 			PrintWriter out = response.getWriter();
 
-				
-//			for (Transaction transactionDetailsBean : transactionDetailsBeanList ) {
-//				out.println("<h2>"+ transactionDetailsBean.toString()+ "<h2>");
-//			}
-//			
 			request.setAttribute("bankStatements", transactionDetailsBeanList); 
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/displayBankStatement.jsp");
+			request.setAttribute("userAccountNumber", loggedInUsersAccountNumber);
+			if (transactionDetailsBeanList.size() == 0) {
+				request.setAttribute("size", 0);
+				request.setAttribute("dateRange", dateFrom + " - " + dateTo);
+			}
+			RequestDispatcher rd = request.getRequestDispatcher("displayBankStatement.jsp");
 			rd.forward(request, response);
-			
 		}
 		
 		catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		

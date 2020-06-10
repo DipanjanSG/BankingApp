@@ -1,20 +1,21 @@
 package TransactionDetails;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
-
-import javax.persistence.TypedQuery;
-
-import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
-import BusinessLogic.SessionFactoryCreation;
-
+/**
+ * @author Dipanjan Sengupta
+ * @purpose - HibernateTemplate for operations on transactions table
+ */
 public class TransactionDaoImpl implements TransactionDao{
 
 	@Autowired
@@ -34,9 +35,8 @@ public class TransactionDaoImpl implements TransactionDao{
 	}
 
 	@Transactional(readOnly = false)
-	public void save(Transaction transaction) {
-		System.out.println(transaction.toString());
-		hibernateTemplate.save(transaction);		
+	public Integer save(Transaction transaction) {
+		return (Integer)hibernateTemplate.save(transaction);		
 		
 	}
 
@@ -60,10 +60,14 @@ public class TransactionDaoImpl implements TransactionDao{
 	public List<Transaction> getTransactionDetails(int fromAccount,int toAccount, Timestamp dateFrom , Timestamp dateTo) throws ClassNotFoundException, IOException {
 		
 		DetachedCriteria criteria = DetachedCriteria.forClass(Transaction.class);
-		criteria.add(Restrictions.eq("fromAccount", fromAccount));
-		criteria.add(Restrictions.eq("toAccount", toAccount));
+		Criterion fromAccountNumber = Restrictions.eq("fromAccount", fromAccount);
+		Criterion toAccountNumber = Restrictions.eq("toAccount", toAccount);
+		
+		LogicalExpression orExp = Restrictions.or(fromAccountNumber, toAccountNumber);
+		criteria.add(orExp);
 		criteria.add(Restrictions.gt("dateOfTransaction", dateFrom));
-		criteria.add(Restrictions.lt("dateOfTransaction", dateTo));		
+		criteria.add(Restrictions.lt("dateOfTransaction", dateTo));
+		
         return (List<Transaction>) hibernateTemplate.findByCriteria(criteria);
 	}
 }
