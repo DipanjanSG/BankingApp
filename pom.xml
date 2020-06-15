@@ -6,7 +6,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
   <groupId>com.edureka</groupId>
   <artifactId>javaCertification</artifactId>
   <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
+  
   <name>javaCertification Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <dependencies>
@@ -127,13 +128,30 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
 
   
   <build>
-    <finalName>javaCertification</finalName>
+   <directory>${buildDirectory}</directory>
+   <finalName>javaCertification</finalName>
        <sourceDirectory> src/main/java</sourceDirectory>
        <testSourceDirectory> src/test/java</testSourceDirectory>
         <resources>
              <resource>
                   <directory>resources</directory>
              </resource>
-        </resources>           
-</build >
+        </resources>
+      <plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					</configuration>
+				</plugin>
+					
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.4</version>
+			</plugin>
+	 </plugins>  
+
+</build>
 </project>
