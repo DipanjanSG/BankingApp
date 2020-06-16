@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+
+   <class name = "com.banking.money.transaction.Transaction" table = "transactions">
+      <meta attribute = "class-description">
+         This class contains the credit-card details with holder id. 
+      </meta>
+	<cache usage = "read-only"/>
+       <id name = "transactionId" type = "int" column = "transactionId">
+         <generator class="increment"/>
+      </id>
+      
+      <property name = "fromAccount" column = "fromAccount" type = "int"/>
+      <property name = "toAccount" column = "toAccount" type = "int"/>
+      <property name = "transactionType" column = "transactionType" type = "string"/>
+      <property name = "dateOfTransaction" column = "dateOfTransaction" type = "timestamp" generated="always"/>
+      <property name = "description" column = "description" type = "string"/>
+      <property name = "checqueNumber" column = "checqueNumber" type = "string"/>      
+	  <property name = "amount" column = "amount" type = "double"/>
+      <property name = "fromAccountAmt" column = "fromAccountAmt" type = "double"/>
+      <property name = "toAccountAmt" column = "toAccountAmt" type = "double"/>  	
+   </class>
+   
+</hibernate-mapping>

@@ -61,7 +61,7 @@ Date Range: <br>
  
  </c:if>
  <c:if test="${ not empty dateRange}">
-      <h3> No transactions found for the given date range "${dateRange}"<h3>
+      <h3 style="color:red;"> No transactions found for the given date range "${dateRange}"<h3>
   </c:if>
  
 </table> 

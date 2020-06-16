@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+		
+<import resource="classpath:hibernateTemplate.xml"/>
+<aop:aspectj-autoproxy proxy-target-class="true"/>
+<bean id = "creditCardHelperBean" class = "com.banking.cc.transactions.authorize.CreditCardHelper"/>
+<bean id = "createTransactionsDaoBean" class = "com.banking.money.transaction.TransactionsDao"/>
+
+<bean id = "createAccountDaoBean" class = "com.banking.account.creation.CustomerDaoImpl">
+	<property name="hibernateTemplate" ref="hibernateTemplate" />  
+</bean>
+
+<bean id = "createCreditCardTransactionsDaoBean" class = "com.banking.cc.transactions.authorize.CreditCardTransactionsDaoImpl">
+	<property name="hibernateTemplate" ref="hibernateTemplate" />  
+</bean>
+
+<bean id = "accountsDaoImplBean" class = "com.banking.money.transaction.AccountsDaoImpl">
+	<property name="hibernateTemplate" ref="hibernateTemplate" />  
+</bean>
+
+<bean id = "transactionDaoImpl" class = "com.banking.money.transaction.TransactionDaoImpl">
+	<property name="hibernateTemplate" ref="hibernateTemplate" />  
+</bean>
+
+<bean id = "credentialsDaoImpl" class = "com.banking.login.CredentialsDaoImpl">
+	<property name="hibernateTemplate" ref="hibernateTemplate" />  
+</bean>
+
+<bean id = "authorizeCCTransactionsLogs" class="com.banking.logging.AuthorizeCCTransactionsLogs"/>
+<bean id = "createAccountLogs" class = "com.banking.logging.CreateAccountLogs"/>
+<bean id = "transactionDaoLogs" class = "com.banking.logging.TransactionDaoLogs"/>
+<bean id = "displayBankStatementLogs" class = "com.banking.logging.DisplayBankStatementLogs"/>
+
+<aop:config>
+	    <aop:aspect id="creditCardAmountUpdationLogs" ref="authorizeCCTransactionsLogs">
+	    <aop:pointcut expression="execution(void com.banking.cc.transactions.authorize.CreditCardHelper.creditCardAmountBorrowedUpdation(..))" id="creditCardAmountUpdation"/>	
+			<aop:before method = "beforeApprovingCCTransactions" pointcut-ref = "creditCardAmountUpdation"/>
+			<aop:after method =  "afterApprovingCCTransactions"  pointcut-ref = "creditCardAmountUpdation" />
+		</aop:aspect>
+</aop:config>
+				
+<aop:config>
+	    <aop:aspect id="accountCreationLogs" ref="createAccountLogs">
+	    <aop:pointcut expression="execution(Integer com.banking.account.creation.CustomerDaoImpl.save(..))" id="accountCreation"/>	
+			<aop:before method = "beforeCreateNewAccount" pointcut-ref = "accountCreation"/>
+			<aop:after method =  "afterCreateNewAccount"  pointcut-ref = "accountCreation" />
+		</aop:aspect>
+</aop:config>
+
+
+<aop:config>
+	    <aop:aspect id="transactionLogs" ref="transactionDaoLogs">
+	    <aop:pointcut expression="execution(boolean com.banking.money.transaction.TransactionsDao.performTransaction(..))" id="performTransactionFromAccount"/>	
+			<aop:before method = "beforePerformTransaction" pointcut-ref = "performTransactionFromAccount"/>
+			<aop:after method =  "afterPerformTransaction"  pointcut-ref = "performTransactionFromAccount" />
+		</aop:aspect>
+</aop:config>
+
+<aop:config>
+	    <aop:aspect id="bankStatementLogs" ref="displayBankStatementLogs">
+	    <aop:pointcut expression="execution(* com.banking.money.transaction.TransactionDaoImpl.getTransactionDetails(..))" id="getBankStatement"/>	
+			<aop:before method = "beforeFetchingTransactionDetails" pointcut-ref = "getBankStatement"/>
+			<aop:after method =  "afterFetchingTransactionDetails"  pointcut-ref = "getBankStatement" />
+		</aop:aspect>
+</aop:config>
+		
+</beans>
