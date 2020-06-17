@@ -23,7 +23,7 @@ public class LoginPage extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String userName = request.getParameter("uname");
 		String password = request.getParameter("password");
 		
@@ -59,4 +59,5 @@ public class LoginPage extends HttpServlet {
 		}
 	}
 
+	
 }

@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import com.banking.account.creation.Customer;
 import com.banking.account.creation.CustomerDaoImpl;
+import com.banking.exceptions.AccountCreationException;
 import com.banking.login.Credentials;
 import com.banking.spring.beans.ContextBeans;
 
@@ -37,23 +38,24 @@ public class CreateAccount extends HttpServlet {
 	private final static String EMAIL_ID_AT_THE_RATE = "@";
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		try {
 		String userName = request.getParameter("uName");
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-      
 		Date dateOfBirth = null;
-		try {
-			dateOfBirth = formatter.parse(request.getParameter("dateOfBirth"));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		String address = request.getParameter("address");
-		String emailId = request.getParameter("emailId");
-		String bankAccountType = request.getParameter("bankAccountType");
-		response.setContentType("text/html");
-		PrintWriter out = response.getWriter();
 		
-		if (userName.length() > 0 && dateOfBirth.toString().length() > 0 && address.length() > 0 && emailId.length() > 0 && emailId.contains(EMAIL_ID_AT_THE_RATE) && bankAccountType!= null) {
+		
+			dateOfBirth = formatter.parse(request.getParameter("dateOfBirth"));
+			String address = request.getParameter("address");
+			String emailId = request.getParameter("emailId");
+			String bankAccountType = request.getParameter("bankAccountType");
+			
+			Customer customerBean = new Customer();
+			customerBean.setUserName(userName);
+			customerBean.setDateOfBirth(dateOfBirth);
+			customerBean.setAddress(address);
+			customerBean.setEmailId(emailId);
+		
+		if (userName.length() > 0 && dateOfBirth.toString().length() > 0 && address.length() > 0 && emailId.length() > 0 && emailId.contains(EMAIL_ID_AT_THE_RATE) ) {
 			
 			CustomerDaoImpl createAccountDao =  ContextBeans.getCreateAccountDao();
 			Accounts accountsBean = new Accounts();
@@ -65,12 +67,7 @@ public class CreateAccount extends HttpServlet {
 			
 			Credentials credentials = new Credentials();
 			credentials.createUserIdAndPassword(userName);
-		
-			Customer customerBean = new Customer();
-			customerBean.setUserName(userName);
-			customerBean.setDateOfBirth(dateOfBirth);
-			customerBean.setAddress(address);
-			customerBean.setEmailId(emailId);
+			
 			customerBean.setAllAccountsHeld(allAccountsHeld);
 			customerBean.setCredentials(credentials);
 			Integer customerNumber = createAccountDao.save(customerBean);
@@ -81,15 +78,29 @@ public class CreateAccount extends HttpServlet {
 				request.setAttribute("customerNumber", customerNumber);
 			    
 			} else {
+				
 				LOGGER.error("Account has not been created for " + userName);
 				request.setAttribute("accountNotCreated", true);
 				request.setAttribute("userName", userName);
+				throw new AccountCreationException("Account has not been created for " + customerBean.toString());
 			}
-		}
-		else {
+		} else {
 			request.setAttribute("allDetailsNotEntered", true);
-			LOGGER.error("All values for creating account not entered - " + userName);
+			LOGGER.error("All values for creating account not entered - ");
+			throw new AccountCreationException("All values for creating account not entered " + customerBean.toString() );
+			}
+		} catch (ParseException ex) {
+			System.out.println(ex);
+			LOGGER.error(ex);
+			request.setAttribute("allDetailsNotEntered", true);
+		} catch (AccountCreationException ex) {
+			System.out.println(ex);
+		} catch (Exception e) {
+			System.out.println(e);
+			request.setAttribute("allDetailsNotEntered", true);
+			LOGGER.error(e);
 		}
+		
 		RequestDispatcher rd = request.getRequestDispatcher("createAccount.jsp");
 		rd.forward(request, response);
 	}

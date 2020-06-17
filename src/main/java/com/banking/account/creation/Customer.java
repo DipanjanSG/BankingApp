@@ -113,4 +113,12 @@ public class Customer {
 	public void setCreditCardBean(CreditCard creditCardBean) {
 		this.creditCardBean = creditCardBean;
 	}
+
+	@Override
+	public String toString() {
+		return "Customer [customerId=" + customerId + ", userName=" + userName + ", dateOfBirth=" + dateOfBirth
+				+ ", address=" + address + ", emailId=" + emailId + ", allAccountsHeld=" + allAccountsHeld
+				+ ", credentials=" + credentials + ", creditCardBean=" + creditCardBean + "]";
+	}
+	
 }

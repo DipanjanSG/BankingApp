@@ -17,6 +17,7 @@ import com.banking.account.creation.CustomerDaoImpl;
 import com.banking.cc.transactions.authorize.CreditCard;
 import com.banking.cc.transactions.authorize.CreditCardHelper;
 import com.banking.cc.transactions.authorize.CreditCardTransactionsDaoImpl;
+import com.banking.exceptions.CreditCardException;
 import com.banking.spring.beans.ContextBeans;
 
 /**
@@ -31,7 +32,7 @@ public class AuthorizeCCTransactions extends HttpServlet {
     final static int MAXIMUM_AMOUNT = 100000;
     
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		try {
 		String cardNumber = request.getParameter("cardNumber");
 		String cvvCode = request.getParameter("cvvCode");
 		String nameOnCreditCard = request.getParameter("nameOnCreditCard");
@@ -42,7 +43,7 @@ public class AuthorizeCCTransactions extends HttpServlet {
 		creditCardBean.setAmount(amount);
 		
 		CreditCardTransactionsDaoImpl creditCardTransactionsDaoImpl = ContextBeans.getcreateCreditCardTransactionsDao();
-		try {
+		
 		    CreditCard retievedCreditCardBean = creditCardTransactionsDaoImpl.getCreditCardWithParam(creditCardBean);
 
 		    if (retievedCreditCardBean == null ) {
@@ -59,6 +60,7 @@ public class AuthorizeCCTransactions extends HttpServlet {
 	        	if (!nameOnCreditCard.equals(retrievedCustomerBean.getUserName())) {
 			    	LOGGER.error("User name - " +  nameOnCreditCard + " is invalid for card number - "+ cardNumber);
 			    	request.setAttribute("invalidDetails", true);
+			    	throw new CreditCardException("User name - " +  nameOnCreditCard + " is invalid for card number - "+ cardNumber);
 			    	
 	        	}
 	        	else if (amount < MAXIMUM_AMOUNT) {
@@ -66,19 +68,26 @@ public class AuthorizeCCTransactions extends HttpServlet {
 	        		CreditCardHelper creditCardHelper = ContextBeans.getCreditCardHelper();
 	        		creditCardHelper.creditCardAmountBorrowedUpdation(retievedCreditCardBean, amount);
 	        		LOGGER.info("Successfully borrowed Rs " + amount + " from credit card - " + cardNumber );
-	        		System.out.println("xxx");
 	        		request.setAttribute("transactionSuccessful", true);
 	        	} else {
 	        		LOGGER.error("Invalid Amount entered");
 	        		request.setAttribute("invalidAmount", true);
+			    	throw new CreditCardException("Invalid Amount entered");
 	        	}
 		    }
-		    RequestDispatcher rd = request.getRequestDispatcher("creditCardTransactions.jsp");
-			rd.forward(request, response);
 		    
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+		} catch (CreditCardException e) {
+			System.out.println(e);
+		} catch (Exception e) {
+			System.out.println(e);
+			request.setAttribute("invalidDetails", true);
+			LOGGER.error(e);
 		}
+		
+		RequestDispatcher rd = request.getRequestDispatcher("creditCardTransactions.jsp");
+		rd.forward(request, response);
 		
 	}
 

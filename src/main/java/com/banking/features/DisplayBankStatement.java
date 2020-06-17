@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 import com.banking.money.transaction.Transaction;
 import com.banking.money.transaction.TransactionDaoImpl;
 import com.banking.spring.beans.ContextBeans;
-
+import com.banking.exceptions.BankStatementException;
 import com.banking.money.transaction.AccountsDaoImpl;
 import com.banking.money.transaction.TransactionsDao;
 /**
@@ -33,19 +33,25 @@ public class DisplayBankStatement extends HttpServlet {
    
 	final static Logger LOGGER = Logger.getLogger(DisplayBankStatement.class);
 	private final static String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
-	private final static String DEFAULT_TIME = " 00:00:00";
+	private final static String DEFAULT_START_TIME = " 00:00:00";
+	private final static String DEFAULT_END_TIME = " 23:59:59";
 	private final static int TRANSACTIONS_LIST_SIZE = 0;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		String dateFrom = request.getParameter("dateFrom");
 		String dateTo = request.getParameter("dateTo");
-		
 		try {
+			
+			dateFrom = request.getParameter("dateFrom");
+			dateTo = request.getParameter("dateTo");
+		
+		
 		    SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-		    Date parsedDate = dateFormat.parse(dateFrom + DEFAULT_TIME);
+		    Date parsedDate = dateFormat.parse(dateFrom + DEFAULT_START_TIME);
 		    Timestamp timestampDateFrom = new Timestamp(parsedDate.getTime());
 		    
-		    parsedDate = dateFormat.parse(dateTo + DEFAULT_TIME);
+		    parsedDate = dateFormat.parse(dateTo + DEFAULT_END_TIME);
 		    Timestamp timestampDateTo = new Timestamp(parsedDate.getTime());
 		    
 		    Cookie[] cookie = request.getCookies();
@@ -64,17 +70,29 @@ public class DisplayBankStatement extends HttpServlet {
 			if (transactionDetailsBeanList.size() == TRANSACTIONS_LIST_SIZE) {
 				request.setAttribute("size", TRANSACTIONS_LIST_SIZE);
 				request.setAttribute("dateRange", dateFrom + " - " + dateTo);
+				throw new BankStatementException("No transactions were retieved");
 			}
-			RequestDispatcher rd = request.getRequestDispatcher("displayBankStatement.jsp");
-			rd.forward(request, response);
+			
 		}
 		
 		catch (ParseException e) {
-			e.printStackTrace();
+			System.out.println(e);
+			request.setAttribute("size", TRANSACTIONS_LIST_SIZE);
+			request.setAttribute("dateRange", dateFrom + " - " + dateTo);
+			LOGGER.error(e);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		} 
+		} catch (BankStatementException e) {
+			System.out.println(e);
+		} catch (Exception e) {
+			System.out.println(e);
+			request.setAttribute("size", TRANSACTIONS_LIST_SIZE);
+			request.setAttribute("dateRange", dateFrom + " - " + dateTo);
+			LOGGER.error(e);
+		}
 		
+		RequestDispatcher rd = request.getRequestDispatcher("displayBankStatement.jsp");
+		rd.forward(request, response);
 		
 	}
 

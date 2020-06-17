@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body style=background-color:orange;>
-<form action="LoginPageServlet" >
+<form action="LoginPageServlet" method="post">
 <p>
 
 <h2> Bank of Edureka  </h2> <br> <br>

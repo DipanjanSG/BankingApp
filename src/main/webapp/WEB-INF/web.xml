@@ -5,45 +5,6 @@
 
 <web-app >  
 
-<servlet>
-  	<servlet-name>PerformTransactions</servlet-name>
-  	<display-name>PerformTransactions</display-name>
-  	<servlet-class>BusinessLogic.PerformTransactions</servlet-class>
-  </servlet>
-<servlet>
-	<servlet-name>LoginPage</servlet-name>
-	<display-name>LoginPage</display-name>
-	<description></description>
-	<servlet-class>Login.LoginPage</servlet-class>
-</servlet>
-<servlet>
-	<servlet-name>BankingSystem</servlet-name>
-	<display-name>BankingSystem</display-name>
-	<description></description>
-	<servlet-class>Login.BankingSystem</servlet-class>
-</servlet>
-<servlet>
-	<servlet-name>TransactionsPage</servlet-name>
-	<display-name>TransactionsPage</display-name>
-	<description></description>
-	<servlet-class>Transactions.TransactionsPage</servlet-class>
-</servlet>
-  <servlet-mapping>
-  	<servlet-name>PerformTransactions</servlet-name>
-  	<url-pattern>/PerformTransactions</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>LoginPage</servlet-name>
-  	<url-pattern>/LoginPage</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>BankingSystem</servlet-name>
-  	<url-pattern>/BankingSystem</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>TransactionsPage</servlet-name>
-  	<url-pattern>/TransactionsPage</url-pattern>
-  </servlet-mapping>
    <welcome-file-list>
    <welcome-file>loginPage.jsp</welcome-file>
   </welcome-file-list>

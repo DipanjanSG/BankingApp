@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import com.banking.spring.beans.ContextBeans;
-
+import com.banking.exceptions.MoneyTransferException;
 import com.banking.money.transaction.Accounts;
 import com.banking.money.transaction.AccountsDaoImpl;
 import com.banking.money.transaction.TransactionsDao;
@@ -30,6 +30,7 @@ public class PerformTransactions extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		try {
 		int accountNumber = Integer.parseInt(request.getParameter("accountNumber"));
 		double amount = Double.parseDouble(request.getParameter("amount"));
 		String transactionType = request.getParameter("transactionType");
@@ -42,23 +43,30 @@ public class PerformTransactions extends HttpServlet {
 		accounts.setAccountBalance(amount);
 				
 		TransactionsDao transactionsDao = ContextBeans.getTransactionsDao();
-		try {
+		
 						
 			if (!transactionsDao.performTransaction( accounts, transactionType, customerId )) {
 				LOGGER.error("Invalid Details Entered");
 				request.setAttribute("invalidDetails", true);
+				throw new MoneyTransferException("Invalid Details Entered");
 			} else {
 				LOGGER.info("Transaction successful");
 				request.setAttribute("transactionSuccessful", true);
 			}
 			
-		    RequestDispatcher rd = request.getRequestDispatcher("moneyTransfer.jsp");
-			rd.forward(request, response);
+		    
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+		} catch (MoneyTransferException e) {
+			System.out.println(e);
+		} catch (Exception e) {
+			System.out.println(e);
+			LOGGER.error(e);
+			request.setAttribute("invalidDetails", true);
 		}
-
+		RequestDispatcher rd = request.getRequestDispatcher("moneyTransfer.jsp");
+		rd.forward(request, response);
 
 	}
 
