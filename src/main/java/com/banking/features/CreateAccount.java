@@ -1,25 +1,21 @@
 package com.banking.features;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.log4j.Logger;
-
+import org.springframework.dao.DataAccessException;
+import org.springframework.transaction.TransactionException;
 import com.banking.account.creation.Customer;
 import com.banking.account.creation.CustomerDaoImpl;
 import com.banking.exceptions.AccountCreationException;
 import com.banking.login.Credentials;
 import com.banking.spring.beans.ContextBeans;
-
 import com.banking.money.transaction.Accounts;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,10 +29,12 @@ import java.util.Set;
 @WebServlet("/createAccountServlet")
 public class CreateAccount extends HttpServlet {
 	
-	final static Logger LOGGER = Logger.getLogger(CreateAccount.class);
-	private final static double MINIMUM_STARTING_BALANCE = 0.0;
-	private final static String EMAIL_ID_AT_THE_RATE = "@";
-
+	static final Logger LOGGER = Logger.getLogger(CreateAccount.class);
+	private static final  double MINIMUM_STARTING_BALANCE = 0.0;
+	private static final String EMAIL_ID_AT_THE_RATE = "@";
+	private static final String ALL_DETAILS_NOT_ENTERED = "allDetailsNotEntered";
+	
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 		String userName = request.getParameter("uName");
@@ -62,7 +60,7 @@ public class CreateAccount extends HttpServlet {
 			accountsBean.setAccountBalance(MINIMUM_STARTING_BALANCE);
 			accountsBean.setBankAccountType(bankAccountType);
 			
-			Set <Accounts> allAccountsHeld = new HashSet();
+			Set <Accounts> allAccountsHeld = new HashSet<Accounts>();
 			allAccountsHeld.add(accountsBean);
 			
 			Credentials credentials = new Credentials();
@@ -85,23 +83,33 @@ public class CreateAccount extends HttpServlet {
 				throw new AccountCreationException("Account has not been created for " + customerBean.toString());
 			}
 		} else {
-			request.setAttribute("allDetailsNotEntered", true);
+			request.setAttribute(ALL_DETAILS_NOT_ENTERED, true);
 			LOGGER.error("All values for creating account not entered - ");
 			throw new AccountCreationException("All values for creating account not entered " + customerBean.toString() );
 			}
-		} catch (ParseException ex) {
-			System.out.println(ex);
+		} catch (DataAccessException e) {
+			request.setAttribute("failedDBConnection", true);
+			LOGGER.error(e);
+		  } catch (TransactionException e) {
+		    request.setAttribute("failedDBConnection", true);
+		    LOGGER.error(e);
+		  } catch (ParseException ex) {
 			LOGGER.error(ex);
-			request.setAttribute("allDetailsNotEntered", true);
-		} catch (AccountCreationException ex) {
-			System.out.println(ex);
-		} catch (Exception e) {
-			System.out.println(e);
-			request.setAttribute("allDetailsNotEntered", true);
+			request.setAttribute(ALL_DETAILS_NOT_ENTERED, true);
+		  } catch (AccountCreationException ex) {
+			LOGGER.error(ex);
+		  } catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute(ALL_DETAILS_NOT_ENTERED, true);
 			LOGGER.error(e);
 		}
-		
+	try {	
 		RequestDispatcher rd = request.getRequestDispatcher("createAccount.jsp");
 		rd.forward(request, response);
+	} catch (ServletException e) {
+		LOGGER.error(e);
+	}catch (IOException e) {
+		LOGGER.error(e);
+	}
 	}
 }

@@ -1,7 +1,5 @@
 package com.banking.money.transaction;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.banking.account.creation.Customer;
 
 import lombok.ToString;
@@ -16,7 +14,6 @@ public class Accounts {
 	int accountNumber;
 	double accountBalance;
 	
-	@Autowired
 	Customer customerBean;
 	
 	String bankAccountType;

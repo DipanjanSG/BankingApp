@@ -1,7 +1,5 @@
 package com.banking.login;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.banking.account.creation.Customer;
 
 import lombok.ToString;
@@ -18,7 +16,6 @@ public class Credentials {
 	int customerId;
 	private static final String PASSWORD_SUFFIX = "123";
 	
-	@Autowired
 	Customer customerBean;
 	
 	public Credentials() {

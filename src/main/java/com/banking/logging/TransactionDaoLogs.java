@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
  */
 public class TransactionDaoLogs {
 
-	final static Logger LOGGER = Logger.getLogger(TransactionDaoLogs.class);
+	static final Logger LOGGER = Logger.getLogger(TransactionDaoLogs.class);
 	
 	public void beforePerformTransaction() {
 		LOGGER.info("Starting Amount Transfer");

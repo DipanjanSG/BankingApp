@@ -8,7 +8,7 @@
 <import resource="classpath:hibernateTemplate.xml"/>
 <aop:aspectj-autoproxy proxy-target-class="true"/>
 <bean id = "creditCardHelperBean" class = "com.banking.cc.transactions.authorize.CreditCardHelper"/>
-<bean id = "createTransactionsDaoBean" class = "com.banking.money.transaction.TransactionsDao"/>
+<bean id = "createTransactionsHelperBean" class = "com.banking.money.transaction.TransactionsHelper"/>
 
 <bean id = "createAccountDaoBean" class = "com.banking.account.creation.CustomerDaoImpl">
 	<property name="hibernateTemplate" ref="hibernateTemplate" />  
@@ -54,7 +54,7 @@
 
 <aop:config>
 	    <aop:aspect id="transactionLogs" ref="transactionDaoLogs">
-	    <aop:pointcut expression="execution(boolean com.banking.money.transaction.TransactionsDao.performTransaction(..))" id="performTransactionFromAccount"/>	
+	    <aop:pointcut expression="execution(boolean com.banking.money.transaction.TransactionsHelper.performTransaction(..))" id="performTransactionFromAccount"/>	
 			<aop:before method = "beforePerformTransaction" pointcut-ref = "performTransactionFromAccount"/>
 			<aop:after method =  "afterPerformTransaction"  pointcut-ref = "performTransactionFromAccount" />
 		</aop:aspect>

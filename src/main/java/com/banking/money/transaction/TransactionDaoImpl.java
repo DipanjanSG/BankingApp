@@ -1,7 +1,5 @@
 package com.banking.money.transaction;
 
-import java.io.IOException;
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import org.hibernate.criterion.Criterion;
@@ -9,7 +7,9 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -35,29 +35,29 @@ public class TransactionDaoImpl implements TransactionDao{
 	}
 
 	@Transactional(readOnly = false)
-	public Integer save(Transaction transaction) {
+	public Integer save(Transaction transaction) throws DataAccessException , TransactionException{
 		return (Integer)hibernateTemplate.save(transaction);		
 		
 	}
 
 	@Transactional(readOnly = false)
-	public void update(Transaction transaction) {
+	public void update(Transaction transaction) throws DataAccessException, TransactionException{
 		hibernateTemplate.update(transaction);		
 		
 	}
 
 	@Transactional(readOnly = false)
-	public void delete(Transaction transaction) {
+	public void delete(Transaction transaction) throws DataAccessException, TransactionException{
 		hibernateTemplate.delete(transaction);		
 		
 	}
 
 	@Transactional(readOnly = false)
-	public List<Transaction> getAllTransaction() {
+	public List<Transaction> getAllTransaction() throws DataAccessException, TransactionException {
 		return hibernateTemplate.loadAll(Transaction.class);
 	}
 
-	public List<Transaction> getTransactionDetails(int fromAccount,int toAccount, Timestamp dateFrom , Timestamp dateTo) throws ClassNotFoundException, IOException {
+	public List<Transaction> getTransactionDetails(int fromAccount,int toAccount, Timestamp dateFrom , Timestamp dateTo) throws DataAccessException , TransactionException {
 		
 		DetachedCriteria criteria = DetachedCriteria.forClass(Transaction.class);
 		Criterion fromAccountNumber = Restrictions.eq("fromAccount", fromAccount);

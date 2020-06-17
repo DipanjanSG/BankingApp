@@ -1,24 +1,20 @@
 package com.banking.money.transaction;
 
-import java.io.IOException;
-
-
 import org.apache.log4j.Logger;
-
-import com.banking.features.DisplayBankStatement;
-import com.banking.money.transaction.Transaction;
-import com.banking.money.transaction.TransactionDaoImpl;
+import org.springframework.dao.DataAccessException;
+import org.springframework.transaction.TransactionException;
 import com.banking.spring.beans.ContextBeans;
 
 /**
  * @author Dipanjan Sengupta
  * @purpose - Contains methods to interact with DB and upadate money transaction details
  */
-public class TransactionsDao {
-	final static Logger LOGGER = Logger.getLogger(TransactionsDao.class);
-	private final static int MINIMUM_TRANSACTION_ID = 1;
+public class TransactionsHelper {
+	static final Logger LOGGER = Logger.getLogger(TransactionsHelper.class);
+	private static final int MINIMUM_TRANSACTION_ID = 1;
+	private static final String TO_ACCOUNT_NUM =  " to account number -";
 	
-	public boolean performTransaction(Accounts accountsBean, String transactionType, int customerId ) throws ClassNotFoundException, IOException {
+	public boolean performTransaction(Accounts accountsBean, String transactionType, int customerId ) throws DataAccessException, TransactionException{
 	        AccountsDaoImpl accountsDaoImpl = ContextBeans.getAcountsDaoImpl();
 	        AccountsDaoImpl accountsDaoImplLoggedInUser = ContextBeans.getAcountsDaoImpl();
 	        
@@ -41,7 +37,7 @@ public class TransactionsDao {
 		        transaction.setToAccount(loggedInUsersAccount.getAccountNumber());
 			}
 			else {
-				LOGGER.error(transactionType + " transaction has FAILED on account number -" + loggedInUsersAccount.accountNumber + " to account number -" + accountsBean.accountNumber);
+				LOGGER.error(transactionType + " transaction has FAILED on account number -" + loggedInUsersAccount.accountNumber + TO_ACCOUNT_NUM + accountsBean.accountNumber);
 				return false;
 			}
 	        
@@ -55,11 +51,11 @@ public class TransactionsDao {
 		    transaction.setFromAccountAmt(accountsBeanFromDatabase.getAccountBalance());
 		    transaction.setToAccountAmt(loggedInUsersAccount.getAccountBalance());
 		    if (transactionDaoImpl.save(transaction) >= MINIMUM_TRANSACTION_ID ) {
-   			    LOGGER.info(transactionType + " transaction has been successful on account number -" + loggedInUsersAccount.accountNumber + " to account number -" + accountsBean.accountNumber);
+   			    LOGGER.info(transactionType + " transaction has been successful on account number -" + loggedInUsersAccount.accountNumber + TO_ACCOUNT_NUM + accountsBean.accountNumber);
 				return true;
 
 		    }
-			LOGGER.error(transactionType + " transaction has FAILED on  account number -" + loggedInUsersAccount.accountNumber + " to account number -" + accountsBean.accountNumber);
+			LOGGER.error(transactionType + " transaction has FAILED on  account number -" + loggedInUsersAccount.accountNumber + TO_ACCOUNT_NUM + accountsBean.accountNumber);
 		    return false;
 	}
 }

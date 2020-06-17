@@ -1,20 +1,13 @@
 package com.banking.cc.transactions.authorize;
 
-import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.List;
-
 import org.apache.log4j.Logger;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.banking.logging.AuthorizeCCTransactionsLogs;
-import com.banking.money.transaction.Transaction;
 
 /**
  * @author Dipanjan Sengupta
@@ -25,8 +18,9 @@ public class CreditCardTransactionsDaoImpl implements CreditCardTransactions{
 	@Autowired
 	HibernateTemplate hibernateTemplate;
 	
-	final static Logger LOGGER = Logger.getLogger(CreditCardTransactionsDaoImpl.class);
-    private final static int MINIMUM_CREDIT_CARD_LIST_SIZE = 0;
+	private static final  Logger LOGGER = Logger.getLogger(CreditCardTransactionsDaoImpl.class);
+    private static final int MINIMUM_CREDIT_CARD_LIST_SIZE = 0;
+    
 	public HibernateTemplate getHibernateTemplate() {
 		return hibernateTemplate;
 	}
@@ -36,33 +30,33 @@ public class CreditCardTransactionsDaoImpl implements CreditCardTransactions{
 	}
 
 	@Transactional(readOnly = false)
-	public CreditCard get(CreditCard creditCardBean) {
+	public CreditCard get(CreditCard creditCardBean) throws DataAccessException {
 		return hibernateTemplate.get(CreditCard.class, creditCardBean.creditCardNumber);
 	}
 	
 	@Transactional(readOnly = false)
-	public void save(CreditCard creditCardBean) {
+	public void save(CreditCard creditCardBean) throws DataAccessException {
 		hibernateTemplate.save(creditCardBean);
 
 	}
 	
 	@Transactional(readOnly = false)
-	public void update(CreditCard creditCardBean) {
+	public void update(CreditCard creditCardBean) throws DataAccessException {
 		hibernateTemplate.update(creditCardBean);
 		
 	}
 	
 	@Transactional(readOnly = false)
-	public void delete(CreditCard creditCardBean) {
+	public void delete(CreditCard creditCardBean) throws DataAccessException {
 		hibernateTemplate.delete(creditCardBean);
 	}
 	
 	@Transactional(readOnly = false)
-	public List<CreditCard> getAllCreditCards() {
+	public List<CreditCard> getAllCreditCards() throws DataAccessException {
 		return hibernateTemplate.loadAll(CreditCard.class);
 	}
 	
-    public CreditCard getCreditCardWithParam(CreditCard creditCardBean)  throws ClassNotFoundException, IOException {
+    public CreditCard getCreditCardWithParam(CreditCard creditCardBean)  throws DataAccessException {
 		
     	CreditCard creditCard = null;
 		DetachedCriteria criteria = DetachedCriteria.forClass(CreditCard.class);

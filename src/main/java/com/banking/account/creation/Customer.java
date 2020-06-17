@@ -1,12 +1,7 @@
 package com.banking.account.creation;
 
 import java.util.Date;
-
-import java.util.List;
 import java.util.Set;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.banking.cc.transactions.authorize.CreditCard;
 import com.banking.login.Credentials;
 
@@ -28,10 +23,10 @@ public class Customer {
 	String emailId;
 	Set <Accounts> allAccountsHeld;
 	
-	@Autowired
+	
 	Credentials credentials;
 	
-	@Autowired
+	
 	CreditCard creditCardBean;
 	
 	public Credentials getCredentials() {

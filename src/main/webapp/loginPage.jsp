@@ -19,10 +19,11 @@
 	 <c:if test="${ invalidCredentials eq true}">
          <h5 style="color:red;"> Invalid Credentials </h5>
  	 </c:if>
- 
     <br><br>
 	<input type="submit" value="Submit">
 </form>
-
+<c:if test="${ failedDBConnection eq true}">
+         <h5 style="color:red;"> Unable to Connect to Database , check your Internet Connection or try after sometime </h5>
+ 	 </c:if>
 </body>
 </html>

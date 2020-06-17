@@ -2,7 +2,6 @@ package com.banking.login;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,8 +9,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
+import org.springframework.dao.DataAccessException;
 
-import com.banking.login.CredentialsHelper;
 
 /**
  * @author Dipanjan Sengupta
@@ -20,23 +20,30 @@ import com.banking.login.CredentialsHelper;
 @WebServlet("/LoginPageServlet")
 public class LoginPage extends HttpServlet {
 
+	static final Logger LOGGER = Logger.getLogger(LoginPage.class);
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		try {
+		
 		String userName = request.getParameter("uname");
 		String password = request.getParameter("password");
-		
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
 		Credentials credentials = new Credentials(userName, password);
 				CredentialsHelper loginDao = new CredentialsHelper();
-		try {
-			response.setContentType("text/html");
-			PrintWriter out = response.getWriter();
+		
+			
 			Integer customerId = loginDao.validateCredentials(credentials);
 			if ( customerId == 0) {		
                 request.setAttribute("invalidCredentials", true); 
-				RequestDispatcher rd = request.getRequestDispatcher("loginPage.jsp");
-				rd.forward(request, response);
+        		RequestDispatcher rd = request.getRequestDispatcher("loginPage.jsp");
+        		rd.forward(request, response);
+        		
 			}
 			else {
 				Cookie cookie = new Cookie("customerId", customerId.toString());
@@ -54,10 +61,22 @@ public class LoginPage extends HttpServlet {
 				out.println("</p>");
 				out.println("</body>");
 			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+		} catch (DataAccessException e) {
+			LOGGER.error(e);
+			request.setAttribute("failedDBConnection", true);
+    	try {
+    		RequestDispatcher rd = request.getRequestDispatcher("loginPage.jsp");
+    		rd.forward(request, response);
+		} catch (ServletException ex) {
+			LOGGER.error(ex);
+		}catch (IOException ex) {
+			LOGGER.error(ex);
+		}
+		} catch (IOException e) {
+			LOGGER.error(e);
+		} catch (ServletException e) {
+			LOGGER.error(e);
+		}
 		}
 	}
 
-	
-}

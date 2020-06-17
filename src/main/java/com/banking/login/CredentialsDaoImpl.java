@@ -1,11 +1,11 @@
 package com.banking.login;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,27 +29,27 @@ public class CredentialsDaoImpl {
 	}
 
 	@Transactional(readOnly = false)
-	public void save(Credentials credential) {
+	public void save(Credentials credential) throws DataAccessException{
 		hibernateTemplate.save(credential);
 	}
 	
 	@Transactional(readOnly = false)
-	public void update(Credentials credential) {
+	public void update(Credentials credential) throws DataAccessException{
 		hibernateTemplate.update(credential);
 		
 	}
 	
 	@Transactional(readOnly = false)
-	public void delete(Credentials credential) {
+	public void delete(Credentials credential) throws DataAccessException{
 		hibernateTemplate.delete(credential);
 	}
 	
-	@Transactional(readOnly = false)
-	public List<Credentials> getcredentials() {
+	@Transactional(readOnly = false) 
+	public List<Credentials> getcredentials() throws DataAccessException{
 		return hibernateTemplate.loadAll(Credentials.class);
 	}
 
-    public Credentials getCredentialDetails( Credentials credentials ) throws ClassNotFoundException, IOException {
+    public Credentials getCredentialDetails( Credentials credentials ) throws DataAccessException {
 		
     	Credentials retrievedCredential = null;
 		DetachedCriteria criteria = DetachedCriteria.forClass(Credentials.class);

@@ -1,8 +1,6 @@
 package com.banking.features;
 
 import java.io.IOException;
-
-import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,15 +13,14 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.log4j.Logger;
-
+import org.springframework.dao.DataAccessException;
 import com.banking.money.transaction.Transaction;
 import com.banking.money.transaction.TransactionDaoImpl;
 import com.banking.spring.beans.ContextBeans;
 import com.banking.exceptions.BankStatementException;
 import com.banking.money.transaction.AccountsDaoImpl;
-import com.banking.money.transaction.TransactionsDao;
+
 /**
  * @author Dipanjan Sengupta
  * @purpose - Servlet for creating a fetching Bank Transactions 
@@ -31,12 +28,14 @@ import com.banking.money.transaction.TransactionsDao;
 @WebServlet("/displayStatementServlet")
 public class DisplayBankStatement extends HttpServlet {
    
-	final static Logger LOGGER = Logger.getLogger(DisplayBankStatement.class);
-	private final static String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
-	private final static String DEFAULT_START_TIME = " 00:00:00";
-	private final static String DEFAULT_END_TIME = " 23:59:59";
-	private final static int TRANSACTIONS_LIST_SIZE = 0;
+	static final Logger LOGGER = Logger.getLogger(DisplayBankStatement.class);
+	private static final  String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+	private static final  String DEFAULT_START_TIME = " 00:00:00";
+	private static final  String DEFAULT_END_TIME = " 23:59:59";
+	private static final  int TRANSACTIONS_LIST_SIZE = 0;
+	private static final  String DATE_RANGE = "dateRange";
 	
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String dateFrom = request.getParameter("dateFrom");
@@ -56,12 +55,10 @@ public class DisplayBankStatement extends HttpServlet {
 		    
 		    Cookie[] cookie = request.getCookies();
 		    int customerId = Integer.parseInt(cookie[0].getValue());
-		    TransactionsDao transactionsDao = new TransactionsDao();
             AccountsDaoImpl accountsDaoImplLoggedInUser = ContextBeans.getAcountsDaoImpl();
             int loggedInUsersAccountNumber =  accountsDaoImplLoggedInUser.getAccountWithCustomerId(customerId).getAccountNumber();
 	        
 		    TransactionDaoImpl transactionDaoImpl = ContextBeans.getTransactionDaoImpl();
-		    Transaction transaction = new Transaction();		
 			List <Transaction> transactionDetailsBeanList = transactionDaoImpl.getTransactionDetails(
 					loggedInUsersAccountNumber,loggedInUsersAccountNumber,timestampDateFrom, timestampDateTo);
 			LOGGER.info("Number of transactions retrieved in date range - " + dateFrom + " to " + dateTo + " is - " + transactionDetailsBeanList.size());
@@ -69,31 +66,32 @@ public class DisplayBankStatement extends HttpServlet {
 			request.setAttribute("userAccountNumber", loggedInUsersAccountNumber);
 			if (transactionDetailsBeanList.size() == TRANSACTIONS_LIST_SIZE) {
 				request.setAttribute("size", TRANSACTIONS_LIST_SIZE);
-				request.setAttribute("dateRange", dateFrom + " - " + dateTo);
+				request.setAttribute(DATE_RANGE, dateFrom + " - " + dateTo);
 				throw new BankStatementException("No transactions were retieved");
 			}
 			
-		}
-		
-		catch (ParseException e) {
-			System.out.println(e);
-			request.setAttribute("size", TRANSACTIONS_LIST_SIZE);
-			request.setAttribute("dateRange", dateFrom + " - " + dateTo);
+		} catch (DataAccessException e) {
 			LOGGER.error(e);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			request.setAttribute("failedDBConnection", true); 
+		}	catch (ParseException e) {
+			request.setAttribute("size", TRANSACTIONS_LIST_SIZE);
+			request.setAttribute(DATE_RANGE, dateFrom + " - " + dateTo);
+			LOGGER.error(e);
 		} catch (BankStatementException e) {
-			System.out.println(e);
+			LOGGER.error(e);
 		} catch (Exception e) {
-			System.out.println(e);
 			request.setAttribute("size", TRANSACTIONS_LIST_SIZE);
-			request.setAttribute("dateRange", dateFrom + " - " + dateTo);
+			request.setAttribute(DATE_RANGE, dateFrom + " - " + dateTo);
 			LOGGER.error(e);
 		}
-		
-		RequestDispatcher rd = request.getRequestDispatcher("displayBankStatement.jsp");
-		rd.forward(request, response);
-		
+		try {	
+			RequestDispatcher rd = request.getRequestDispatcher("displayBankStatement.jsp");
+			rd.forward(request, response);
+		} catch (ServletException e) {
+			LOGGER.error(e);
+		} catch (IOException e) {
+			LOGGER.error(e);
+		}
 	}
 
 }

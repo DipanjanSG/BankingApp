@@ -22,22 +22,6 @@ public class Transaction {
 	double fromAccountAmt;
 	double toAccountAmt;
 	
-	public Transaction(int transactionId, int fromAccount, int toAccount, String transactionType,
-			Timestamp dateOfTransaction, String description, String checqueNumber, double amount, double fromAccountAmt,
-			double toAccountAmt) {
-		super();
-		this.transactionId = transactionId;
-		this.fromAccount = fromAccount;
-		this.toAccount = toAccount;
-		this.transactionType = transactionType;
-		this.dateOfTransaction = dateOfTransaction;
-		this.description = description;
-		this.checqueNumber = checqueNumber;
-		this.amount = amount;
-		this.fromAccountAmt = fromAccountAmt;
-		this.toAccountAmt = toAccountAmt;
-	}
-
 	public Transaction( int fromAccount, int toAccount, String transactionType,
 			 double amount, double fromAccountAmt, double toAccountAmt) {
 

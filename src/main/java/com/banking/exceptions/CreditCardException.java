@@ -5,17 +5,17 @@ import org.apache.log4j.Logger;
 public class CreditCardException  extends Exception{
 
 
-	private String exception;
-	final static Logger LOGGER = Logger.getLogger(CreditCardException.class);
+	final String exceptionMessage;
+	private static final Logger LOGGER = Logger.getLogger(CreditCardException.class);
 
 	
 	public CreditCardException(String ex) {
-		this.exception = ex;
+		this.exceptionMessage = ex;
 		LOGGER.fatal(ex);
 	}
 	@Override
 	public String toString() {
-		return "CreditCardException [exception=" + exception + "]";
+		return "CreditCardException [exception=" + exceptionMessage + "]";
 	}
 	
 }

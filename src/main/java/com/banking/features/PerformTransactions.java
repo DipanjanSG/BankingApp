@@ -1,8 +1,6 @@
 package com.banking.features;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,14 +8,13 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.log4j.Logger;
-
+import org.springframework.dao.DataAccessException;
+import org.springframework.transaction.TransactionException;
 import com.banking.spring.beans.ContextBeans;
 import com.banking.exceptions.MoneyTransferException;
 import com.banking.money.transaction.Accounts;
-import com.banking.money.transaction.AccountsDaoImpl;
-import com.banking.money.transaction.TransactionsDao;
+import com.banking.money.transaction.TransactionsHelper;
 
 /**
  * @author Dipanjan Sengupta
@@ -26,8 +23,9 @@ import com.banking.money.transaction.TransactionsDao;
 @WebServlet("/PerformTransactionsServlet")
 public class PerformTransactions extends HttpServlet {
 
-	final static Logger LOGGER = Logger.getLogger(PerformTransactions.class);
+	static final Logger LOGGER = Logger.getLogger(PerformTransactions.class);
 
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
@@ -42,7 +40,7 @@ public class PerformTransactions extends HttpServlet {
 		accounts.setAccountNumber(accountNumber);
 		accounts.setAccountBalance(amount);
 				
-		TransactionsDao transactionsDao = ContextBeans.getTransactionsDao();
+		TransactionsHelper transactionsDao = ContextBeans.getTransactionsHelper();
 		
 						
 			if (!transactionsDao.performTransaction( accounts, transactionType, customerId )) {
@@ -56,18 +54,26 @@ public class PerformTransactions extends HttpServlet {
 			
 		    
 			
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (MoneyTransferException e) {
-			System.out.println(e);
+		} catch (DataAccessException e) {
+			request.setAttribute("failedDBConnection", true);
+			LOGGER.error(e);
+		} catch (TransactionException e) {
+		    request.setAttribute("failedDBConnection", true);
+		    LOGGER.error(e);
+		}	catch (MoneyTransferException e) {
+			LOGGER.error(e);
 		} catch (Exception e) {
-			System.out.println(e);
 			LOGGER.error(e);
 			request.setAttribute("invalidDetails", true);
 		}
+	try {	
 		RequestDispatcher rd = request.getRequestDispatcher("moneyTransfer.jsp");
 		rd.forward(request, response);
-
+		} catch (ServletException e) {
+			LOGGER.error(e);
+		} catch (IOException e) {
+			LOGGER.error(e);
+		}
 	}
 
 }

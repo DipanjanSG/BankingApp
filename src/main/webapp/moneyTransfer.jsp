@@ -26,6 +26,9 @@
     		
 </c:choose>
 </p>
+<c:if test="${ failedDBConnection eq true}">
+         <h5 style="color:red;"> Unable to Connect to Database , check your Internet Connection or try after sometime </h5>
+ 	 </c:if>
 </body>
 <script type="text/javascript" >
 function setValueDepositOrWithDraw(button) {

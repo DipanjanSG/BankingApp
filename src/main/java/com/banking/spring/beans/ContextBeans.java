@@ -1,8 +1,6 @@
 package com.banking.spring.beans;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.banking.account.creation.CustomerDaoImpl;
@@ -11,7 +9,7 @@ import com.banking.cc.transactions.authorize.CreditCardTransactionsDaoImpl;
 import com.banking.login.CredentialsDaoImpl;
 import com.banking.money.transaction.TransactionDaoImpl;
 import com.banking.money.transaction.AccountsDaoImpl;
-import com.banking.money.transaction.TransactionsDao;
+import com.banking.money.transaction.TransactionsHelper;
 /**
  * @author Dipanjan Sengupta
  * @purpose - This class is the used for creating beans, to be called when when we need objects created 
@@ -21,15 +19,16 @@ public class ContextBeans {
 	private static ApplicationContext context = null;
 	private static CreditCardHelper creditCardHelper = null;
 	private static CustomerDaoImpl createAccountDao = null;
-	private static TransactionsDao transactionsDao = null;
+	private static TransactionsHelper transactionsHelper = null;
 	private static CreditCardTransactionsDaoImpl createCreditCardTransactionsDaoBean = null;
-	private AccountsDaoImpl accountsDaoImpl = null;
 	private static TransactionDaoImpl transactionDaoImpl = null;
-	private static SessionFactory sFactory = null ;
-	private static Session session = null;
 	private static CredentialsDaoImpl credentialsDaoImpl = null;
-	final static Logger LOGGER = Logger.getLogger(CreditCardTransactionsDaoImpl.class);
+	static final Logger LOGGER = Logger.getLogger(ContextBeans.class);
  
+	private ContextBeans() {
+		
+	}
+	
 	public static ApplicationContext getContext() {
 		if (context == null ) {
 			context = new ClassPathXmlApplicationContext("context.xml");
@@ -63,12 +62,12 @@ public class ContextBeans {
 		return createCreditCardTransactionsDaoBean;
 	}
 	
-	public static TransactionsDao getTransactionsDao() {
-		if (transactionsDao == null ) {
-			transactionsDao =  (TransactionsDao)getContext().getBean("createTransactionsDaoBean");
+	public static TransactionsHelper getTransactionsHelper() {
+		if (transactionsHelper == null ) {
+			transactionsHelper =  (TransactionsHelper)getContext().getBean("createTransactionsHelperBean");
 		}
 		
-		return transactionsDao;
+		return transactionsHelper;
 	}
 	public static AccountsDaoImpl getAcountsDaoImpl() {		
 		return (AccountsDaoImpl)getContext().getBean("accountsDaoImplBean");

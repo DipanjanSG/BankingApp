@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
  */
 public class DisplayBankStatementLogs {
 
-	final static Logger LOGGER = Logger.getLogger(DisplayBankStatementLogs.class);
+	static final Logger LOGGER = Logger.getLogger(DisplayBankStatementLogs.class);
 	
 	public void beforeFetchingTransactionDetails() {
 		LOGGER.info("Going to fetch Transactions details ");

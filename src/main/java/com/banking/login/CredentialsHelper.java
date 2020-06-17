@@ -1,10 +1,6 @@
 package com.banking.login;
 
-import java.io.IOException;
-
-import org.apache.log4j.Logger;
-
-import com.banking.features.PerformTransactions;
+import org.springframework.dao.DataAccessException;
 import com.banking.spring.beans.ContextBeans;
 
 /**
@@ -15,7 +11,7 @@ public class CredentialsHelper {
 
 	private static final int MINIMUM_CUSTOMER_ID = 0;
 	
-	public int validateCredentials(Credentials credentials) throws ClassNotFoundException, IOException {
+	public int validateCredentials(Credentials credentials) throws DataAccessException {
 		
 		    CredentialsDaoImpl credentialsDaoImpl = ContextBeans.getCredentialsDaoImpl();
 		    credentials = credentialsDaoImpl.getCredentialDetails(credentials);

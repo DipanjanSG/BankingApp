@@ -12,7 +12,9 @@
 <p>
 
 <h2> Display Statement </h2> <br> <br>
-
+<c:if test="${ failedDBConnection eq true}">
+         <h5 style="color:red;"> Unable to Connect to Database , check your Internet Connection or try after sometime </h5>
+ 	 </c:if>
 Date Range: <br>
 <label for="accountNumber">From:</label>  <input type = "text" id = "dateFrom" name = "dateFrom"> 
 <label for="amount">To:</label>           <input type = "text" id = "dateTo" name = "dateTo"> <br> <br>

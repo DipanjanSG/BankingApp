@@ -1,5 +1,7 @@
 package com.banking.cc.transactions.authorize;
 
+import org.springframework.dao.DataAccessException;
+
 import com.banking.spring.beans.ContextBeans;
 
 /**
@@ -9,9 +11,9 @@ import com.banking.spring.beans.ContextBeans;
  */
 public class CreditCardHelper {
 
-	public void creditCardAmountBorrowedUpdation(CreditCard retievedCreditCardBean , double amount ) throws ClassNotFoundException {
+	public void creditCardAmountBorrowedUpdation(CreditCard retievedCreditCardBean , double amount ) throws DataAccessException {
 		retievedCreditCardBean.setAmount(retievedCreditCardBean.getAmount() + amount);
-		CreditCardTransactionsDaoImpl CreditCardTransactionsDaoImpl = ContextBeans.getcreateCreditCardTransactionsDao();
-		CreditCardTransactionsDaoImpl.update(retievedCreditCardBean);
+		CreditCardTransactionsDaoImpl creditCardTransactionsDaoImpl = ContextBeans.getcreateCreditCardTransactionsDao();
+		creditCardTransactionsDaoImpl.update(retievedCreditCardBean);
 	}
 }

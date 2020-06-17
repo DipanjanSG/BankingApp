@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
  */
 public class AuthorizeCCTransactionsLogs {
 
-	final static Logger LOGGER = Logger.getLogger(AuthorizeCCTransactionsLogs.class);
+	static final Logger LOGGER = Logger.getLogger(AuthorizeCCTransactionsLogs.class);
 	
 	public void beforeApprovingCCTransactions() {
 		LOGGER.info("Going to begin transaction for Credit Card");

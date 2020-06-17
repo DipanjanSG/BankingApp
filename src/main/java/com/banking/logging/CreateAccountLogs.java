@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
  */
 public class CreateAccountLogs {
 
-	final static Logger LOGGER = Logger.getLogger(CreateAccountLogs.class);
+	static final Logger LOGGER = Logger.getLogger(CreateAccountLogs.class);
 	
 	public void beforeCreateNewAccount() {
 		LOGGER.info("Go into create a new account");
