@@ -52,7 +52,8 @@ public class Credentials {
 	}
 	
 	public void createUserIdAndPassword(String fullName) {
-		setUserName(fullName.toLowerCase().split(" ")[0]);
+		String[] firstLastName = fullName.toLowerCase().split(" ");
+		setUserName(firstLastName[0]+ "_" + firstLastName[1]);
 		createPassword();
 	}
 	public void createPassword() {

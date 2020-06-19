@@ -53,7 +53,7 @@ public class LoginPage extends HttpServlet {
 				out.println("</head>");
 				out.println("<body style='background-color:orange;'");
 				out.println("<p>");
-				out.println("<h2> Banking System </h2>");
+				out.println("<h2 input style=\"margin-left: 30em\";> Banking System </h2>");
 				out.println("<a href = 'createAccount.jsp'> Create Account </a> <br>");
 				out.println("<a href = 'creditCardTransactions.jsp'> Authorize Credit Card Amount</a> <br>");
 				out.println("<a href = 'moneyTransfer.jsp' > Transactions </a> <br>");

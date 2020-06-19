@@ -51,9 +51,7 @@ public class PerformTransactions extends HttpServlet {
 				LOGGER.info("Transaction successful");
 				request.setAttribute("transactionSuccessful", true);
 			}
-			
-		    
-			
+		
 		} catch (DataAccessException e) {
 			request.setAttribute("failedDBConnection", true);
 			LOGGER.error(e);

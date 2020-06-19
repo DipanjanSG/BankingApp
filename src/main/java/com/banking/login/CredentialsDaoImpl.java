@@ -9,6 +9,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.banking.account.creation.Customer;
+
 /**
  * @author Dipanjan Sengupta
  * @purpose - HibernateTemplate for operations on credentials table
@@ -26,6 +28,11 @@ public class CredentialsDaoImpl {
 
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
 		this.hibernateTemplate = hibernateTemplate;
+	}
+	
+	@Transactional(readOnly = false)
+	public Credentials get(Customer customer) throws DataAccessException{
+		return hibernateTemplate.get(Credentials.class, customer.getCustomerId());
 	}
 
 	@Transactional(readOnly = false)

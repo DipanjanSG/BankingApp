@@ -8,13 +8,13 @@
 </head>
 <body style='background-color:orange;'>
 
-<h2> Bank of Edureka </h2>
-<h3>Authorize Credit Card Transaction </h3>
+<h2 input style="margin-left: 30em";>Authorize Credit Card Transaction </h2>
+
 <form action="AuthorizeCCTransactionsServlet" method = "post">
-<label for="nameOnCreditCard">Name:</label>  <input type = "text" id = "nameOnCreditCard" name = "nameOnCreditCard"> <br> <br>
-<label for="cardNumber">Card Number:</label>  <input type = "text" id = "cardNumber" name = "cardNumber"> <br> <br>
-<label for="cvvCode">CVV2/CVC2:</label>  <input type = "text" id = "cvvCode" name = "cvvCode"> <br> <br>
-<label for="amount">Amount:</label>  <input type = "text" id = "amount" name = "amount"> <br> <br>
+<label for="nameOnCreditCard">Name:</label>  <input  style="margin-left: 3.7em"; type = "text" id = "nameOnCreditCard" name = "nameOnCreditCard" placeholder="Dipanjan Sengupta"> <br> <br>
+<label for="cardNumber">Card Number:</label>  <input type = "text" id = "cardNumber" name = "cardNumber" placeholder="16 digit number"> <br> <br>
+<label for="cvvCode">CVV2/CVC2:</label>  <input  style="margin-left: .1em"; type = "text" id = "cvvCode" name = "cvvCode" placeholder="3 digit number"> <br> <br>
+<label for="amount">Amount:</label>  <input  style="margin-left: 2.6em"; type = "text" id = "amount" name = "amount" placeholder="Value less than 100000"> <br> <br>
 <button type="submit" >Authorize</button>
 </form>
 
@@ -31,12 +31,11 @@
     			</c:when>
     			
     			<c:when test="${transactionSuccessful eq true}">
-				
     				<h5>Transaction Successful</h5>
 				</c:when>
 </c:choose>
 
-<c:if test="${ failedDBConnection eq true}">
+<c:if test="${failedDBConnection eq true}">
          <h5 style="color:red;"> Unable to Connect to Database , check your Internet Connection or try after sometime </h5>
 </c:if>
 

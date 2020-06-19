@@ -19,8 +19,10 @@ public class TransactionsHelper {
 	        AccountsDaoImpl accountsDaoImplLoggedInUser = ContextBeans.getAcountsDaoImpl();
 	        
 	        Accounts accountsBeanFromDatabase = accountsDaoImpl.get(accountsBean);
-	        if (accountsBeanFromDatabase == null)
+	        if (accountsBeanFromDatabase == null) {
 	        	return false;
+
+	        }
 	        Accounts loggedInUsersAccount =  accountsDaoImplLoggedInUser.getAccountWithCustomerId(customerId);
 
 	        Transaction transaction = new Transaction();

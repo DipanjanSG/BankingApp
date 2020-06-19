@@ -6,11 +6,11 @@
 <title> Bank of Edureka</title>
 </head>
 <body style='background-color:orange;'>
-<p>
-<h3> Perform Debit or Credit Operation </h3>
+
+<h2 input style="margin-left: 30em";> Perform Debit or Credit Operation </h2>
 <form action = "PerformTransactionsServlet" method = "get">
-<label for="accountNumber">Account Number:</label>  <input type = "text" id = "accountNumber"   name = "accountNumber"> <br> <br>
-<label for="amount">Amount:</label>                 <input type = "text" id = "amount"          name = "amount"> <br> <br>
+<label for="accountNumber">Account Number:</label>  <input type = "text" id = "accountNumber"   name = "accountNumber" placeholder="1"> <br> <br>
+<label for="amount">Amount:</label>                 <input  style="margin-left: 4.4em"; type = "text" id = "amount"          name = "amount" placeholder="1000"> <br> <br>
                                                     <input type = "hidden" id = "transactionType" name = "transactionType" value = "notSet">
 <button type="submit" onclick="setValueDepositOrWithDraw(this)" value="null" name = "debit" >Debit From</button>
 <button type="submit" onclick="setValueDepositOrWithDraw(this)" value="null" name = "credit">Credit To</button>
@@ -25,7 +25,7 @@
     			</c:when>
     		
 </c:choose>
-</p>
+
 <c:if test="${ failedDBConnection eq true}">
          <h5 style="color:red;"> Unable to Connect to Database , check your Internet Connection or try after sometime </h5>
  	 </c:if>
