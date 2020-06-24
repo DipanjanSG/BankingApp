@@ -9,8 +9,8 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate5.HibernateTemplate;
-import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.annotation.Transactional;
+import com.banking.exceptions.TransactionDBAccessException;
 
 /**
  * @author Dipanjan Sengupta
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TransactionDaoImpl implements TransactionDao{
 
 	@Autowired
-	HibernateTemplate hibernateTemplate;
+	private HibernateTemplate hibernateTemplate;
 	
 	public HibernateTemplate getHibernateTemplate() {
 		return hibernateTemplate;
@@ -35,30 +35,45 @@ public class TransactionDaoImpl implements TransactionDao{
 	}
 
 	@Transactional(readOnly = false)
-	public Integer save(Transaction transaction) throws DataAccessException , TransactionException{
-		return (Integer)hibernateTemplate.save(transaction);		
+	public Integer save(Transaction transaction) throws TransactionDBAccessException {
+		try {
+			return (Integer)hibernateTemplate.save(transaction);		
+		} catch (DataAccessException ex ) {
+			throw new TransactionDBAccessException("Unable to save to Transaction DB");
+		}
 		
 	}
 
 	@Transactional(readOnly = false)
-	public void update(Transaction transaction) throws DataAccessException, TransactionException{
-		hibernateTemplate.update(transaction);		
+	public void update(Transaction transaction) throws TransactionDBAccessException{
+		try {hibernateTemplate.update(transaction);	
+	
+		} catch (DataAccessException ex ) {
+			throw new TransactionDBAccessException("Unable to update to Transaction DB");
+		}
 		
 	}
 
 	@Transactional(readOnly = false)
-	public void delete(Transaction transaction) throws DataAccessException, TransactionException{
-		hibernateTemplate.delete(transaction);		
+	public void delete(Transaction transaction) throws TransactionDBAccessException{
+		try {hibernateTemplate.delete(transaction);	
+		} catch (DataAccessException ex ) {
+			throw new TransactionDBAccessException("Unable to delete from Transaction DB");
+		}
 		
 	}
 
 	@Transactional(readOnly = false)
-	public List<Transaction> getAllTransaction() throws DataAccessException, TransactionException {
-		return hibernateTemplate.loadAll(Transaction.class);
+	public List<Transaction> getAllTransaction() throws TransactionDBAccessException {
+		try {return hibernateTemplate.loadAll(Transaction.class);
+		} catch (DataAccessException ex ) {
+			throw new TransactionDBAccessException("Unable to get all Transactions");
+		}
+		
 	}
 
-	public List<Transaction> getTransactionDetails(int fromAccount,int toAccount, Timestamp dateFrom , Timestamp dateTo) throws DataAccessException , TransactionException {
-		
+	public List<Transaction> getTransactionDetails(int fromAccount,int toAccount, Timestamp dateFrom , Timestamp dateTo) throws TransactionDBAccessException {
+		try {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Transaction.class);
 		Criterion fromAccountNumber = Restrictions.eq("fromAccount", fromAccount);
 		Criterion toAccountNumber = Restrictions.eq("toAccount", toAccount);
@@ -69,5 +84,8 @@ public class TransactionDaoImpl implements TransactionDao{
 		criteria.add(Restrictions.lt("dateOfTransaction", dateTo));
 		
         return (List<Transaction>) hibernateTemplate.findByCriteria(criteria);
+		} catch (DataAccessException ex ) {
+			throw new TransactionDBAccessException("Unable to get specific Trasaction Details");
+		}
 	}
 }

@@ -23,7 +23,7 @@ import com.banking.money.transaction.TransactionsHelper;
 @WebServlet("/PerformTransactionsServlet")
 public class PerformTransactions extends HttpServlet {
 
-	static final Logger LOGGER = Logger.getLogger(PerformTransactions.class);
+	private static final Logger LOGGER = Logger.getLogger(PerformTransactions.class);
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -42,10 +42,10 @@ public class PerformTransactions extends HttpServlet {
 				
 		TransactionsHelper transactionsDao = ContextBeans.getTransactionsHelper();
 		
-						
-			if (!transactionsDao.performTransaction( accounts, transactionType, customerId )) {
-				LOGGER.error("Invalid Details Entered");
-				request.setAttribute("invalidDetails", true);
+		String status = transactionsDao.performTransaction( accounts, transactionType, customerId ).getStatus();				
+			if (!status.equals("OK")) {
+				LOGGER.error(status);
+				request.setAttribute("invalidDetails", status);
 				throw new MoneyTransferException("Invalid Details Entered");
 			} else {
 				LOGGER.info("Transaction successful");
@@ -62,7 +62,7 @@ public class PerformTransactions extends HttpServlet {
 			LOGGER.error(e);
 		} catch (Exception e) {
 			LOGGER.error(e);
-			request.setAttribute("invalidDetails", true);
+			request.setAttribute("invalidDetails", "INVALID DETAILS");
 		}
 	try {	
 		RequestDispatcher rd = request.getRequestDispatcher("moneyTransfer.jsp");

@@ -1,6 +1,7 @@
 package com.banking.login;
 
-import org.springframework.dao.DataAccessException;
+import java.util.List;
+import com.banking.exceptions.CredentialsDBAccessException;
 import com.banking.spring.beans.ContextBeans;
 
 /**
@@ -11,13 +12,14 @@ public class CredentialsHelper {
 
 	private static final int MINIMUM_CUSTOMER_ID = 0;
 	
-	public int validateCredentials(Credentials credentials) throws DataAccessException {
+	public int validateCredentials(final Credentials credentials) throws CredentialsDBAccessException {
 		
 		    CredentialsDaoImpl credentialsDaoImpl = ContextBeans.getCredentialsDaoImpl();
-		    credentials = credentialsDaoImpl.getCredentialDetails(credentials);
 		    
-		    if ( credentials!= null && credentials.customerId > MINIMUM_CUSTOMER_ID ) {
-				return credentials.getCustomerId();
+		    List<Credentials> retrievedCredentialsList = credentialsDaoImpl.getCredentialDetails(credentials);
+
+		    if ( retrievedCredentialsList.isEmpty() && retrievedCredentialsList.get(MINIMUM_CUSTOMER_ID).getCustomerId() > MINIMUM_CUSTOMER_ID ) {
+				return retrievedCredentialsList.get(MINIMUM_CUSTOMER_ID).getCustomerId();
 			}		    
 			
 	        return 0;

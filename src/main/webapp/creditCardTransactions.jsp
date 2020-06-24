@@ -21,22 +21,22 @@
  <c:choose>
  				<c:when test="${invalidAmount eq true}">
 			
-       				<h5 style="color:red;">Invalid Amount Entered</h5>
+       				<h5 style="background-color:black;color: red;">Invalid Amount Entered</h5>
        				
     			</c:when>
     			
            		<c:when test="${invalidDetails eq true}">
 				
-       				<h5 style="color:red;">Invalid Credit Card Details</h5>
+       				<h5 style="background-color:black;color: red;">Invalid Credit Card Details</h5>
     			</c:when>
     			
     			<c:when test="${transactionSuccessful eq true}">
-    				<h5>Transaction Successful</h5>
+    				<h5 style="background-color:black;color: white;">Transaction Successful</h5>
 				</c:when>
 </c:choose>
 
 <c:if test="${failedDBConnection eq true}">
-         <h5 style="color:red;"> Unable to Connect to Database , check your Internet Connection or try after sometime </h5>
+         <h5 style="background-color:black;color: red;"> Unable to Connect to Database , check your Internet Connection or try after sometime </h5>
 </c:if>
 
 

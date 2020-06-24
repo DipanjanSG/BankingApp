@@ -8,12 +8,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
-import org.springframework.dao.DataAccessException;
-import org.springframework.transaction.TransactionException;
 import com.banking.account.creation.Customer;
 import com.banking.account.creation.CustomerDaoImpl;
 import com.banking.account.creation.CustomerHelper;
 import com.banking.exceptions.AccountCreationException;
+import com.banking.exceptions.CustomerDBAccessException;
 import com.banking.login.Credentials;
 import com.banking.spring.beans.ContextBeans;
 import com.banking.money.transaction.Accounts;
@@ -23,7 +22,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,11 +31,11 @@ import java.util.Set;
 @WebServlet("/createAccountServlet")
 public class CreateAccount extends HttpServlet {
 	
-	static final Logger LOGGER = Logger.getLogger(CreateAccount.class);
+	private static final Logger LOGGER = Logger.getLogger(CreateAccount.class);
 	private static final  double MINIMUM_STARTING_BALANCE = 0.0;
 	private static final String EMAIL_ID_AT_THE_RATE = "@";
 	private static final String ALL_DETAILS_NOT_ENTERED = "allDetailsNotEntered";
-	private int generatedAccountNumber = 0;
+
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
@@ -80,13 +78,11 @@ public class CreateAccount extends HttpServlet {
 			
 			Integer customerNumber = createAccountDao.save(customerBean);
 			AccountsDaoImpl accountsDaoImplLoggedInUser = ContextBeans.getAcountsDaoImpl();
-			
-			
-			generatedAccountNumber =  accountsDaoImplLoggedInUser.getAccountWithCustomerId(customerNumber).getAccountNumber();
+						
+			int generatedAccountNumber =  accountsDaoImplLoggedInUser.getAccountWithCustomerId(customerNumber).getAccountNumber();
 			
 			if ( generatedAccountNumber != 0)
 			{ 	
-				
 				LOGGER.info("New Customer record created with account no -" + generatedAccountNumber);
 				request.setAttribute("accountNumber", generatedAccountNumber);
 				request.setAttribute("credentials"," Your User name is ---> \"" + credentials.getUserName() + "\" and your Password is ---> \"" + credentials.getPassword() + "\"");
@@ -103,16 +99,12 @@ public class CreateAccount extends HttpServlet {
 			LOGGER.error("All values for creating account not entered - ");
 			throw new AccountCreationException("All values for creating account not entered " + customerBean.toString() );
 			}
-		} catch (DataAccessException e) {
-			request.setAttribute("failedDBConnection", true);
-			LOGGER.error(e);
-		  } catch (TransactionException e) {
-		    request.setAttribute("failedDBConnection", true);
-		    LOGGER.error(e);
-		  } catch (ParseException ex) {
+		} catch (ParseException ex) {
 			LOGGER.error(ex);
 			request.setAttribute(ALL_DETAILS_NOT_ENTERED, true);
-		  } catch (AccountCreationException ex) {
+		  } catch (CustomerDBAccessException ex) {
+			LOGGER.error(ex);
+		  }catch (AccountCreationException ex) {
 			LOGGER.error(ex);
 		  } catch (Exception e) {
 			e.printStackTrace();

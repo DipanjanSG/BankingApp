@@ -2,9 +2,13 @@ package com.banking.exceptions;
 
 import org.apache.log4j.Logger;
 
+/**
+ * @author Dipanjan Sengupta
+ * @purpose - Custom Exception to be thrown while Generating Bank Statement
+ */
 public class BankStatementException extends Exception{
 
-	final String exceptionMessage;
+	private final String exceptionMessage;
 	private static final Logger LOGGER = Logger.getLogger(BankStatementException.class);
 
 	

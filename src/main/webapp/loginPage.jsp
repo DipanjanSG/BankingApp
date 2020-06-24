@@ -18,13 +18,13 @@
 <label  for="password">Password:</label>  <input  style="margin-left: .3em"; type = "password" id = "password" name = "password"> <br> <br>
 	
 	 <c:if test="${ invalidCredentials eq true}">
-         <h5 style="color:red;"> Invalid Credentials </h5>
+         <h5 style="background-color:black;color: white;"> Invalid Credentials </h5>
  	 </c:if>
     <br><br>
 	<input style="margin-left: 8em"; type="submit" value="Submit">
 </form>
 <c:if test="${ failedDBConnection eq true}">
-         <h5 style="color:red;"> Unable to Connect to Database , check your Internet Connection or try after sometime </h5>
+         <h5 style="background-color:black;color: red;"> Unable to Connect to Database , check your Internet Connection or try after sometime </h5>
  	 </c:if>
  	 </div>
 </body>

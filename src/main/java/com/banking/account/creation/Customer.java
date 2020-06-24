@@ -16,12 +16,12 @@ import lombok.ToString;
 @ToString
 public class Customer {
 	
-	int customerId;
-	String userName ;
-	Date dateOfBirth;
-	String address;
-	String emailId;
-	Set <Accounts> allAccountsHeld;
+	private int customerId;
+	private String userName ;
+	private Date dateOfBirth;
+	private String address;
+	private String emailId;
+	private Set <Accounts> allAccountsHeld;
 	
 	
 	Credentials credentials;

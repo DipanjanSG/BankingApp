@@ -11,9 +11,9 @@ import lombok.ToString;
 @ToString
 public class Credentials {
 	
-	String userName;
-	String password;
-	int customerId;
+	private String userName;
+	private String password;
+	private int customerId;
 	private static final String PASSWORD_SUFFIX = "123";
 	
 	Customer customerBean;
@@ -58,5 +58,12 @@ public class Credentials {
 	}
 	public void createPassword() {
 		setPassword(this.userName + PASSWORD_SUFFIX);
+	}
+	
+	@Override
+	public String toString() {
+		return "Credentials [userName=" + userName + ", password=" + password + ", customerId=" + customerId
+				+ ", customerBean=" + customerBean + "]";
 	}	
+	
 }

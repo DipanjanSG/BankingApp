@@ -23,7 +23,7 @@ public class ContextBeans {
 	private static CreditCardTransactionsDaoImpl createCreditCardTransactionsDaoBean = null;
 	private static TransactionDaoImpl transactionDaoImpl = null;
 	private static CredentialsDaoImpl credentialsDaoImpl = null;
-	static final Logger LOGGER = Logger.getLogger(ContextBeans.class);
+	private static final Logger LOGGER = Logger.getLogger(ContextBeans.class);
  
 	private ContextBeans() {
 		

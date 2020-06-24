@@ -1,13 +1,14 @@
 package com.banking.cc.transactions.authorize;
 
 import java.util.List;
-import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.banking.exceptions.CreditCardDBAccessException;
 
 /**
  * @author Dipanjan Sengupta
@@ -16,11 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class CreditCardTransactionsDaoImpl implements CreditCardTransactions{
 
 	@Autowired
-	HibernateTemplate hibernateTemplate;
-	
-	private static final  Logger LOGGER = Logger.getLogger(CreditCardTransactionsDaoImpl.class);
-    private static final int MINIMUM_CREDIT_CARD_LIST_SIZE = 0;
-    
+	private HibernateTemplate hibernateTemplate;
+		
 	public HibernateTemplate getHibernateTemplate() {
 		return hibernateTemplate;
 	}
@@ -30,48 +28,63 @@ public class CreditCardTransactionsDaoImpl implements CreditCardTransactions{
 	}
 
 	@Transactional(readOnly = false)
-	public CreditCard get(CreditCard creditCardBean) throws DataAccessException {
-		return hibernateTemplate.get(CreditCard.class, creditCardBean.creditCardNumber);
+	public CreditCard get(CreditCard creditCardBean) throws CreditCardDBAccessException {
+		try {
+		return hibernateTemplate.get(CreditCard.class, creditCardBean.getCreditCardNumber());
+		} catch(DataAccessException ex) {
+			throw new CreditCardDBAccessException("Unable to get credit card details for ---->" + creditCardBean.toString());
+		}
 	}
 	
 	@Transactional(readOnly = false)
-	public void save(CreditCard creditCardBean) throws DataAccessException {
-		hibernateTemplate.save(creditCardBean);
+	public void save(CreditCard creditCardBean) throws CreditCardDBAccessException {
+		try {
+			hibernateTemplate.save(creditCardBean);
+		} catch(DataAccessException ex) {
+			throw new CreditCardDBAccessException("Unable to save credit card details for ---->" + creditCardBean.toString());
+		}
 
 	}
 	
 	@Transactional(readOnly = false)
-	public void update(CreditCard creditCardBean) throws DataAccessException {
-		hibernateTemplate.update(creditCardBean);
+	public void update(CreditCard creditCardBean) throws CreditCardDBAccessException {
+		try {
+			hibernateTemplate.update(creditCardBean);
+		} catch(DataAccessException ex) {
+			throw new CreditCardDBAccessException("Unable to update credit card details for ---->" + creditCardBean.toString());
+		}
 		
 	}
 	
 	@Transactional(readOnly = false)
-	public void delete(CreditCard creditCardBean) throws DataAccessException {
+	public void delete(CreditCard creditCardBean) throws CreditCardDBAccessException {
+		try {
 		hibernateTemplate.delete(creditCardBean);
+		} catch(DataAccessException ex) {
+			throw new CreditCardDBAccessException("Unable to delete credit card details for ---->" + creditCardBean.toString());
+		}
 	}
 	
 	@Transactional(readOnly = false)
-	public List<CreditCard> getAllCreditCards() throws DataAccessException {
+	public List<CreditCard> getAllCreditCards() throws CreditCardDBAccessException {
+		try {
 		return hibernateTemplate.loadAll(CreditCard.class);
+		} catch(DataAccessException ex) {
+			throw new CreditCardDBAccessException("Unable to fetch all credit card details");
+		}
 	}
 	
-    public CreditCard getCreditCardWithParam(CreditCard creditCardBean)  throws DataAccessException {
-		
-    	CreditCard creditCard = null;
+    public List<CreditCard> getCreditCardWithParam(CreditCard creditCardBean) throws CreditCardDBAccessException {
+    	try {
 		DetachedCriteria criteria = DetachedCriteria.forClass(CreditCard.class);
-		criteria.add(Restrictions.eq("cvvCode", creditCardBean.cvvCode));
-		criteria.add(Restrictions.eq("creditCardNumber", creditCardBean.creditCardNumber));
+		criteria.add(Restrictions.eq("cvvCode", creditCardBean.getCvvCode()));
+		criteria.add(Restrictions.eq("creditCardNumber", creditCardBean.getCreditCardNumber()));
 
-		List<CreditCard> creditCardList =  (List<CreditCard>)hibernateTemplate.findByCriteria(criteria);
+		return (List<CreditCard>)hibernateTemplate.findByCriteria(criteria);
 		
-		
-		if (creditCardList.size() > MINIMUM_CREDIT_CARD_LIST_SIZE ) {
-			creditCard = creditCardList.get(MINIMUM_CREDIT_CARD_LIST_SIZE);
+    	} catch(DataAccessException ex) {
+			throw new CreditCardDBAccessException("Unable to fetch credit card with parameter --->" + creditCardBean.toString());
 		}
-		else {
-			LOGGER.warn("No credit card was found with number " + creditCardBean.creditCardNumber + " and cvv-code as " + creditCardBean.cvvCode);
-		}
-        return creditCard;
+    	
 	}
 }

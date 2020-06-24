@@ -1,7 +1,6 @@
 package com.banking.money.transaction;
 
 import com.banking.account.creation.Customer;
-
 import lombok.ToString;
 
 /**
@@ -11,12 +10,13 @@ import lombok.ToString;
 @ToString
 public class Accounts {
 	
-	int accountNumber;
-	double accountBalance;
+	private int accountNumber;
 	
-	Customer customerBean;
+	private double accountBalance;
 	
-	String bankAccountType;
+	private Customer customerBean;
+	
+	private String bankAccountType;
 	
 	public Accounts() {
 	}
@@ -64,6 +64,12 @@ public class Accounts {
 	
 	public void decrementAccountBalance(double debitedAmount) {
 		this.accountBalance -= debitedAmount;
+	}
+
+	@Override
+	public String toString() {
+		return "Accounts [accountNumber=" + accountNumber + ", accountBalance=" + accountBalance + ", customerBean="
+				+ customerBean + ", bankAccountType=" + bankAccountType + "]";
 	}
 
 }

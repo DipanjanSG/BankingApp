@@ -4,20 +4,21 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.banking.exceptions.CustomerDBAccessException;
 import com.banking.spring.beans.ContextBeans;
 
 public class CustomerHelper {
 	
-	public Set<String> checkIfDetailsAlreadyPresent(Customer customer) {
+	public Set<String> checkIfDetailsAlreadyPresent(final Customer customer) throws CustomerDBAccessException {
 		Set<String> existingFields = new HashSet<String>(); 
 		CustomerDaoImpl createAccountDaoImpl =  ContextBeans.getCreateAccountDao();
     	List <Customer> customers = createAccountDaoImpl.getCustomers();
     	
     	for (Customer registeredCustomer : customers) {
-    		if (registeredCustomer.userName.equalsIgnoreCase(customer.userName)) {
+    		if (registeredCustomer.getUserName().equalsIgnoreCase(customer.getUserName())) {
     			existingFields.add("Name"); 
     		}
-    		if (registeredCustomer.emailId.equalsIgnoreCase(customer.emailId)) {
+    		if (registeredCustomer.getEmailId().equalsIgnoreCase(customer.getEmailId())) {
     			existingFields.add("Email Id");
     		}
     	}

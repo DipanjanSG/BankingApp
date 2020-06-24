@@ -8,10 +8,10 @@ import lombok.ToString;
 @ToString
 public class CreditCard {
 	
-	String creditCardNumber;
-	String cvvCode;
-	int cardOwner;
-	double amount;
+	private String creditCardNumber;
+	private String cvvCode;
+	private int cardOwner;
+	private double amount;
 	
 	public CreditCard(String creditCardNumber, String cvvCode, int cardOwner, double amount) {
 		this.creditCardNumber = creditCardNumber;
@@ -55,5 +55,10 @@ public class CreditCard {
 		this.amount = amount;
 	}
 	
+	@Override
+	public String toString() {
+		return "CreditCard [creditCardNumber=" + creditCardNumber + ", cvvCode=" + cvvCode + ", cardOwner=" + cardOwner
+				+ ", amount=" + amount + "]";
+	}
 	
 }

@@ -14,10 +14,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
-import org.springframework.dao.DataAccessException;
 import com.banking.money.transaction.Transaction;
 import com.banking.money.transaction.TransactionDaoImpl;
 import com.banking.spring.beans.ContextBeans;
+import com.banking.exceptions.TransactionDBAccessException;
+import com.banking.exceptions.AccountsDBAccessException;
 import com.banking.exceptions.BankStatementException;
 import com.banking.money.transaction.AccountsDaoImpl;
 
@@ -28,7 +29,7 @@ import com.banking.money.transaction.AccountsDaoImpl;
 @WebServlet("/displayStatementServlet")
 public class DisplayBankStatement extends HttpServlet {
    
-	static final Logger LOGGER = Logger.getLogger(DisplayBankStatement.class);
+	private static final Logger LOGGER = Logger.getLogger(DisplayBankStatement.class);
 	private static final  String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
 	private static final  String DEFAULT_START_TIME = " 00:00:00";
 	private static final  String DEFAULT_END_TIME = " 23:59:59";
@@ -70,10 +71,13 @@ public class DisplayBankStatement extends HttpServlet {
 				throw new BankStatementException("No transactions were retieved");
 			}
 			
-		} catch (DataAccessException e) {
+		} catch (AccountsDBAccessException e) {
 			LOGGER.error(e);
 			request.setAttribute("failedDBConnection", true); 
-		}	catch (ParseException e) {
+		}	catch (TransactionDBAccessException e) {
+			LOGGER.error(e);
+			request.setAttribute("failedDBConnection", true); 
+		}catch (ParseException e) {
 			request.setAttribute("size", TRANSACTIONS_LIST_SIZE);
 			request.setAttribute(DATE_RANGE, dateFrom + " - " + dateTo);
 			LOGGER.error(e);

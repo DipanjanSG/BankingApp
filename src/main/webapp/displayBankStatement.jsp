@@ -12,7 +12,7 @@
 <p>
 <h2 input style="margin-left: 30em";> Display Statement </h2> <br> <br>
 <c:if test="${ failedDBConnection eq true}">
-         <h5 style="color:red;"> Unable to Connect to Database , check your Internet Connection or try after sometime </h5>
+         <h5 style="background-color:black;color: red;"> Unable to Connect to Database , check your Internet Connection or try after sometime </h5>
  	 </c:if>
 Date Range: <br>
 <label for="accountNumber">From:</label>  <input type = "text" id = "dateFrom" name = "dateFrom" placeholder="2020-01-23"> 
@@ -62,7 +62,7 @@ Date Range: <br>
  
  </c:if>
  <c:if test="${ not empty dateRange}">
-      <h3 style="color:red;"> No transactions found for the given date range "${dateRange}"<h3>
+      <h3 style="background-color:black;color: white;"> No transactions found for the given date range "${dateRange}"<h3>
   </c:if>
  
 </table> 

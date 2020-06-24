@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
-import org.springframework.dao.DataAccessException;
+import com.banking.exceptions.CredentialsDBAccessException;
 
 
 /**
@@ -20,7 +20,7 @@ import org.springframework.dao.DataAccessException;
 @WebServlet("/LoginPageServlet")
 public class LoginPage extends HttpServlet {
 
-	static final Logger LOGGER = Logger.getLogger(LoginPage.class);
+	private static final Logger LOGGER = Logger.getLogger(LoginPage.class);
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -61,22 +61,18 @@ public class LoginPage extends HttpServlet {
 				out.println("</p>");
 				out.println("</body>");
 			}
-		} catch (DataAccessException e) {
+		} catch (CredentialsDBAccessException e) {
 			LOGGER.error(e);
 			request.setAttribute("failedDBConnection", true);
     	try {
     		RequestDispatcher rd = request.getRequestDispatcher("loginPage.jsp");
     		rd.forward(request, response);
-		} catch (ServletException ex) {
-			LOGGER.error(ex);
-		}catch (IOException ex) {
+		} catch (Exception ex) {
 			LOGGER.error(ex);
 		}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			LOGGER.error(e);
-		} catch (ServletException e) {
-			LOGGER.error(e);
-		}
+		} 
 		}
 	}
 

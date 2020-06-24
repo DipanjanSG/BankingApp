@@ -9,7 +9,7 @@
 ##License and Copyright
 - This code is owned by Dipanjan Sengupta <dipanjan.sen.gupta1993@gmail.com>
 
-##How to run the code
+##How to use
 > Clone the repository and open powershell in that location and run the command
 .\WindowsBuild.ps1 to run the file "WindowsBuild.ps1".
 
