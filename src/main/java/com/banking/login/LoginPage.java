@@ -35,7 +35,7 @@ public class LoginPage extends HttpServlet {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		Credentials credentials = new Credentials(userName, password);
-				CredentialsHelper loginDao = new CredentialsHelper();
+		CredentialsHelper loginDao = new CredentialsHelper();
 		
 			
 			Integer customerId = loginDao.validateCredentials(credentials);

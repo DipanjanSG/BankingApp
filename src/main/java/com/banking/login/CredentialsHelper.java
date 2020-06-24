@@ -18,7 +18,7 @@ public class CredentialsHelper {
 		    
 		    List<Credentials> retrievedCredentialsList = credentialsDaoImpl.getCredentialDetails(credentials);
 
-		    if ( retrievedCredentialsList.isEmpty() && retrievedCredentialsList.get(MINIMUM_CUSTOMER_ID).getCustomerId() > MINIMUM_CUSTOMER_ID ) {
+		    if ( !retrievedCredentialsList.isEmpty() && retrievedCredentialsList.get(MINIMUM_CUSTOMER_ID).getCustomerId() > MINIMUM_CUSTOMER_ID ) {
 				return retrievedCredentialsList.get(MINIMUM_CUSTOMER_ID).getCustomerId();
 			}		    
 			
