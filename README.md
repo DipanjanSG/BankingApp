@@ -4,13 +4,13 @@
 
 
 ##Contributors
-- Dipanjan Sengupta <dipanjan.sen.gupta1993@gmail.com>
+- Dipanjan Sengupta  <dipanjan.sen.gupta1993@gmail.com>
 
 ##License and Copyright
-- This code is owned by Dipanjan Sengupta <dipanjan.sen.gupta1993@gmail.com>
+- This code is owned by Dipanjan Sengupta  <dipanjan.sen.gupta1993@gmail.com>
 
 ##How to use in "Windows OS"
-> Clone the repository and open powershell in that location and run the command
+> Clone the repository and open powershell in that location and run the command 
 .\WindowsBuild.ps1 to run the file "WindowsBuild.ps1".
 
 > It will ask for the location of the javaCertification.war file to be generated.

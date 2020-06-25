@@ -3,7 +3,7 @@ package com.banking.login;
 import java.util.List;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - Interface with functions for operations on credentials table 
  */
 public interface CredentialsDao {

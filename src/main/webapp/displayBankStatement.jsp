@@ -10,7 +10,7 @@
 <body style=background-color:orange;>
 <form action="displayStatementServlet" >
 <p>
-<h2 input style="margin-left: 30em";> Display Statement </h2> <br> <br>
+<h2 input style="margin-left: 30em";> Display Statement </h2> <br> <br> 
 <c:if test="${ failedDBConnection eq true}">
          <h5 style="background-color:black;color: red;"> Unable to Connect to Database , check your Internet Connection or try after sometime </h5>
  	 </c:if>

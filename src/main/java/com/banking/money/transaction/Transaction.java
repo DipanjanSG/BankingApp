@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import lombok.ToString;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - PoJo for representing transaction table
  */
 @ToString

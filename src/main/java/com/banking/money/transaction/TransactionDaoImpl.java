@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.banking.exceptions.TransactionDBAccessException;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - HibernateTemplate for operations on transactions table
  */
 public class TransactionDaoImpl implements TransactionDao{

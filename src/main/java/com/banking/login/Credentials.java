@@ -5,7 +5,7 @@ import com.banking.account.creation.Customer;
 import lombok.ToString;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - POJO representing values in credentials table
  */
 @ToString

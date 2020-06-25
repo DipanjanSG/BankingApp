@@ -7,6 +7,10 @@ import java.util.Set;
 import com.banking.exceptions.CustomerDBAccessException;
 import com.banking.spring.beans.ContextBeans;
 
+/**
+ * @author Dipanjan Sengupta 
+ * @purpose - Customer Helper class for checking user name and password already present
+ */
 public class CustomerHelper {
 	
 	public Set<String> checkIfDetailsAlreadyPresent(final Customer customer) throws CustomerDBAccessException {

@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.banking.exceptions.CreditCardDBAccessException;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - HibernateTemplate for operations on credit_card table
  */
 public class CreditCardTransactionsDaoImpl implements CreditCardTransactions{

@@ -9,14 +9,14 @@
 </head>
 <body style='background-color:orange;'>
 <div style="margin-left: 40em";>
-<form action='createAccountServlet' method="post">
+<form action='createAccountServlet' method="post"> 
 <h2 input> Account Creation Screen </h2>
 
 <c:if test="${accountNumber ge 0}"> <h5 style="background-color:black;color: white;"> Account created successfully with Account Number - ${accountNumber} </h5></c:if>
 <c:if test="${not empty credentials}"> <h5 style="background-color:black;color: white;">${credentials}</h5></c:if>
 
 <c:if test="${not empty existingFields}"> <h5 style="background-color:black;color: red;"> Values entered against fields - ${existingFields} , ALREADY EXISTS. Enter different values</h5></c:if>
-<label for='uname'>Name:     </label>  <input  style="margin-left: 1.7em"; type = 'text' id ='uName' name ='uName' placeholder="Dipanjan Sengupta"> <br> <br>
+<label for='uname'>Name:     </label>  <input  style="margin-left: 1.7em"; type = 'text' id ='uName' name ='uName' placeholder="Dipanjan Sengupta "> <br> <br>
 <label for='dateOfBirth'>DOB:      </label>  <input  style="margin-left: 2em"; type = 'text' id ='dateOfBirth'name ='dateOfBirth' placeholder="1994-01-01"> <br> <br>
 <label for='address'>Address:      <br>              <textarea style="margin-left: 5.4em"; name ='address' cols="40" rows="5" id ='address' placeholder="FG-324/7 Belladur Bangalore-700097"></textarea></label><br><br>
 <label for='emailId'>Email Id: </label>  <input  style="margin-left: .5em"; type = 'text' id ='emailId' name ='emailId' placeholder="dipanjan.sen@gmail.com"> <br> <br>

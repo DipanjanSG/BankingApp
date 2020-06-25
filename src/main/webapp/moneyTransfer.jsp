@@ -7,7 +7,7 @@
 </head>
 <body style='background-color:orange;'>
 
-<h2 input style="margin-left: 30em";> Perform Debit or Credit Operation </h2>
+<h2 input style="margin-left: 30em";> Perform Debit or Credit Operation </h2> 
 <form action = "PerformTransactionsServlet" method = "get">
 <label for="accountNumber">Account Number:</label>  <input type = "text" id = "accountNumber"   name = "accountNumber" placeholder="1"> <br> <br>
 <label for="amount">Amount:</label>                 <input  style="margin-left: 4.4em"; type = "text" id = "amount"          name = "amount" placeholder="1000"> <br> <br>

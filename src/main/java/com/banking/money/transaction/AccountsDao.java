@@ -5,7 +5,7 @@ import java.util.List;
 import com.banking.exceptions.AccountsDBAccessException;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - Interface containing functions for operations on accounts table
  */
 public interface AccountsDao{

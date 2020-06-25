@@ -9,7 +9,7 @@ import com.banking.money.transaction.Accounts;
 import lombok.ToString;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta  
  * @purpose - This POJO represents the Customer Object and is mapped to customer class
  */
 

@@ -14,7 +14,7 @@ import com.banking.exceptions.CredentialsDBAccessException;
 
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - Servlet for main page after successful login
  */
 @WebServlet("/LoginPageServlet")

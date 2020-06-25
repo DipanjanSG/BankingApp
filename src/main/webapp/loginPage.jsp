@@ -12,7 +12,7 @@
 <form action="LoginPageServlet" method="post">
 
 
-<h2 style="margin-left: 2em";> Bank of Edureka  </h2> <br> <br>
+<h2 style="margin-left: 2em";> Bank of Edureka  </h2> <br> <br> 
 
 <label  for="uname">Username:</label>  <input  type = "text" id = "uname" name = "uname"> <br> <br>
 <label  for="password">Password:</label>  <input  style="margin-left: .3em"; type = "password" id = "password" name = "password"> <br> <br>

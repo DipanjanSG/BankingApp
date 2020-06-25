@@ -4,7 +4,7 @@ import com.banking.exceptions.CreditCardDBAccessException;
 import com.banking.spring.beans.ContextBeans;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - This class helps in updating the value in the credit card amount in the table credit_card after
  * 			  the transaction has been authorized
  */

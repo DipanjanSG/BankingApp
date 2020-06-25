@@ -13,7 +13,7 @@ import com.banking.account.creation.Customer;
 import com.banking.exceptions.CredentialsDBAccessException;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - HibernateTemplate for operations on credentials table
  */
 public class CredentialsDaoImpl {

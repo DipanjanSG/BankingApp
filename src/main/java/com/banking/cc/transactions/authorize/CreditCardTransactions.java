@@ -5,7 +5,7 @@ import java.util.List;
 import com.banking.exceptions.CreditCardDBAccessException;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - Interface for operations on credit card table
  */
 public interface CreditCardTransactions {

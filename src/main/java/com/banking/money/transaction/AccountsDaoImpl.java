@@ -11,7 +11,7 @@ import com.banking.account.creation.Customer;
 import com.banking.exceptions.AccountsDBAccessException;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - HibernateTemplate for operations on accounts table
  */
 public class AccountsDaoImpl implements AccountsDao{

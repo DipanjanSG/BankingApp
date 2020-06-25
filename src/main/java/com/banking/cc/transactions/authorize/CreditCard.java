@@ -2,7 +2,7 @@ package com.banking.cc.transactions.authorize;
 
 import lombok.ToString;
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - This POJO represents the CreditCard Object and is mapped to credit_card class
  */
 @ToString

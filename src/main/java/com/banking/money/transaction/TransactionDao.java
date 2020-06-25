@@ -5,7 +5,7 @@ import java.util.List;
 import com.banking.exceptions.TransactionDBAccessException;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - Interface containing functions for operations on transaction table
  */
 public interface TransactionDao {

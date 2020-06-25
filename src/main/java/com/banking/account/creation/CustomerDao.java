@@ -5,7 +5,7 @@ import java.util.List;
 import com.banking.exceptions.CustomerDBAccessException;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - This interface represents the methods for operations on customer table
  */
 public interface CustomerDao{
