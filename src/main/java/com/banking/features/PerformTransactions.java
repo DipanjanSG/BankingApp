@@ -1,6 +1,9 @@
 package com.banking.features;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,9 +14,20 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.TransactionException;
-import com.banking.spring.beans.ContextBeans;
-import com.banking.exceptions.MoneyTransferException;
+import com.banking.spring.beans.ContextBeansFactory;
+import com.banking.account.creation.Customer;
+import com.banking.account.creation.CustomerDaoImpl;
+import com.banking.constants.Constants.TransactionStatus;
+import com.banking.exceptions.AccountCreationException;
+import com.banking.exceptions.AccountsDBAccessException;
+import com.banking.exceptions.CreditCardDBAccessException;
+import com.banking.exceptions.CreditCardException;
+import com.banking.exceptions.CustomerDBAccessException;
+import com.banking.exceptions.FinancialTransaction;
+import com.banking.exceptions.TransactionDBAccessException;
+import com.banking.login.Credentials;
 import com.banking.money.transaction.Accounts;
+import com.banking.money.transaction.AccountsDaoImpl;
 import com.banking.money.transaction.TransactionsHelper;
 
 /**
@@ -24,11 +38,17 @@ import com.banking.money.transaction.TransactionsHelper;
 public class PerformTransactions extends HttpServlet {
 
 	private static final Logger LOGGER = Logger.getLogger(PerformTransactions.class);
+    private HttpServletRequest tempRequest;
 
+    @Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	doPut(request,response);
+    }
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	protected void doPut(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
+		tempRequest = request;
 		int accountNumber = Integer.parseInt(request.getParameter("accountNumber"));
 		double amount = Double.parseDouble(request.getParameter("amount"));
 		String transactionType = request.getParameter("transactionType");
@@ -40,31 +60,21 @@ public class PerformTransactions extends HttpServlet {
 		accounts.setAccountNumber(accountNumber);
 		accounts.setAccountBalance(amount);
 				
-		TransactionsHelper transactionsDao = ContextBeans.getTransactionsHelper();
-		
-		String status = transactionsDao.performTransaction( accounts, transactionType, customerId ).getStatus();				
-			if (!status.equals("OK")) {
-				LOGGER.error(status);
-				request.setAttribute("invalidDetails", status);
-				throw new MoneyTransferException("Invalid Details Entered");
-			} else {
-				LOGGER.info("Transaction successful");
-				request.setAttribute("transactionSuccessful", true);
-			}
-		
+		performTransactionAndVerify(accounts, transactionType, customerId);
 		} catch (DataAccessException e) {
 			request.setAttribute("failedDBConnection", true);
 			LOGGER.error(e);
 		} catch (TransactionException e) {
 		    request.setAttribute("failedDBConnection", true);
 		    LOGGER.error(e);
-		}	catch (MoneyTransferException e) {
+		}	catch (FinancialTransaction e) {
 			LOGGER.error(e);
 		} catch (Exception e) {
 			LOGGER.error(e);
 			request.setAttribute("invalidDetails", "INVALID DETAILS");
 		}
 	try {	
+		request = tempRequest;
 		RequestDispatcher rd = request.getRequestDispatcher("moneyTransfer.jsp");
 		rd.forward(request, response);
 		} catch (ServletException e) {
@@ -73,5 +83,20 @@ public class PerformTransactions extends HttpServlet {
 			LOGGER.error(e);
 		}
 	}
+	
+	 void performTransactionAndVerify(Accounts accounts,String transactionType,int customerId) throws TransactionDBAccessException, AccountsDBAccessException, FinancialTransaction  {
+	    	
+		 TransactionsHelper transactionsDao = ContextBeansFactory.getTransactionsHelper();
+			
+		 String status = transactionsDao.performTransaction( accounts, transactionType, customerId ).getStatus();				
+				if (!status.equals("OK")) {
+					LOGGER.error(status);
+					tempRequest.setAttribute("invalidDetails", status);
+					throw new FinancialTransaction("Invalid Details Entered");
+				} else {
+					LOGGER.info("Transaction successful");
+					tempRequest.setAttribute("transactionSuccessful", true);
+				}
+	    }
 
 }

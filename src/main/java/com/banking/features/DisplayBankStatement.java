@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import com.banking.money.transaction.Transaction;
 import com.banking.money.transaction.TransactionDaoImpl;
-import com.banking.spring.beans.ContextBeans;
+import com.banking.spring.beans.ContextBeansFactory;
 import com.banking.exceptions.TransactionDBAccessException;
 import com.banking.exceptions.AccountsDBAccessException;
 import com.banking.exceptions.BankStatementException;
@@ -56,10 +56,10 @@ public class DisplayBankStatement extends HttpServlet {
 		    
 		    Cookie[] cookie = request.getCookies();
 		    int customerId = Integer.parseInt(cookie[0].getValue());
-            AccountsDaoImpl accountsDaoImplLoggedInUser = ContextBeans.getAcountsDaoImpl();
+            AccountsDaoImpl accountsDaoImplLoggedInUser = ContextBeansFactory.getAcountsDaoImpl();
             int loggedInUsersAccountNumber =  accountsDaoImplLoggedInUser.getAccountWithCustomerId(customerId).getAccountNumber();
 	        
-		    TransactionDaoImpl transactionDaoImpl = ContextBeans.getTransactionDaoImpl();
+		    TransactionDaoImpl transactionDaoImpl = ContextBeansFactory.getTransactionDaoImpl();
 			List <Transaction> transactionDetailsBeanList = transactionDaoImpl.getTransactionDetails(
 					loggedInUsersAccountNumber,loggedInUsersAccountNumber,timestampDateFrom, timestampDateTo);
 			LOGGER.info("Number of transactions retrieved in date range - " + dateFrom + " to " + dateTo + " is - " + transactionDetailsBeanList.size());

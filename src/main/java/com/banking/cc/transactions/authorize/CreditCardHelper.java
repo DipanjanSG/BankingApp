@@ -1,7 +1,7 @@
 package com.banking.cc.transactions.authorize;
 
 import com.banking.exceptions.CreditCardDBAccessException;
-import com.banking.spring.beans.ContextBeans;
+import com.banking.spring.beans.ContextBeansFactory;
 
 /**
  * @author Dipanjan Sengupta 
@@ -12,7 +12,7 @@ public class CreditCardHelper {
 
 	public void creditCardAmountBorrowedUpdation(final CreditCard retievedCreditCardBean , final double amount ) throws CreditCardDBAccessException {
 		retievedCreditCardBean.setAmount(retievedCreditCardBean.getAmount() + amount);
-		CreditCardTransactionsDaoImpl creditCardTransactionsDaoImpl = ContextBeans.getcreateCreditCardTransactionsDao();
+		CreditCardTransactionsDaoImpl creditCardTransactionsDaoImpl = ContextBeansFactory.getcreateCreditCardTransactionsDao();
 		creditCardTransactionsDaoImpl.update(retievedCreditCardBean);
 	}
 }

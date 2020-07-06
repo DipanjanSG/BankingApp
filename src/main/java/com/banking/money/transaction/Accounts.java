@@ -10,12 +10,9 @@ import lombok.ToString;
 @ToString
 public class Accounts {
 	
-	private int accountNumber;
-	
-	private double accountBalance;
-	
+	private int accountNumber;	
+	private double accountBalance;	
 	private Customer customerBean;
-	
 	private String bankAccountType;
 	
 	public Accounts() {
@@ -64,12 +61,6 @@ public class Accounts {
 	
 	public void decrementAccountBalance(double debitedAmount) {
 		this.accountBalance -= debitedAmount;
-	}
-
-	@Override
-	public String toString() {
-		return "Accounts [accountNumber=" + accountNumber + ", accountBalance=" + accountBalance + ", customerBean="
-				+ customerBean + ", bankAccountType=" + bankAccountType + "]";
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.banking.money.transaction;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import com.banking.exceptions.TransactionDBAccessException;
@@ -10,9 +11,10 @@ import com.banking.exceptions.TransactionDBAccessException;
  */
 public interface TransactionDao {
 
-	Transaction get(Transaction transaction);
+	Transaction get(int transactionId) throws TransactionDBAccessException;
 	Integer save(Transaction transaction) throws TransactionDBAccessException;
 	void update(Transaction transaction) throws TransactionDBAccessException;
-	void delete(Transaction transaction) throws TransactionDBAccessException;
+	void delete(int transactionId) throws TransactionDBAccessException;
 	List<Transaction> getAllTransaction() throws TransactionDBAccessException;
+	List<Transaction> getTransactionDetails(int fromAccount,int toAccount, Timestamp dateFrom , Timestamp dateTo) throws TransactionDBAccessException;
 }

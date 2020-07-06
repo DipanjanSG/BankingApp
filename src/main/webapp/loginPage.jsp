@@ -24,7 +24,7 @@
 	<input style="margin-left: 8em"; type="submit" value="Submit">
 </form>
 <c:if test="${ failedDBConnection eq true}">
-         <h5 style="background-color:black;color: red;"> Unable to Connect to Database , check your Internet Connection or try after sometime </h5>
+         <h5 style="background-color:black;color: red;"> Bank Unreachable , check Internet Connection/try later </h5>
  	 </c:if>
  	 </div>
 </body>

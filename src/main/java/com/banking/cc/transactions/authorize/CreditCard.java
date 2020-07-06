@@ -1,10 +1,12 @@
 package com.banking.cc.transactions.authorize;
 
 import lombok.ToString;
+
 /**
  * @author Dipanjan Sengupta 
  * @purpose - This POJO represents the CreditCard Object and is mapped to credit_card class
  */
+
 @ToString
 public class CreditCard {
 	
@@ -54,11 +56,5 @@ public class CreditCard {
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
-	
-	@Override
-	public String toString() {
-		return "CreditCard [creditCardNumber=" + creditCardNumber + ", cvvCode=" + cvvCode + ", cardOwner=" + cardOwner
-				+ ", amount=" + amount + "]";
-	}
-	
+		
 }

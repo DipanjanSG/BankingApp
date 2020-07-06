@@ -2,7 +2,7 @@ package com.banking.login;
 
 import java.util.List;
 import com.banking.exceptions.CredentialsDBAccessException;
-import com.banking.spring.beans.ContextBeans;
+import com.banking.spring.beans.ContextBeansFactory;
 
 /**
  * @author Dipanjan Sengupta 
@@ -14,14 +14,14 @@ public class CredentialsHelper {
 	
 	public int validateCredentials(final Credentials credentials) throws CredentialsDBAccessException {
 		
-		    CredentialsDaoImpl credentialsDaoImpl = ContextBeans.getCredentialsDaoImpl();
+		    CredentialsDaoImpl credentialsDaoImpl = ContextBeansFactory.getCredentialsDaoImpl();
 		    
-		    List<Credentials> retrievedCredentialsList = credentialsDaoImpl.getCredentialDetails(credentials);
+		    List<Credentials> retrievedCredentialsList = credentialsDaoImpl.getCredentialDetails(credentials.getUserName() ,credentials.getPassword());
 
 		    if ( !retrievedCredentialsList.isEmpty() && retrievedCredentialsList.get(MINIMUM_CUSTOMER_ID).getCustomerId() > MINIMUM_CUSTOMER_ID ) {
 				return retrievedCredentialsList.get(MINIMUM_CUSTOMER_ID).getCustomerId();
 			}		    
 			
-	        return 0;
+	        return -1;
 	}
 }

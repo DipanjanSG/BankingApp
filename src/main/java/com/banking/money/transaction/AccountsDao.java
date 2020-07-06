@@ -10,10 +10,10 @@ import com.banking.exceptions.AccountsDBAccessException;
  */
 public interface AccountsDao{
 	
-	Accounts get(Accounts accountsBean) throws AccountsDBAccessException;
+	Accounts get(int accountNumber) throws AccountsDBAccessException;
 	void save(Accounts accountsBean) throws AccountsDBAccessException;
 	void update(Accounts accountsBean) throws AccountsDBAccessException;
-	void delete(Accounts accountsBean) throws AccountsDBAccessException;
+	void delete(int accountNumber) throws AccountsDBAccessException;
 	List<Accounts> getAllAccounts() throws AccountsDBAccessException;
-	
+	Accounts getAccountWithCustomerId(int customerId) throws AccountsDBAccessException;
 }

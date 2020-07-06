@@ -8,7 +8,7 @@
 <body style='background-color:orange;'>
 
 <h2 input style="margin-left: 30em";> Perform Debit or Credit Operation </h2> 
-<form action = "PerformTransactionsServlet" method = "get">
+<form action = "PerformTransactionsServlet" method = "post">
 <label for="accountNumber">Account Number:</label>  <input type = "text" id = "accountNumber"   name = "accountNumber" placeholder="1"> <br> <br>
 <label for="amount">Amount:</label>                 <input  style="margin-left: 4.4em"; type = "text" id = "amount"          name = "amount" placeholder="1000"> <br> <br>
                                                     <input type = "hidden" id = "transactionType" name = "transactionType" value = "notSet">
@@ -27,7 +27,7 @@
 </c:choose>
 
 <c:if test="${ failedDBConnection eq true}">
-         <h5 style="background-color:black;color: red;"> Unable to Connect to Database , check your Internet Connection or try after sometime </h5>
+         <h5 style="background-color:black;color: red;"> Bank Unreachable , check Internet Connection/try later </h5>
  	 </c:if>
 </body>
 <script type="text/javascript" >

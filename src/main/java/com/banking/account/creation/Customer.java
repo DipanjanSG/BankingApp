@@ -1,10 +1,10 @@
 package com.banking.account.creation;
 
 import java.util.Date;
+
 import java.util.Set;
 import com.banking.cc.transactions.authorize.CreditCard;
 import com.banking.login.Credentials;
-
 import com.banking.money.transaction.Accounts;
 import lombok.ToString;
 
@@ -107,13 +107,6 @@ public class Customer {
 
 	public void setCreditCardBean(CreditCard creditCardBean) {
 		this.creditCardBean = creditCardBean;
-	}
-
-	@Override
-	public String toString() {
-		return "Customer [customerId=" + customerId + ", userName=" + userName + ", dateOfBirth=" + dateOfBirth
-				+ ", address=" + address + ", emailId=" + emailId + ", allAccountsHeld=" + allAccountsHeld
-				+ ", credentials=" + credentials + ", creditCardBean=" + creditCardBean + "]";
 	}
 	
 }

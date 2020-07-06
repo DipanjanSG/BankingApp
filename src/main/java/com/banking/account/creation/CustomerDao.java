@@ -12,6 +12,9 @@ public interface CustomerDao{
 	
 	Integer save(Customer customer) throws CustomerDBAccessException;
 	void update(Customer customer) throws CustomerDBAccessException;
-	void delete(Customer customer) throws CustomerDBAccessException;
+	void delete(int customerId) throws CustomerDBAccessException;
 	List<Customer> getCustomers() throws CustomerDBAccessException;
+	Customer get(int customerId) throws CustomerDBAccessException;
+	List<Customer> getCustomerWithParam(String userName, String emailId) throws CustomerDBAccessException;
+
 }
