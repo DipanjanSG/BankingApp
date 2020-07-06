@@ -30,9 +30,9 @@ public class AccountsDaoImpl implements AccountsDao {
 	}
 	
 	@Transactional(readOnly = true)
-	public Accounts get(int accountNumber) throws AccountsDBAccessException{
+	public Account get(int accountNumber) throws AccountsDBAccessException{
 		try {
-		return hibernateTemplate.get(Accounts.class, accountNumber);
+		return hibernateTemplate.get(Account.class, accountNumber);
 		}  catch (DataAccessException ex ) {
 			String expMsg = "Unable to get account ";
 			LOGGER.error(ex + " " + expMsg);
@@ -41,7 +41,7 @@ public class AccountsDaoImpl implements AccountsDao {
 	}
     	
 	@Transactional(readOnly = false)
-	public void save(Accounts accountsBean) throws AccountsDBAccessException {
+	public void save(Account accountsBean) throws AccountsDBAccessException {
 		try {
 		hibernateTemplate.save(accountsBean);
 		}  catch (DataAccessException ex ) {
@@ -52,7 +52,7 @@ public class AccountsDaoImpl implements AccountsDao {
 	}
 
 	@Transactional(readOnly = false)
-	public void update(Accounts accountsBean) throws AccountsDBAccessException{
+	public void update(Account accountsBean) throws AccountsDBAccessException{
 		try {
 		hibernateTemplate.update(accountsBean);
 		}  catch (DataAccessException ex ) {
@@ -75,8 +75,8 @@ public class AccountsDaoImpl implements AccountsDao {
 	}
 
 	@Transactional(readOnly = false)
-	public List<Accounts> getAllAccounts() throws AccountsDBAccessException {
-		try {return hibernateTemplate.loadAll(Accounts.class);
+	public List<Account> getAllAccounts() throws AccountsDBAccessException {
+		try {return hibernateTemplate.loadAll(Account.class);
 		} catch (DataAccessException ex ) {
 			String expMsg = "Unable to get all Accounts";
 			LOGGER.error(ex + " " + expMsg);
@@ -85,14 +85,14 @@ public class AccountsDaoImpl implements AccountsDao {
 	}
 
 	@Transactional(readOnly = true)
-    public Accounts getAccountWithCustomerId(int customerId) throws AccountsDBAccessException {
+    public Account getAccountWithCustomerId(int customerId) throws AccountsDBAccessException {
     	try {
     	Customer customer = new Customer();
         customer.setCustomerId(customerId);
-		DetachedCriteria criteria = DetachedCriteria.forClass(Accounts.class);
+		DetachedCriteria criteria = DetachedCriteria.forClass(Account.class);
 		criteria.add(Restrictions.eq("customerBean", customer));
 		
-        return ((List<Accounts>) hibernateTemplate.findByCriteria(criteria)).get(RETRIVED_LIST_INDEX);
+        return ((List<Account>) hibernateTemplate.findByCriteria(criteria)).get(RETRIVED_LIST_INDEX);
     	} catch (DataAccessException ex ) {
     		String expMsg = "Unable to get Account with customerId";
 			LOGGER.error(ex + " " + expMsg);

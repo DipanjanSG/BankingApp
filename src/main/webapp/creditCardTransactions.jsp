@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page isELIgnored="false"%>
+<%@ page import="com.banking.constants.Constants" %>
 <html>
 <head>
 <title> Bank of Edureka</title>
@@ -21,22 +22,22 @@
  <c:choose>
  				<c:when test="${invalidAmount eq true}">
 			
-       				<h5 style="background-color:black;color: red;">Invalid Amount Entered</h5>
+       				<h5 style="background-color:black;color: red;">${Constants.CC_INVAID_AMT}</h5>
        				
     			</c:when>
     			
            		<c:when test="${invalidDetails eq true}">
 				
-       				<h5 style="background-color:black;color: red;">Invalid Credit Card Details</h5>
+       				<h5 style="background-color:black;color: red;">${Constants.CC_INVALID_DETAILS}</h5>
     			</c:when>
     			
     			<c:when test="${transactionSuccessful eq true}">
-    				<h5 style="background-color:black;color: white;">Transaction Successful</h5>
+    				<h5 style="background-color:black;color: white;">${Constants.CC_TRANSACTION_OK}</h5>
 				</c:when>
 </c:choose>
 
 <c:if test="${failedDBConnection eq true}">
-         <h5 style="background-color:black;color: red;"> Bank Unreachable , check Internet Connection/try later </h5>
+         <h5 style="background-color:black;color: red;"> ${Constants.UNREACHABLE_SERVER} </h5>
 </c:if>
 
 

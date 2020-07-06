@@ -3,6 +3,7 @@
     
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page isELIgnored="false"%>
+<%@ page import="com.banking.constants.Constants" %>
 <html>
 <head>
 <title>Insert title here</title>
@@ -18,7 +19,7 @@
 <p>
 <h2 input style="margin-left: 30em";> Display Statement </h2> <br> <br> 
 <c:if test="${ failedDBConnection eq true}">
-         <h5 style="background-color:black;color: red;"> Bank Unreachable , check Internet Connection/try later </h5>
+         <h5 style="background-color:black;color: red;"> ${Constants.ACCOUNT_CREATION_SUCCESSFUL} </h5>
  	 </c:if>
 Date Range: <br>
 <label for="accountNumber">From:</label>  <input type = "text" id = "dateFrom" name = "dateFrom" placeholder="2020-01-23">
@@ -68,7 +69,7 @@ Date Range: <br>
  
  </c:if>
  <c:if test="${ not empty dateRange}">
-      <h3 style="background-color:black;color: white;"> No transactions found for the given date range "${dateRange}"<h3>
+      <h3 style="background-color:black;color: white;"> {Constants.TRANSACTIONS_NOT_FOUND} "${dateRange}"<h3>
   </c:if>
  
 </table> 

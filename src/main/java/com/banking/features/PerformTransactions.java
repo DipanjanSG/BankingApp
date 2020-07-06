@@ -26,7 +26,7 @@ import com.banking.exceptions.CustomerDBAccessException;
 import com.banking.exceptions.FinancialTransaction;
 import com.banking.exceptions.TransactionDBAccessException;
 import com.banking.login.Credentials;
-import com.banking.money.transaction.Accounts;
+import com.banking.money.transaction.Account;
 import com.banking.money.transaction.AccountsDaoImpl;
 import com.banking.money.transaction.TransactionsHelper;
 
@@ -56,11 +56,11 @@ public class PerformTransactions extends HttpServlet {
 		Cookie[] allCookies = request.getCookies();
 		int customerId = Integer.parseInt(allCookies[0].getValue());
 		
-		Accounts accounts = new Accounts();
-		accounts.setAccountNumber(accountNumber);
-		accounts.setAccountBalance(amount);
+		Account account = new Account();
+		account.setAccountNumber(accountNumber);
+		account.setAccountBalance(amount);
 				
-		performTransactionAndVerify(accounts, transactionType, customerId);
+		performTransactionAndVerify(account, transactionType, customerId);
 		} catch (DataAccessException e) {
 			request.setAttribute("failedDBConnection", true);
 			LOGGER.error(e);
@@ -84,11 +84,18 @@ public class PerformTransactions extends HttpServlet {
 		}
 	}
 	
-	 void performTransactionAndVerify(Accounts accounts,String transactionType,int customerId) throws TransactionDBAccessException, AccountsDBAccessException, FinancialTransaction  {
+	 /**
+     * @author Dipanjan Sengupta 
+     * @purpose - Perform Financial Transactions from one account to another and verify 
+     * @param - account : Account object storing details of target account
+     *          transactionType: "credit/debit"
+     *          customerId : Logged in users customerId
+     */
+	 void performTransactionAndVerify(Account account,String transactionType,int customerId) throws TransactionDBAccessException, AccountsDBAccessException, FinancialTransaction  {
 	    	
 		 TransactionsHelper transactionsDao = ContextBeansFactory.getTransactionsHelper();
 			
-		 String status = transactionsDao.performTransaction( accounts, transactionType, customerId ).getStatus();				
+		 String status = transactionsDao.performTransaction( account, transactionType, customerId ).getStatus();				
 				if (!status.equals("OK")) {
 					LOGGER.error(status);
 					tempRequest.setAttribute("invalidDetails", status);

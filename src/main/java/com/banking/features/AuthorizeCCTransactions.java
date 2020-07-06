@@ -88,6 +88,14 @@ public class AuthorizeCCTransactions extends HttpServlet {
 		
 	}
     
+    /**
+     * @author Dipanjan Sengupta 
+     * @purpose - Perform Credit Card Transactions and set values for HttpServletRequest as per the outcome
+     * @param - retievedCreditCardBeanList : credit card retrieved from database
+     *          nameOnCreditCard : Card Owner Name
+     *          cardNumber: 16 Digit Card Number
+     *          amount : Amount to be debited from Card
+     */
     void performCreditCardTransaction(List <CreditCard> retievedCreditCardBeanList, String nameOnCreditCard, String cardNumber, double amount) throws CreditCardException, CreditCardDBAccessException, CustomerDBAccessException {
     	CreditCard retievedCreditCardBean = retievedCreditCardBeanList.get(MINIMUM_CREDIT_CARD_LIST_SIZE);
     	Customer customerBean = new Customer();

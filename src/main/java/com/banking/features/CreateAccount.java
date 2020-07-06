@@ -20,7 +20,7 @@ import com.banking.exceptions.CreditCardException;
 import com.banking.exceptions.CustomerDBAccessException;
 import com.banking.login.Credentials;
 import com.banking.spring.beans.ContextBeansFactory;
-import com.banking.money.transaction.Accounts;
+import com.banking.money.transaction.Account;
 import com.banking.money.transaction.AccountsDaoImpl;
 
 import java.text.ParseException;
@@ -72,20 +72,8 @@ public class CreateAccount extends HttpServlet {
 				rd.forward(request, response);
 			}
 			
-			generateNewCustomerAndAcc(bankAccountType, userName, customerBean);
+			generateNewCustomerAndAcc(bankAccountType, customerBean);
 			
-//			if (generatedAccountNumber != 0) {
-//				 LOGGER.info("New Customer record created with account no -" + generatedAccountNumber);
-//				 request.setAttribute("accountNumber", generatedAccountNumber);
-//				 request.setAttribute("credentials"," Your User name is ---> \"" + credentials.getUserName() + "\" and your Password is ---> \"" + credentials.getPassword() + "\"");
-//			 } else {
-//
-//					LOGGER.error("Account has not been created for " + userName);
-//					request.setAttribute("accountNotCreated", true);
-//					request.setAttribute("userName", userName);
-//					throw new AccountCreationException("Account has not been created for " + customerBean.toString());
-//			 }
-
 		} else {
 			request.setAttribute(ALL_DETAILS_NOT_ENTERED, true);
 			LOGGER.error("All values for creating account not entered - ");
@@ -114,17 +102,24 @@ public class CreateAccount extends HttpServlet {
 	}
 	}
 	
-    void generateNewCustomerAndAcc(String bankAccountType, String userName, Customer customerBean) throws CustomerDBAccessException, AccountsDBAccessException, AccountCreationException  {
+
+    /**
+     * @author Dipanjan Sengupta 
+     * @purpose - Creates a new customer and a new account
+     * @param - bankAccountType : "Savings / Current Bank Account"
+     *          customerBean: Details of the customer to be created 
+     */
+    void generateNewCustomerAndAcc(String bankAccountType, Customer customerBean) throws CustomerDBAccessException, AccountsDBAccessException, AccountCreationException  {
     	
 		CustomerDaoImpl createAccountDao =  ContextBeansFactory.getCreateAccountDao();
-		Accounts accountsBean = new Accounts();
+		Account accountsBean = new Account();
 		accountsBean.setAccountBalance(MINIMUM_STARTING_BALANCE);
 		accountsBean.setBankAccountType(bankAccountType);
 		
-		Set <Accounts> allAccountsHeld = new HashSet<Accounts>();
+		Set <Account> allAccountsHeld = new HashSet<Account>();
 		allAccountsHeld.add(accountsBean);
 		credentials = new Credentials();
-		credentials.createUserIdAndPassword(userName);
+		credentials.createUserIdAndPassword(customerBean.getUserName());
 		
 		customerBean.setAllAccountsHeld(allAccountsHeld);
 		customerBean.setCredentials(credentials);
@@ -140,9 +135,9 @@ public class CreateAccount extends HttpServlet {
 			 tempRequest.setAttribute("credentials"," Your User name is ---> \"" + credentials.getUserName() + "\" and your Password is ---> \"" + credentials.getPassword() + "\"");
 		 } else {
 
-				LOGGER.error("Account has not been created for " + userName);
+				LOGGER.error("Account has not been created for " + customerBean.getUserName());
 				tempRequest.setAttribute("accountNotCreated", true);
-				tempRequest.setAttribute("userName", userName);
+				tempRequest.setAttribute("userName", customerBean.getUserName());
 				throw new AccountCreationException("Account has not been created for " + customerBean.toString());
 		 }
 

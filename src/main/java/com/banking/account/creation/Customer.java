@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Set;
 import com.banking.cc.transactions.authorize.CreditCard;
 import com.banking.login.Credentials;
-import com.banking.money.transaction.Accounts;
+import com.banking.money.transaction.Account;
 import lombok.ToString;
 
 /**
@@ -21,7 +21,7 @@ public class Customer {
 	private Date dateOfBirth;
 	private String address;
 	private String emailId;
-	private Set <Accounts> allAccountsHeld;
+	private Set <Account> allAccountsHeld;
 	
 	
 	Credentials credentials;
@@ -37,16 +37,16 @@ public class Customer {
 		this.credentials = credentials;
 	}
 
-	public Set<Accounts> getAllAccountsHeld() {
+	public Set<Account> getAllAccountsHeld() {
 		return allAccountsHeld;
 	}
 
-	public void setAllAccountsHeld(Set<Accounts> allAccountsHeld) {
+	public void setAllAccountsHeld(Set<Account> allAccountsHeld) {
 		this.allAccountsHeld = allAccountsHeld;
 	}
 
 	public Customer(String userName, Date dateOfBirth, String address, String emailId,
-			Set <Accounts> allAccountsHeld, Credentials credentials) {
+			Set <Account> allAccountsHeld, Credentials credentials) {
 		super();
 		this.userName = userName;
 		this.dateOfBirth = dateOfBirth;

@@ -8,22 +8,22 @@ import lombok.ToString;
  * @purpose - PoJo representing Accounts table
  */
 @ToString
-public class Accounts {
+public class Account {
 	
 	private int accountNumber;	
 	private double accountBalance;	
 	private Customer customerBean;
 	private String bankAccountType;
 	
-	public Accounts() {
+	public Account() {
 	}
 	
-	public Accounts( double accountBalance, String bankAccountType) {
+	public Account( double accountBalance, String bankAccountType) {
 		this.accountBalance = accountBalance;
 		this.bankAccountType = bankAccountType;
 	}
 
-	public Accounts(int accountNumber, double accountBalance) {
+	public Account(int accountNumber, double accountBalance) {
 		this.accountNumber = accountNumber;
 		this.accountBalance = accountBalance;
 	}

@@ -17,10 +17,10 @@ public class TransactionsHelper {
 	private AccountsDaoImpl accountsDaoImpl ;
 	private AccountsDaoImpl accountsDaoImplLoggedInUser ;
 	private Transaction transaction = new Transaction();
-	Accounts accountsBeanFromDatabase;
-	 Accounts loggedInUsersAccount;
+	Account accountsBeanFromDatabase;
+	 Account loggedInUsersAccount;
 	
-	public TransactionStatus performTransaction(final Accounts accountsBean, final String transactionType, final int customerId ) throws TransactionDBAccessException, AccountsDBAccessException{
+	public TransactionStatus performTransaction(final Account accountsBean, final String transactionType, final int customerId ) throws TransactionDBAccessException, AccountsDBAccessException{
 	        accountsDaoImpl = ContextBeansFactory.getAcountsDaoImpl();
 	        accountsDaoImplLoggedInUser = ContextBeansFactory.getAcountsDaoImpl();
 	        
@@ -40,7 +40,7 @@ public class TransactionsHelper {
 	        return accountBalUpadationStatus;
 	}
 	
-	public TransactionStatus updateAccountBalance(final String transactionType, final Accounts accountsBean) throws TransactionDBAccessException, AccountsDBAccessException {
+	public TransactionStatus updateAccountBalance(final String transactionType, final Account accountsBean) throws TransactionDBAccessException, AccountsDBAccessException {
 		
         if ( transactionType.equals("credit")) {
         	if (loggedInUsersAccount.getAccountBalance() >= accountsBean.getAccountBalance()) {
@@ -77,7 +77,7 @@ public class TransactionsHelper {
 	
 	}
 
-public TransactionStatus updateTransactions(final String transactionType, final Accounts accountsBean) throws TransactionDBAccessException, AccountsDBAccessException {
+public TransactionStatus updateTransactions(final String transactionType, final Account accountsBean) throws TransactionDBAccessException, AccountsDBAccessException {
 	
     TransactionDaoImpl transactionDaoImpl = ContextBeansFactory.getTransactionDaoImpl();
     transaction.setTransactionType(transactionType);
