@@ -69,7 +69,7 @@ Date Range: <br>
  
  </c:if>
  <c:if test="${ not empty dateRange}">
-      <h3 style="background-color:black;color: white;"> {Constants.TRANSACTIONS_NOT_FOUND} "${dateRange}"<h3>
+      <h3 style="background-color:black;color: white;"> ${Constants.TRANSACTIONS_NOT_FOUND} "${dateRange}"<h3>
   </c:if>
  
 </table> 
