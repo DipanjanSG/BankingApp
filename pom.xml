@@ -133,10 +133,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
        <sourceDirectory>src/main/java</sourceDirectory>
        <testSourceDirectory>src/test/java</testSourceDirectory>
        <resources>
-     <resource>
-       <directory>src/main/resources</directory>
-       </resource>
-     </resources>
+          <resource>
+             <directory>src/main/resources</directory>
+          </resource>
+       </resources>
 
       <plugins>
 			<plugin>

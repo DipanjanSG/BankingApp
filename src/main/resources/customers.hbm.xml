@@ -24,7 +24,7 @@
       		<key>
       			<column name = "customerId"/>
       		</key>
-      	<one-to-many class = "com.banking.money.transaction.Accounts"/>
+      	<one-to-many class = "com.banking.money.transaction.Account"/>
       	
       </set>   
      
