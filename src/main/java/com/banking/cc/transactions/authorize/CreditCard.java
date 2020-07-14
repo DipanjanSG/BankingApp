@@ -1,5 +1,12 @@
 package com.banking.cc.transactions.authorize;
 
+import java.math.BigInteger;
+import java.util.Random;
+
+import com.banking.account.creation.Customer;
+import com.banking.exceptions.CreditCardDBAccessException;
+import com.banking.spring.beans.ContextBeansFactory;
+
 import lombok.ToString;
 
 /**
@@ -10,45 +17,46 @@ import lombok.ToString;
 @ToString
 public class CreditCard {
 	
-	private String creditCardNumber;
-	private String cvvCode;
-	private int cardOwner;
+	private int id;
+	private BigInteger creditCardNumber;
+	private int cvvCode;
 	private double amount;
 	
-	public CreditCard(String creditCardNumber, String cvvCode, int cardOwner, double amount) {
-		this.creditCardNumber = creditCardNumber;
-		this.cvvCode = cvvCode;
-		this.cardOwner = cardOwner;
-		this.amount = amount;
-	}
+	Customer customerBean;
 	
-	public CreditCard(String creditCardNumber, String cvvCode, double amount) {
-		super();
+	private static final String CC_NUMBER_INCREMENT_VALUE = "1";
+	private Random rand = new Random(); 
+	
+	public CreditCard(BigInteger creditCardNumber, int cvvCode, double amount) {
 		this.creditCardNumber = creditCardNumber;
 		this.cvvCode = cvvCode;
 		this.amount = amount;
 	}
 	
 	public CreditCard() {
-		
+		 
 	}
-	public String getCreditCardNumber() {
+	
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public BigInteger getCreditCardNumber() {
 		return creditCardNumber;
 	}
-	public void setCreditCardNumber(String creditCardNumber) {
+	public void setCreditCardNumber(BigInteger creditCardNumber) {
 		this.creditCardNumber = creditCardNumber;
 	}
-	public String getCvvCode() {
+	public int getCvvCode() {
 		return cvvCode;
 	}
-	public void setCvvCode(String cvvCode) {
+	public void setCvvCode(int cvvCode) {
 		this.cvvCode = cvvCode;
-	}
-	public int getCardOwner() {
-		return cardOwner;
-	}
-	public void setCardOwner(int cardOwner) {
-		this.cardOwner = cardOwner;
 	}
 	public double getAmount() {
 		return amount;
@@ -56,5 +64,23 @@ public class CreditCard {
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
-		
+
+	public Customer getCustomerBean() {
+		return customerBean;
+	}
+
+	public void setCustomerBean(Customer customerBean) {
+		this.customerBean = customerBean;
+	}
+	
+	public void generateNewCreditCardValues() throws CreditCardDBAccessException {
+		 cvvCode = rand.nextInt(999);
+		 if (cvvCode < 100) {
+			 cvvCode += 100;
+		 }
+		 
+		 CreditCardTransactionsDaoImpl creditCardTransactionsDaoImpl = ContextBeansFactory.getCreateCreditCardTransactionsDao();
+		 creditCardNumber = creditCardTransactionsDaoImpl.getMaxCreditCardNum().add(new BigInteger(CC_NUMBER_INCREMENT_VALUE));
+	}
+	
 }

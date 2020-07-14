@@ -5,14 +5,14 @@
 
 <hibernate-mapping>
 
-   <class name = "com.banking.account.creation.Customer" table = "customers"> 
+  <class name = "com.banking.account.creation.Customer" table = "customers" >
       <meta attribute = "class-description">
-         This class contains the account-holders net-banking credentails. 
+         This class contains the account-holders net-banking credentials. 
       </meta>
       <cache usage = "read-only"/>
       
       <id name = "customerId" type = "int" column = "customerId">
-         <generator class="increment"/>
+         <generator class="increment"></generator>
       </id>
       
       <property name = "userName" column = "customerName" type = "string"/>
@@ -25,10 +25,11 @@
       			<column name = "customerId"/>
       		</key>
       	<one-to-many class = "com.banking.money.transaction.Account"/>
-      	
       </set>   
      
-     <one-to-one name="credentials" cascade="all" class="com.banking.login.Credentials" />
+     <one-to-one name="credentials" cascade="all" class="com.banking.login.Credentials" property-ref="customerBean"/>
+     <one-to-one name="creditCard" cascade="all" class="com.banking.cc.transactions.authorize.CreditCard" property-ref="customerBean"/>
+     
    </class>
    
 </hibernate-mapping>

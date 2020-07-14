@@ -10,8 +10,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.banking.account.creation.Customer;
-import com.banking.cc.transactions.authorize.CreditCardTransactionsDaoImpl;
+import com.banking.cc.transactions.authorize.CreditCard;
 import com.banking.exceptions.CredentialsDBAccessException;
 
 /**
@@ -32,7 +31,10 @@ public class CredentialsDaoImpl implements CredentialsDao{
 	@Transactional(readOnly = true)
 	public Credentials get(int customerId) throws CredentialsDBAccessException{
 		try {
-		return hibernateTemplate.get(Credentials.class, customerId);
+			DetachedCriteria criteria = DetachedCriteria.forClass(Credentials.class);
+			criteria.add(Restrictions.eq("customerId", customerId));
+			return ((List<Credentials>)hibernateTemplate.findByCriteria(criteria)).get(0);
+
 		} catch (DataAccessException ex ) {
 			String expMsg = "Unable to get new credentials";
 			LOGGER.error(ex + " " + expMsg);
@@ -92,6 +94,7 @@ public class CredentialsDaoImpl implements CredentialsDao{
 	    criteria.add(Restrictions.eq("userName", userName));
 	    criteria.add(Restrictions.eq("password", password));
 	    return ((List<Credentials>) hibernateTemplate.findByCriteria(criteria));
+	    
 	 	} catch (DataAccessException ex ) {
 	 		String expMsg = "Unable to get credentials with parameters";
 			LOGGER.error(ex + " " + expMsg);

@@ -12,7 +12,7 @@ public class CreditCardHelper {
 
 	public void creditCardAmountBorrowedUpdation(final CreditCard retievedCreditCardBean , final double amount ) throws CreditCardDBAccessException {
 		retievedCreditCardBean.setAmount(retievedCreditCardBean.getAmount() + amount);
-		CreditCardTransactionsDaoImpl creditCardTransactionsDaoImpl = ContextBeansFactory.getcreateCreditCardTransactionsDao();
+		CreditCardTransactionsDaoImpl creditCardTransactionsDaoImpl = ContextBeansFactory.getCreateCreditCardTransactionsDao();
 		creditCardTransactionsDaoImpl.update(retievedCreditCardBean);
 	}
 }

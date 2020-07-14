@@ -1,6 +1,7 @@
 package com.banking.features;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -43,8 +44,8 @@ public class AuthorizeCCTransactions extends HttpServlet {
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 		tempRequest = request;
-		String cardNumber = request.getParameter("cardNumber");
-		String cvvCode = request.getParameter("cvvCode");
+		BigInteger cardNumber = new BigInteger(request.getParameter("cardNumber"));
+		int cvvCode = Integer.parseInt(request.getParameter("cvvCode"));
 		String nameOnCreditCard = request.getParameter("nameOnCreditCard");
 		double amount = Double.parseDouble(request.getParameter("amount"));
 		CreditCard creditCardBean = new CreditCard();
@@ -52,7 +53,7 @@ public class AuthorizeCCTransactions extends HttpServlet {
 		creditCardBean.setCvvCode(cvvCode);
 		creditCardBean.setAmount(amount);
 		
-		CreditCardTransactionsDaoImpl creditCardTransactionsDaoImpl = ContextBeansFactory.getcreateCreditCardTransactionsDao();
+		CreditCardTransactionsDaoImpl creditCardTransactionsDaoImpl = ContextBeansFactory.getCreateCreditCardTransactionsDao();
 		
 		    List <CreditCard> retievedCreditCardBeanList = creditCardTransactionsDaoImpl.getCreditCardWithParam(creditCardBean.getCreditCardNumber(), creditCardBean.getCvvCode());
 		    
@@ -96,10 +97,10 @@ public class AuthorizeCCTransactions extends HttpServlet {
      *          cardNumber: 16 Digit Card Number
      *          amount : Amount to be debited from Card
      */
-    void performCreditCardTransaction(List <CreditCard> retievedCreditCardBeanList, String nameOnCreditCard, String cardNumber, double amount) throws CreditCardException, CreditCardDBAccessException, CustomerDBAccessException {
+    void performCreditCardTransaction(List <CreditCard> retievedCreditCardBeanList, String nameOnCreditCard, BigInteger cardNumber, double amount) throws CreditCardException, CreditCardDBAccessException, CustomerDBAccessException {
     	CreditCard retievedCreditCardBean = retievedCreditCardBeanList.get(MINIMUM_CREDIT_CARD_LIST_SIZE);
     	Customer customerBean = new Customer();
-    	customerBean.setCustomerId(retievedCreditCardBean.getCardOwner());
+    	customerBean.setCustomerId(retievedCreditCardBean.getCustomerBean().getCustomerId());
     
     	CustomerDaoImpl createAccountDaoImpl =  ContextBeansFactory.getCreateAccountDao();
     	Customer retrievedCustomerBean = createAccountDaoImpl.get(customerBean.getCustomerId());

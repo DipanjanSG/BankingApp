@@ -14,6 +14,7 @@ import lombok.ToString;
  */
 
 @ToString
+
 public class Customer {
 	
 	private int customerId;
@@ -22,13 +23,18 @@ public class Customer {
 	private String address;
 	private String emailId;
 	private Set <Account> allAccountsHeld;
-	
-	
+	CreditCard creditCard;
 	Credentials credentials;
 	
-	
-	CreditCard creditCardBean;
-	
+    public CreditCard getCreditCard() {
+		return creditCard;
+	}
+	public void setCreditCard(CreditCard creditCard) {
+		this.creditCard = creditCard;
+	}
+	public Customer() {
+		
+	}
 	public Credentials getCredentials() {
 		return credentials;
 	}
@@ -46,13 +52,14 @@ public class Customer {
 	}
 
 	public Customer(String userName, Date dateOfBirth, String address, String emailId,
-			Set <Account> allAccountsHeld, Credentials credentials) {
+			Set <Account> allAccountsHeld,  CreditCard creditCard, Credentials credentials) {
 		super();
 		this.userName = userName;
 		this.dateOfBirth = dateOfBirth;
 		this.address = address;
 		this.emailId = emailId;
 		this.allAccountsHeld = allAccountsHeld;
+		this.creditCard = creditCard;
 		this.credentials = credentials;
 	}
 
@@ -63,9 +70,6 @@ public class Customer {
 		this.emailId = emailId;
 	}
 	
-	public Customer() {
-		
-	}
 	public Customer(int customerId) {
 		this.customerId = customerId;
 	}
@@ -99,14 +103,6 @@ public class Customer {
 	}
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
-	}
-
-	public CreditCard getCreditCardBean() {
-		return creditCardBean;
-	}
-
-	public void setCreditCardBean(CreditCard creditCardBean) {
-		this.creditCardBean = creditCardBean;
 	}
 	
 }

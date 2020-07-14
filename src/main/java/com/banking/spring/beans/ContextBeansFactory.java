@@ -1,10 +1,5 @@
 package com.banking.spring.beans;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -59,7 +54,7 @@ public final class ContextBeansFactory {
 		return createAccountDao;
 	}
 	
-	public static CreditCardTransactionsDaoImpl getcreateCreditCardTransactionsDao() {
+	public static CreditCardTransactionsDaoImpl getCreateCreditCardTransactionsDao() {
 		if (createCreditCardTransactionsDaoBean == null ) {
 			createCreditCardTransactionsDaoBean = (CreditCardTransactionsDaoImpl)getContext().getBean("createCreditCardTransactionsDaoBean");
 		}

@@ -1,9 +1,11 @@
 package com.banking.cc.transactions.authorize;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -11,9 +13,7 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.banking.account.creation.Customer;
-import com.banking.account.creation.CustomerDaoImpl;
 import com.banking.exceptions.CreditCardDBAccessException;
-import com.banking.exceptions.CustomerDBAccessException;
 
 /**
  * @author Dipanjan Sengupta 
@@ -33,9 +33,27 @@ public class CreditCardTransactionsDaoImpl implements CreditCardTransactions{
 	@Transactional(readOnly = true)
 	public CreditCard get(String creditCardNumber) throws CreditCardDBAccessException {
 		try {
-		return hibernateTemplate.get(CreditCard.class, creditCardNumber);
-		} catch(DataAccessException ex) {
+			DetachedCriteria criteria = DetachedCriteria.forClass(CreditCard.class);
+			criteria.add(Restrictions.eq("creditCardNumber", creditCardNumber));
+			return ((List<CreditCard>)hibernateTemplate.findByCriteria(criteria)).get(0);
+
+			} catch(DataAccessException ex) {
 			String expMsg = "Unable to get credit card details for ---->" + creditCardNumber;
+			LOGGER.error(ex + " " + expMsg);
+			throw new CreditCardDBAccessException(expMsg);
+		}
+	}
+	
+	@Transactional(readOnly = true)
+	public BigInteger getMaxCreditCardNum() throws CreditCardDBAccessException {
+		try {
+			
+		DetachedCriteria criteria = DetachedCriteria.forClass(CreditCard.class);
+		criteria.setProjection( Projections.max("creditCardNumber"));
+		return ((List<BigInteger>)hibernateTemplate.findByCriteria(criteria)).get(0);	
+		
+		} catch(DataAccessException ex) {
+			String expMsg = "Unable to get max credit card number for customer ---->";
 			LOGGER.error(ex + " " + expMsg);
 			throw new CreditCardDBAccessException(expMsg);
 		}
@@ -88,7 +106,7 @@ public class CreditCardTransactionsDaoImpl implements CreditCardTransactions{
 	}
 	
 	@Transactional(readOnly = true)
-    public List<CreditCard> getCreditCardWithParam(String creditCardNumber, String cvvCode) throws CreditCardDBAccessException {
+    public List<CreditCard> getCreditCardWithParam(BigInteger creditCardNumber, int cvvCode) throws CreditCardDBAccessException {
     	try {
 		DetachedCriteria criteria = DetachedCriteria.forClass(CreditCard.class);
 		criteria.add(Restrictions.eq("creditCardNumber", creditCardNumber));
@@ -97,7 +115,7 @@ public class CreditCardTransactionsDaoImpl implements CreditCardTransactions{
 		return (List<CreditCard>)hibernateTemplate.findByCriteria(criteria);
 		
     	} catch(DataAccessException ex) {
-    		String expMsg = "Unable to fetch credit card with parameter --->" + creditCardNumber.toString();
+    		String expMsg = "Unable to fetch credit card with parameter --->" + creditCardNumber;
 			LOGGER.error(ex + " " + expMsg);
 			throw new CreditCardDBAccessException(expMsg);
 		}

@@ -9,14 +9,19 @@
       <meta attribute = "class-description">
          This class contains the credit-card details with holder id. 
       </meta>
-      <!-- <cache usage = "read-only"/> -->
-       <id name = "creditCardNumber" type = "string" column = "creditCardNumber">
-         <generator class="increment"/>
+          
+      <id name = "id" type = "int" column = "id">
+          <generator class="increment">
+          </generator>
       </id>
+     
       
-      <property name = "cvvCode" column = "cvvCode" type = "string"/>
-      <property name = "cardOwner" column = "customerId" type = "int"/>
+      <property name = "creditCardNumber" type = "big_integer" column = "creditCardNumber"/>
       <property name = "amount" column = "amount" type = "double"/>
+      <property name = "cvvCode" column = "cvvCode" type = "int"/>
+	  <many-to-one name="customerBean" class="com.banking.account.creation.Customer" cascade="all" column="customerId"/>
+	  
+		
    </class>
    
 </hibernate-mapping>

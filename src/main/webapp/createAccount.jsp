@@ -4,7 +4,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page isELIgnored="false"%>
 <%@ page import="com.banking.constants.Constants" %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <title> Bank of Edureka</title>
 </head>
@@ -15,7 +16,7 @@
 
 <c:if test="${accountNumber ge 0}"> <h5 style="background-color:black;color: white;"> ${Constants.ACCOUNT_CREATION_SUCCESSFUL} - ${accountNumber} </h5></c:if>
 <c:if test="${not empty credentials}"> <h5 style="background-color:black;color: white;">${credentials}</h5></c:if>
-
+<c:if test="${not empty creditCardDetails}"> <h5 style="background-color:black;color: white;">${creditCardDetails}</h5></c:if>
 <c:if test="${not empty existingFields}"> <h5 style="background-color:black;color: red;"> ${Constants.ACCOUNT_CREATION_VALUES} ${existingFields} ${Constants.ACCOUNT_CREATION_INVALID_VALUES}</h5></c:if>
 <label for='uname'>Name:     </label>  <input  style="margin-left: 1.7em"; type = 'text' id ='uName' name ='uName' placeholder="Dipanjan Sengupta "> <br> <br>
 <label for='dateOfBirth'>DOB:      </label>  <input  style="margin-left: 2em"; type = 'text' id ='dateOfBirth'name ='dateOfBirth' placeholder="1994-01-01"> <br> <br>

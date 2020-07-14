@@ -12,22 +12,18 @@ import com.banking.account.creation.Customer;
 import com.banking.account.creation.CustomerDaoImpl;
 import com.banking.account.creation.CustomerHelper;
 import com.banking.cc.transactions.authorize.CreditCard;
-import com.banking.cc.transactions.authorize.CreditCardHelper;
 import com.banking.exceptions.AccountCreationException;
 import com.banking.exceptions.AccountsDBAccessException;
 import com.banking.exceptions.CreditCardDBAccessException;
-import com.banking.exceptions.CreditCardException;
 import com.banking.exceptions.CustomerDBAccessException;
 import com.banking.login.Credentials;
 import com.banking.spring.beans.ContextBeansFactory;
 import com.banking.money.transaction.Account;
 import com.banking.money.transaction.AccountsDaoImpl;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -41,8 +37,8 @@ public class CreateAccount extends HttpServlet {
 	private static final  double MINIMUM_STARTING_BALANCE = 0.0;
 	private static final String EMAIL_ID_AT_THE_RATE = "@";
 	private static final String ALL_DETAILS_NOT_ENTERED = "allDetailsNotEntered";
-	Credentials credentials;
 	HttpServletRequest tempRequest;
+	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
@@ -86,7 +82,9 @@ public class CreateAccount extends HttpServlet {
 			LOGGER.error(ex);
 		  }catch (AccountCreationException ex) {
 			LOGGER.error(ex);
-		  } catch (Exception e) {
+		  } catch (CreditCardDBAccessException ex) {
+			LOGGER.error(ex);
+		  }catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute(ALL_DETAILS_NOT_ENTERED, true);
 			LOGGER.error(e);
@@ -105,11 +103,12 @@ public class CreateAccount extends HttpServlet {
 
     /**
      * @author Dipanjan Sengupta 
-     * @purpose - Creates a new customer and a new account
+     * @purpose - Creates a new customer, a new account, credentials, credit card
      * @param - bankAccountType : "Savings / Current Bank Account"
      *          customerBean: Details of the customer to be created 
+     * @throws CreditCardDBAccessException 
      */
-    void generateNewCustomerAndAcc(String bankAccountType, Customer customerBean) throws CustomerDBAccessException, AccountsDBAccessException, AccountCreationException  {
+    void generateNewCustomerAndAcc(String bankAccountType, Customer customerBean) throws CustomerDBAccessException, AccountsDBAccessException, AccountCreationException, CreditCardDBAccessException  {
     	
 		CustomerDaoImpl createAccountDao =  ContextBeansFactory.getCreateAccountDao();
 		Account accountsBean = new Account();
@@ -118,13 +117,18 @@ public class CreateAccount extends HttpServlet {
 		
 		Set <Account> allAccountsHeld = new HashSet<Account>();
 		allAccountsHeld.add(accountsBean);
-		credentials = new Credentials();
+		Credentials credentials = new Credentials();
 		credentials.createUserIdAndPassword(customerBean.getUserName());
-		
+		credentials.setCustomerBean(customerBean);
 		customerBean.setAllAccountsHeld(allAccountsHeld);
 		customerBean.setCredentials(credentials);
 		
-		Integer customerNumber = createAccountDao.save(customerBean);
+		CreditCard creditCard = new CreditCard();
+		creditCard.generateNewCreditCardValues();
+		creditCard.setCustomerBean(customerBean);
+		customerBean.setCreditCard(creditCard);
+		
+		int customerNumber = createAccountDao.save(customerBean);
 		AccountsDaoImpl accountsDaoImplLoggedInUser = ContextBeansFactory.getAcountsDaoImpl();
 					
 		int generatedAccountNumber = accountsDaoImplLoggedInUser.getAccountWithCustomerId(customerNumber).getAccountNumber();
@@ -132,8 +136,9 @@ public class CreateAccount extends HttpServlet {
 		if (generatedAccountNumber != 0) {
 			 LOGGER.info("New Customer record created with account no -" + generatedAccountNumber);
 			 tempRequest.setAttribute("accountNumber", generatedAccountNumber);
-			 tempRequest.setAttribute("credentials"," Your User name is ---> \"" + credentials.getUserName() + "\" and your Password is ---> \"" + credentials.getPassword() + "\"");
-		 } else {
+			 tempRequest.setAttribute("credentials"," Your User name is : \"" + credentials.getUserName() + "\" and your Password is : \"" + credentials.getPassword() + "\"");
+			 tempRequest.setAttribute("creditCardDetails", "New Credit Card Number : " + creditCard.getCreditCardNumber() + " , CVV : " + creditCard.getCvvCode());
+		} else {
 
 				LOGGER.error("Account has not been created for " + customerBean.getUserName());
 				tempRequest.setAttribute("accountNotCreated", true);
