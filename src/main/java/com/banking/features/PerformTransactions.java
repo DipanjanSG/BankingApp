@@ -70,7 +70,7 @@ public class PerformTransactions extends HttpServlet {
 		}	catch (FinancialTransaction e) {
 			LOGGER.error(e);
 		} catch (Exception e) {
-			LOGGER.error(e);
+			LOGGER.error(e.getStackTrace().toString());
 			request.setAttribute("invalidDetails", "INVALID DETAILS");
 		}
 	try {	
