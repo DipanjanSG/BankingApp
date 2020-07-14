@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 		
-<import resource="classpath:hibernateTemplate.xml"/>
+<import resource="classpath:hibernateTemplate.xml"/> 
 <aop:aspectj-autoproxy proxy-target-class="true"/>
 <bean id = "creditCardHelperBean" class = "com.banking.cc.transactions.authorize.CreditCardHelper"/>
 <bean id = "createTransactionsHelperBean" class = "com.banking.money.transaction.TransactionsHelper"/>

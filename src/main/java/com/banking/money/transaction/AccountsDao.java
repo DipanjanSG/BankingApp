@@ -5,15 +5,15 @@ import java.util.List;
 import com.banking.exceptions.AccountsDBAccessException;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - Interface containing functions for operations on accounts table
  */
 public interface AccountsDao{
 	
-	Accounts get(Accounts accountsBean) throws AccountsDBAccessException;
-	void save(Accounts accountsBean) throws AccountsDBAccessException;
-	void update(Accounts accountsBean) throws AccountsDBAccessException;
-	void delete(Accounts accountsBean) throws AccountsDBAccessException;
-	List<Accounts> getAllAccounts() throws AccountsDBAccessException;
-	
+	Account get(int accountNumber) throws AccountsDBAccessException;
+	void save(Account accountsBean) throws AccountsDBAccessException;
+	void update(Account accountsBean) throws AccountsDBAccessException;
+	void delete(int accountNumber) throws AccountsDBAccessException;
+	List<Account> getAllAccounts() throws AccountsDBAccessException;
+	Account getAccountWithCustomerId(int customerId) throws AccountsDBAccessException;
 }

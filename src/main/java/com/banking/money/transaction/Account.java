@@ -4,29 +4,26 @@ import com.banking.account.creation.Customer;
 import lombok.ToString;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - PoJo representing Accounts table
  */
 @ToString
-public class Accounts {
+public class Account {
 	
-	private int accountNumber;
-	
-	private double accountBalance;
-	
+	private int accountNumber;	
+	private double accountBalance;	
 	private Customer customerBean;
-	
 	private String bankAccountType;
 	
-	public Accounts() {
+	public Account() {
 	}
 	
-	public Accounts( double accountBalance, String bankAccountType) {
+	public Account( double accountBalance, String bankAccountType) {
 		this.accountBalance = accountBalance;
 		this.bankAccountType = bankAccountType;
 	}
 
-	public Accounts(int accountNumber, double accountBalance) {
+	public Account(int accountNumber, double accountBalance) {
 		this.accountNumber = accountNumber;
 		this.accountBalance = accountBalance;
 	}
@@ -64,12 +61,6 @@ public class Accounts {
 	
 	public void decrementAccountBalance(double debitedAmount) {
 		this.accountBalance -= debitedAmount;
-	}
-
-	@Override
-	public String toString() {
-		return "Accounts [accountNumber=" + accountNumber + ", accountBalance=" + accountBalance + ", customerBean="
-				+ customerBean + ", bankAccountType=" + bankAccountType + "]";
 	}
 
 }

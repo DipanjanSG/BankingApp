@@ -14,7 +14,7 @@ import com.banking.exceptions.CredentialsDBAccessException;
 
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - Servlet for main page after successful login
  */
 @WebServlet("/LoginPageServlet")
@@ -39,7 +39,7 @@ public class LoginPage extends HttpServlet {
 		
 			
 			Integer customerId = loginDao.validateCredentials(credentials);
-			if ( customerId == 0) {		
+			if ( customerId == -1) {		
                 request.setAttribute("invalidCredentials", true); 
         		RequestDispatcher rd = request.getRequestDispatcher("loginPage.jsp");
         		rd.forward(request, response);
@@ -74,5 +74,6 @@ public class LoginPage extends HttpServlet {
 			LOGGER.error(e);
 		} 
 		}
+	
 	}
 

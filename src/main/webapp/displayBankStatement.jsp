@@ -3,20 +3,27 @@
     
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page isELIgnored="false"%>
+<%@ page import="com.banking.constants.Constants" %>
 <html>
 <head>
 <title>Insert title here</title>
+<style>
+.labelClass{
+    white-space:pre;
+}
+</style>
 </head>
+
 <body style=background-color:orange;>
 <form action="displayStatementServlet" >
 <p>
-<h2 input style="margin-left: 30em";> Display Statement </h2> <br> <br>
+<h2 input style="margin-left: 30em";> Display Statement </h2> <br> <br> 
 <c:if test="${ failedDBConnection eq true}">
-         <h5 style="background-color:black;color: red;"> Unable to Connect to Database , check your Internet Connection or try after sometime </h5>
+         <h5 style="background-color:black;color: red;"> ${Constants.ACCOUNT_CREATION_SUCCESSFUL} </h5>
  	 </c:if>
 Date Range: <br>
-<label for="accountNumber">From:</label>  <input type = "text" id = "dateFrom" name = "dateFrom" placeholder="2020-01-23"> 
-<label for="amount">    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To:</label>           <input type = "text" id = "dateTo" name = "dateTo" placeholder="2020-12-31"> <br> <br>
+<label for="accountNumber">From:</label>  <input type = "text" id = "dateFrom" name = "dateFrom" placeholder="2020-01-23">
+<label class = "labelClass" for="amount">          To:</label>           <input type = "text" id = "dateTo" name = "dateTo" placeholder="2020-12-31"> <br> <br>
 <input type="submit" value="Display">
 </p>
 </form>
@@ -62,7 +69,7 @@ Date Range: <br>
  
  </c:if>
  <c:if test="${ not empty dateRange}">
-      <h3 style="background-color:black;color: white;"> No transactions found for the given date range "${dateRange}"<h3>
+      <h3 style="background-color:black;color: white;"> ${Constants.TRANSACTIONS_NOT_FOUND} "${dateRange}"<h3>
   </c:if>
  
 </table> 

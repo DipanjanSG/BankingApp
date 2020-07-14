@@ -3,7 +3,7 @@ package com.banking.exceptions;
 import org.apache.log4j.Logger;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - Custom Exception to be thrown while Generating Bank Statement
  */
 public class BankStatementException extends Exception{

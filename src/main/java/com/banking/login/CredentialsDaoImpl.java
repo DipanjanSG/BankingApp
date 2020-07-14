@@ -2,6 +2,7 @@ package com.banking.login;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,31 +11,32 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.banking.account.creation.Customer;
+import com.banking.cc.transactions.authorize.CreditCardTransactionsDaoImpl;
 import com.banking.exceptions.CredentialsDBAccessException;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - HibernateTemplate for operations on credentials table
  */
-public class CredentialsDaoImpl {
+public class CredentialsDaoImpl implements CredentialsDao{
 	
 	@Autowired
 	private HibernateTemplate hibernateTemplate;
 	
-	public HibernateTemplate getHibernateTemplate() {
-		return hibernateTemplate;
-	}
+	private static final Logger LOGGER = Logger.getLogger(CredentialsDaoImpl.class);
 
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
 		this.hibernateTemplate = hibernateTemplate;
 	}
 	
-	@Transactional(readOnly = false)
-	public Credentials get(Customer customer) throws CredentialsDBAccessException{
+	@Transactional(readOnly = true)
+	public Credentials get(int customerId) throws CredentialsDBAccessException{
 		try {
-		return hibernateTemplate.get(Credentials.class, customer.getCustomerId());
+		return hibernateTemplate.get(Credentials.class, customerId);
 		} catch (DataAccessException ex ) {
-			throw new CredentialsDBAccessException("Unable to get new credentials");
+			String expMsg = "Unable to get new credentials";
+			LOGGER.error(ex + " " + expMsg);
+			throw new CredentialsDBAccessException(expMsg);
 		}
 	}
 
@@ -43,7 +45,9 @@ public class CredentialsDaoImpl {
 		try {
 			hibernateTemplate.save(credential);
 		} catch (DataAccessException ex ) {
-			throw new CredentialsDBAccessException("Unable to get save credentials");
+			String expMsg = "Unable to save credentials";
+			LOGGER.error(ex + " " + expMsg);
+			throw new CredentialsDBAccessException(expMsg);
 		}
 	}
 	
@@ -52,37 +56,47 @@ public class CredentialsDaoImpl {
 		try {
 			hibernateTemplate.update(credential);
 		} catch (DataAccessException ex ) {
-			throw new CredentialsDBAccessException("Unable to get update credentials");
+			String expMsg = "Unable to update credentials";
+			LOGGER.error(ex + " " + expMsg);
+			throw new CredentialsDBAccessException(expMsg);
 		}
 		
 	}
 	
 	@Transactional(readOnly = false)
-	public void delete(Credentials credential) throws CredentialsDBAccessException {
+	public void delete(int customerId) throws CredentialsDBAccessException {
 		try {
-			hibernateTemplate.delete(credential);
+			hibernateTemplate.delete(get(customerId));
 		} catch (DataAccessException ex ) {
-			throw new CredentialsDBAccessException("Unable to delete new credentials");
+			String expMsg = "Unable to delete credentials";
+			LOGGER.error(ex + " " + expMsg);
+			throw new CredentialsDBAccessException(expMsg);
 		}
 	}
 	
-	@Transactional(readOnly = false) 
-	public List<Credentials> getcredentials() throws CredentialsDBAccessException {
+	@Transactional(readOnly = true) 
+	public List<Credentials> getCredentials() throws CredentialsDBAccessException {
 		try {
 			return hibernateTemplate.loadAll(Credentials.class);
 		} catch (DataAccessException ex ) {
-			throw new CredentialsDBAccessException("Unable to get all credentials");
+			String expMsg = "Unable to get all credentials";
+			LOGGER.error(ex + " " + expMsg);
+			throw new CredentialsDBAccessException(expMsg);
 		}
 	}
 
-    public List<Credentials> getCredentialDetails( Credentials credentials ) throws CredentialsDBAccessException {
+	@Transactional(readOnly = true)
+    public List<Credentials> getCredentialDetails( String userName, String password ) throws CredentialsDBAccessException {
     	try {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Credentials.class);
-	    criteria.add(Restrictions.eq("userName", credentials.getUserName()));
-	    criteria.add(Restrictions.eq("password", credentials.getPassword()));
+	    criteria.add(Restrictions.eq("userName", userName));
+	    criteria.add(Restrictions.eq("password", password));
 	    return ((List<Credentials>) hibernateTemplate.findByCriteria(criteria));
 	 	} catch (DataAccessException ex ) {
-			throw new CredentialsDBAccessException("Unable to get credentials with parameters");
+	 		String expMsg = "Unable to get credentials with parameters";
+			LOGGER.error(ex + " " + expMsg);
+			throw new CredentialsDBAccessException(expMsg);
 		}
 	}
+
 }

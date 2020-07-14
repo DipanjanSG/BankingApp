@@ -1,26 +1,26 @@
 package com.banking.money.transaction;
 
 import java.sql.Timestamp;
-
 import lombok.ToString;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - PoJo for representing transaction table
  */
+
 @ToString
 public class Transaction {
 	
-	int transactionId; 
-	int fromAccount;
-	int toAccount;
-	String transactionType;
-	Timestamp dateOfTransaction;
-	String description;
-	String checqueNumber;
-	double amount;
-	double fromAccountAmt;
-	double toAccountAmt;
+	private int transactionId; 
+	private int fromAccount;
+	private int toAccount;
+	private String transactionType;
+	private Timestamp dateOfTransaction;
+	private String description;
+	private String checqueNumber;
+	private double amount;
+	private double fromAccountAmt;
+	private double toAccountAmt;
 	
 	public Transaction( int fromAccount, int toAccount, String transactionType,
 			 double amount, double fromAccountAmt, double toAccountAmt) {
@@ -101,15 +101,5 @@ public class Transaction {
 	public void setToAccountAmt(double toAccountAmt) {
 		this.toAccountAmt = toAccountAmt;
 	}
-
-	@Override
-	public String toString() {
-		return "TransactionDetailsBean [transactionId=" + transactionId + ", fromAccount=" + fromAccount
-				+ ", toAccount=" + toAccount + ", transactionType=" + transactionType + ", dateOfTransaction="
-				+ dateOfTransaction + ", description=" + description + ", checqueNumber=" + checqueNumber + ", amount="
-				+ amount + ", fromAccountAmt=" + fromAccountAmt + ", toAccountAmt=" + toAccountAmt + "]";
-	}
-	
-
 	
 }

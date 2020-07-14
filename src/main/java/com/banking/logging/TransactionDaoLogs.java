@@ -3,7 +3,7 @@ package com.banking.logging;
 import org.apache.log4j.Logger;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - Logs for money Transactions 
  */
 public class TransactionDaoLogs {

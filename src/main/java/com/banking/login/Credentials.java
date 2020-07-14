@@ -1,13 +1,13 @@
 package com.banking.login;
 
 import com.banking.account.creation.Customer;
-
 import lombok.ToString;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - POJO representing values in credentials table
  */
+
 @ToString
 public class Credentials {
 	
@@ -59,11 +59,5 @@ public class Credentials {
 	public void createPassword() {
 		setPassword(this.userName + PASSWORD_SUFFIX);
 	}
-	
-	@Override
-	public String toString() {
-		return "Credentials [userName=" + userName + ", password=" + password + ", customerId=" + customerId
-				+ ", customerBean=" + customerBean + "]";
-	}	
-	
+		
 }

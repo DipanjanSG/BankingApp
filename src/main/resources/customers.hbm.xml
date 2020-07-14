@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-   <class name = "com.banking.account.creation.Customer" table = "customers">
+   <class name = "com.banking.account.creation.Customer" table = "customers"> 
       <meta attribute = "class-description">
          This class contains the account-holders net-banking credentails. 
       </meta>
@@ -24,7 +24,7 @@
       		<key>
       			<column name = "customerId"/>
       		</key>
-      	<one-to-many class = "com.banking.money.transaction.Accounts"/>
+      	<one-to-many class = "com.banking.money.transaction.Account"/>
       	
       </set>   
      

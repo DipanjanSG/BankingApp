@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-   <class name = "com.banking.money.transaction.Transaction" table = "transactions">
+   <class name = "com.banking.money.transaction.Transaction" table = "transactions"> 
       <meta attribute = "class-description">
          This class contains the credit-card details with holder id. 
       </meta>

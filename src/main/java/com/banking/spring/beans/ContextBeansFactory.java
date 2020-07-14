@@ -1,5 +1,10 @@
 package com.banking.spring.beans;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -11,10 +16,10 @@ import com.banking.money.transaction.TransactionDaoImpl;
 import com.banking.money.transaction.AccountsDaoImpl;
 import com.banking.money.transaction.TransactionsHelper;
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - This class is the used for creating beans, to be called when when we need objects created 
  */
-public class ContextBeans {
+public final class ContextBeansFactory {
 	
 	private static ApplicationContext context = null;
 	private static CreditCardHelper creditCardHelper = null;
@@ -23,9 +28,9 @@ public class ContextBeans {
 	private static CreditCardTransactionsDaoImpl createCreditCardTransactionsDaoBean = null;
 	private static TransactionDaoImpl transactionDaoImpl = null;
 	private static CredentialsDaoImpl credentialsDaoImpl = null;
-	private static final Logger LOGGER = Logger.getLogger(ContextBeans.class);
+	private static final Logger LOGGER = Logger.getLogger(ContextBeansFactory.class);
  
-	private ContextBeans() {
+	private ContextBeansFactory() {
 		
 	}
 	

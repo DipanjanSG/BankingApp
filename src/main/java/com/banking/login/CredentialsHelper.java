@@ -1,11 +1,16 @@
 package com.banking.login;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
 import com.banking.exceptions.CredentialsDBAccessException;
-import com.banking.spring.beans.ContextBeans;
+import com.banking.spring.beans.ContextBeansFactory;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - Contains Helper functions for operations on credential table
  */
 public class CredentialsHelper {
@@ -13,15 +18,12 @@ public class CredentialsHelper {
 	private static final int MINIMUM_CUSTOMER_ID = 0;
 	
 	public int validateCredentials(final Credentials credentials) throws CredentialsDBAccessException {
-		
-		    CredentialsDaoImpl credentialsDaoImpl = ContextBeans.getCredentialsDaoImpl();
-		    
-		    List<Credentials> retrievedCredentialsList = credentialsDaoImpl.getCredentialDetails(credentials);
-
+		    CredentialsDaoImpl credentialsDaoImpl = ContextBeansFactory.getCredentialsDaoImpl();
+		    List<Credentials> retrievedCredentialsList = credentialsDaoImpl.getCredentialDetails(credentials.getUserName() ,credentials.getPassword());
 		    if ( !retrievedCredentialsList.isEmpty() && retrievedCredentialsList.get(MINIMUM_CUSTOMER_ID).getCustomerId() > MINIMUM_CUSTOMER_ID ) {
 				return retrievedCredentialsList.get(MINIMUM_CUSTOMER_ID).getCustomerId();
 			}		    
 			
-	        return 0;
+	        return -1;
 	}
 }

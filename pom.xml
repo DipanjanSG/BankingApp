@@ -8,7 +8,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
   <packaging>war</packaging>
   <version>0.0.1</version>
   
-  <name>javaCertification Maven Webapp</name>
+  <name>javaCertification Maven Webapp</name> 
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
@@ -130,13 +130,14 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
   <build>
    <directory>${buildDirectory}</directory>
    <finalName>javaCertification</finalName>
-       <sourceDirectory> src/main/java</sourceDirectory>
-       <testSourceDirectory> src/test/java</testSourceDirectory>
-        <resources>
-             <resource>
-                  <directory>resources</directory>
-             </resource>
-        </resources>
+       <sourceDirectory>src/main/java</sourceDirectory>
+       <testSourceDirectory>src/test/java</testSourceDirectory>
+       <resources>
+          <resource>
+             <directory>src/main/resources</directory>
+          </resource>
+       </resources>
+
       <plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>

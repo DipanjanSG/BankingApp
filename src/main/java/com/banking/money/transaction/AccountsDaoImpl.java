@@ -1,6 +1,8 @@
 package com.banking.money.transaction;
 
 import java.util.List;
+
+import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,80 +11,92 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import com.banking.account.creation.Customer;
 import com.banking.exceptions.AccountsDBAccessException;
+import com.banking.login.CredentialsDaoImpl;
 
 /**
- * @author Dipanjan Sengupta
+ * @author Dipanjan Sengupta 
  * @purpose - HibernateTemplate for operations on accounts table
  */
-public class AccountsDaoImpl implements AccountsDao{
+public class AccountsDaoImpl implements AccountsDao {
 
 	private static final int RETRIVED_LIST_INDEX = 0;
 	@Autowired
 	private HibernateTemplate hibernateTemplate;
-	
-	public HibernateTemplate getHibernateTemplate() {
-		return hibernateTemplate;
-	}
+
+	private static final Logger LOGGER = Logger.getLogger(AccountsDaoImpl.class);
 
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
 		this.hibernateTemplate = hibernateTemplate;
 	}
 	
-	@Transactional(readOnly = false)
-	public Accounts get(Accounts accountsBean) throws AccountsDBAccessException{
+	@Transactional(readOnly = true)
+	public Account get(int accountNumber) throws AccountsDBAccessException{
 		try {
-		return hibernateTemplate.get(Accounts.class, accountsBean.getAccountNumber());
+		return hibernateTemplate.get(Account.class, accountNumber);
 		}  catch (DataAccessException ex ) {
-			throw new AccountsDBAccessException("Unable to delete get account details");
+			String expMsg = "Unable to get account ";
+			LOGGER.error(ex + " " + expMsg);
+			throw new AccountsDBAccessException(expMsg);
 		}
 	}
     	
 	@Transactional(readOnly = false)
-	public void save(Accounts accountsBean) throws AccountsDBAccessException {
+	public void save(Account accountsBean) throws AccountsDBAccessException {
 		try {
 		hibernateTemplate.save(accountsBean);
 		}  catch (DataAccessException ex ) {
-			throw new AccountsDBAccessException("Unable to save Account");
+			String expMsg = "Unable to save Account";
+			LOGGER.error(ex + " " + expMsg);
+			throw new AccountsDBAccessException(expMsg);
 		}
 	}
 
 	@Transactional(readOnly = false)
-	public void update(Accounts accountsBean) throws AccountsDBAccessException{
+	public void update(Account accountsBean) throws AccountsDBAccessException{
 		try {
 		hibernateTemplate.update(accountsBean);
 		}  catch (DataAccessException ex ) {
-			throw new AccountsDBAccessException("Unable to update Account");
+			String expMsg = "Unable to update Account";
+			LOGGER.error(ex + " " + expMsg);
+			throw new AccountsDBAccessException(expMsg);
 		}
 	}
 
 	@Transactional(readOnly = false)
-	public void delete(Accounts accountsBean) throws AccountsDBAccessException {
-		try {hibernateTemplate.delete(accountsBean);
+	public void delete(int accountNumber) throws AccountsDBAccessException {
+		try {hibernateTemplate.delete(get(accountNumber));
 		}  catch (DataAccessException ex ) {
-			throw new AccountsDBAccessException("Unable to delete Account");
+			String expMsg = "Unable to delete Account";
+			LOGGER.error(ex + " " + expMsg);
+			throw new AccountsDBAccessException(expMsg);
 		}
 		
 		
 	}
 
 	@Transactional(readOnly = false)
-	public List<Accounts> getAllAccounts() throws AccountsDBAccessException {
-		try {return hibernateTemplate.loadAll(Accounts.class);
+	public List<Account> getAllAccounts() throws AccountsDBAccessException {
+		try {return hibernateTemplate.loadAll(Account.class);
 		} catch (DataAccessException ex ) {
-			throw new AccountsDBAccessException("Unable to get all Accounts");
+			String expMsg = "Unable to get all Accounts";
+			LOGGER.error(ex + " " + expMsg);
+			throw new AccountsDBAccessException(expMsg);
 		}
 	}
 
-    public Accounts getAccountWithCustomerId(int customerId) throws AccountsDBAccessException {
+	@Transactional(readOnly = true)
+    public Account getAccountWithCustomerId(int customerId) throws AccountsDBAccessException {
     	try {
     	Customer customer = new Customer();
         customer.setCustomerId(customerId);
-		DetachedCriteria criteria = DetachedCriteria.forClass(Accounts.class);
+		DetachedCriteria criteria = DetachedCriteria.forClass(Account.class);
 		criteria.add(Restrictions.eq("customerBean", customer));
 		
-        return ((List<Accounts>) hibernateTemplate.findByCriteria(criteria)).get(RETRIVED_LIST_INDEX);
+        return ((List<Account>) hibernateTemplate.findByCriteria(criteria)).get(RETRIVED_LIST_INDEX);
     	} catch (DataAccessException ex ) {
-			throw new AccountsDBAccessException("Unable to get Account with customerId");
+    		String expMsg = "Unable to get Account with customerId";
+			LOGGER.error(ex + " " + expMsg);
+			throw new AccountsDBAccessException(expMsg);
 		}
 	}
 
