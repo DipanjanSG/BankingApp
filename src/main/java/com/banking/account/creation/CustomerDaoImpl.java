@@ -1,9 +1,6 @@
 package com.banking.account.creation;
 
-
-import java.util.Date;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -12,11 +9,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.banking.exceptions.AccountsDBAccessException;
-import com.banking.exceptions.CredentialsDBAccessException;
 import com.banking.exceptions.CustomerDBAccessException;
-import com.banking.login.Credentials;
 
 /**
  * @author Dipanjan Sengupta 

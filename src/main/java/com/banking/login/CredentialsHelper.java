@@ -12,6 +12,9 @@ public class CredentialsHelper {
 
 	private static final int MINIMUM_CUSTOMER_ID = 0;
 	
+	/** 
+	 * @purpose - Validates credentials during Login
+	 */
 	public int validateCredentials(final Credentials credentials) throws CredentialsDBAccessException {
 		    CredentialsDaoImpl credentialsDaoImpl = ContextBeansFactory.getCredentialsDaoImpl();
 		    List<Credentials> retrievedCredentialsList = credentialsDaoImpl.getCredentialDetails(credentials.getUserName() ,credentials.getPassword());

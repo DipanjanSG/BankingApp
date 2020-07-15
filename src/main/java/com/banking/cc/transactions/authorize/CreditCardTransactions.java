@@ -2,10 +2,7 @@ package com.banking.cc.transactions.authorize;
 
 import java.math.BigInteger;
 import java.util.List;
-
-import com.banking.account.creation.Customer;
 import com.banking.exceptions.CreditCardDBAccessException;
-import com.banking.exceptions.CustomerDBAccessException;
 
 /**
  * @author Dipanjan Sengupta 

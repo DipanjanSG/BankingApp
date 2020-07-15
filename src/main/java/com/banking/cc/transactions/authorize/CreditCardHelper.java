@@ -10,6 +10,12 @@ import com.banking.spring.beans.ContextBeansFactory;
  */
 public class CreditCardHelper {
 
+	/**
+	 * @purpose - Update the amount borrowed in the credit card table
+	 * @param - 
+	 *         retievedCreditCardBean : Object containing CC details
+	 *         amount : amount borrowed
+	 */
 	public void creditCardAmountBorrowedUpdation(final CreditCard retievedCreditCardBean , final double amount ) throws CreditCardDBAccessException {
 		retievedCreditCardBean.setAmount(retievedCreditCardBean.getAmount() + amount);
 		CreditCardTransactionsDaoImpl creditCardTransactionsDaoImpl = ContextBeansFactory.getCreateCreditCardTransactionsDao();

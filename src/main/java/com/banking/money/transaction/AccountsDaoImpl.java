@@ -11,7 +11,6 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import com.banking.account.creation.Customer;
 import com.banking.exceptions.AccountsDBAccessException;
-import com.banking.login.CredentialsDaoImpl;
 
 /**
  * @author Dipanjan Sengupta 

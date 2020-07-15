@@ -2,7 +2,7 @@ package com.banking.constants;
 
 /**
  * @author Dipanjan Sengupta 
- * @purpose - This class represents constants to be used in the Banking App
+ * @purpose - This class represents constants to be used in this Banking Application
  */
 
 public class Constants {

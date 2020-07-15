@@ -1,9 +1,6 @@
 package com.banking.features;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,19 +12,10 @@ import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.TransactionException;
 import com.banking.spring.beans.ContextBeansFactory;
-import com.banking.account.creation.Customer;
-import com.banking.account.creation.CustomerDaoImpl;
-import com.banking.constants.Constants.TransactionStatus;
-import com.banking.exceptions.AccountCreationException;
 import com.banking.exceptions.AccountsDBAccessException;
-import com.banking.exceptions.CreditCardDBAccessException;
-import com.banking.exceptions.CreditCardException;
-import com.banking.exceptions.CustomerDBAccessException;
 import com.banking.exceptions.FinancialTransaction;
 import com.banking.exceptions.TransactionDBAccessException;
-import com.banking.login.Credentials;
 import com.banking.money.transaction.Account;
-import com.banking.money.transaction.AccountsDaoImpl;
 import com.banking.money.transaction.TransactionsHelper;
 
 /**
@@ -42,48 +30,49 @@ public class PerformTransactions extends HttpServlet {
 
     @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	doPut(request,response);
-    }
-	@Override
-	protected void doPut(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		try {
-		tempRequest = request;
-		int accountNumber = Integer.parseInt(request.getParameter("accountNumber"));
-		double amount = Double.parseDouble(request.getParameter("amount"));
-		String transactionType = request.getParameter("transactionType");
+    	try {
+    		tempRequest = request;
+    		int accountNumber = Integer.parseInt(request.getParameter("accountNumber"));
+    		double amount = Double.parseDouble(request.getParameter("amount"));
+    		String transactionType = request.getParameter("transactionType");
 
-		Cookie[] allCookies = request.getCookies();
-		int customerId = Integer.parseInt(allCookies[0].getValue());
-		
-		Account account = new Account();
-		account.setAccountNumber(accountNumber);
-		account.setAccountBalance(amount);
-				
-		performTransactionAndVerify(account, transactionType, customerId);
-		} catch (DataAccessException e) {
-			request.setAttribute("failedDBConnection", true);
-			LOGGER.error(e);
-		} catch (TransactionException e) {
-		    request.setAttribute("failedDBConnection", true);
-		    LOGGER.error(e);
-		}	catch (FinancialTransaction e) {
-			LOGGER.error(e);
-		} catch (Exception e) {
-			LOGGER.error(e.getStackTrace().toString());
-			request.setAttribute("invalidDetails", "INVALID DETAILS");
-		}
-	try {	
-		request = tempRequest;
-		RequestDispatcher rd = request.getRequestDispatcher("moneyTransfer.jsp");
-		rd.forward(request, response);
-		} catch (ServletException e) {
-			LOGGER.error(e);
-		} catch (IOException e) {
-			LOGGER.error(e);
-		}
-	}
-	
+    		Cookie[] allCookies = request.getCookies();
+    		int customerId = 0 ;
+    		
+    		for (Cookie cookie : allCookies) {
+    		   if (cookie.getName().equals("customerId")) {
+    			   customerId = Integer.parseInt(cookie.getValue());
+    		    }
+    		  }
+    			
+    		Account account = new Account();
+    		account.setAccountNumber(accountNumber);
+    		account.setAccountBalance(amount);
+    				
+    		performTransactionAndVerify(account, transactionType, customerId);
+    		} catch (DataAccessException e) {
+    			request.setAttribute("failedDBConnection", true);
+    			LOGGER.error(e);
+    		} catch (TransactionException e) {
+    		    request.setAttribute("failedDBConnection", true);
+    		    LOGGER.error(e);
+    		}	catch (FinancialTransaction e) {
+    			LOGGER.error(e);
+    		} catch (Exception e) {
+    			LOGGER.error("failed",e);
+    			request.setAttribute("invalidDetails", "INVALID DETAILS");
+    		}
+    	try {	
+    		request = tempRequest;
+    		RequestDispatcher rd = request.getRequestDispatcher("moneyTransfer.jsp");
+    		rd.forward(request, response);
+    		} catch (ServletException e) {
+    			LOGGER.error(e);
+    		} catch (IOException e) {
+    			LOGGER.error(e);
+    		}
+    }
+    
 	 /**
      * @author Dipanjan Sengupta 
      * @purpose - Perform Financial Transactions from one account to another and verify 

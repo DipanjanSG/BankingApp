@@ -37,58 +37,53 @@ public class AuthorizeCCTransactions extends HttpServlet {
 
     @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	doPut(request, response);
+    	try {
+    		tempRequest = request;
+    		BigInteger cardNumber = new BigInteger(request.getParameter("cardNumber"));
+    		int cvvCode = Integer.parseInt(request.getParameter("cvvCode"));
+    		String nameOnCreditCard = request.getParameter("nameOnCreditCard");
+    		double amount = Double.parseDouble(request.getParameter("amount"));
+    		CreditCard creditCardBean = new CreditCard();
+    		creditCardBean.setCreditCardNumber(cardNumber);
+    		creditCardBean.setCvvCode(cvvCode);
+    		creditCardBean.setAmount(amount);
+    		
+    		CreditCardTransactionsDaoImpl creditCardTransactionsDaoImpl = ContextBeansFactory.getCreateCreditCardTransactionsDao();
+    		
+    		    List <CreditCard> retievedCreditCardBeanList = creditCardTransactionsDaoImpl.getCreditCardWithParam(creditCardBean.getCreditCardNumber(), creditCardBean.getCvvCode());
+    		    
+    			if (retievedCreditCardBeanList.size() == MINIMUM_CREDIT_CARD_LIST_SIZE )  {
+    		    	LOGGER.error("Invalid credit card details entered for card Number " + cardNumber + " and Cvv code" + cvvCode);
+    		    	request.setAttribute(INVALID_DETAILS, true);
+    	        } else {	   
+    		    
+    	        	performCreditCardTransaction(retievedCreditCardBeanList,  nameOnCreditCard, cardNumber, amount);
+    		    }
+    		    
+    		} catch (CreditCardDBAccessException e) { 
+    			LOGGER.error(e);
+    			request.setAttribute("failedDBConnection", true); 
+    		} catch (CustomerDBAccessException e) { 
+    			LOGGER.error(e);
+    			request.setAttribute("failedDBConnection", true); 
+    		} catch (CreditCardException e) {
+    			LOGGER.error(e);
+    		} catch (Exception e) {
+    			request.setAttribute(INVALID_DETAILS, true);
+    			LOGGER.error(e);
+    		} 
+    		try {
+    		request = tempRequest;	
+    		RequestDispatcher rd = request.getRequestDispatcher("creditCardTransactions.jsp");
+    		rd.forward(request, response);
+    		} catch (ServletException e) {
+    			LOGGER.error(e);
+    		}catch (IOException e) {
+    			LOGGER.error(e);
+    		}
+    		
     }
-    
-    @Override
-	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-		tempRequest = request;
-		BigInteger cardNumber = new BigInteger(request.getParameter("cardNumber"));
-		int cvvCode = Integer.parseInt(request.getParameter("cvvCode"));
-		String nameOnCreditCard = request.getParameter("nameOnCreditCard");
-		double amount = Double.parseDouble(request.getParameter("amount"));
-		CreditCard creditCardBean = new CreditCard();
-		creditCardBean.setCreditCardNumber(cardNumber);
-		creditCardBean.setCvvCode(cvvCode);
-		creditCardBean.setAmount(amount);
-		
-		CreditCardTransactionsDaoImpl creditCardTransactionsDaoImpl = ContextBeansFactory.getCreateCreditCardTransactionsDao();
-		
-		    List <CreditCard> retievedCreditCardBeanList = creditCardTransactionsDaoImpl.getCreditCardWithParam(creditCardBean.getCreditCardNumber(), creditCardBean.getCvvCode());
-		    
-			if (retievedCreditCardBeanList.size() == MINIMUM_CREDIT_CARD_LIST_SIZE )  {
-		    	LOGGER.error("Invalid credit card details entered for card Number " + cardNumber + " and Cvv code" + cvvCode);
-		    	request.setAttribute(INVALID_DETAILS, true);
-	        } else {	   
-		    
-	        	performCreditCardTransaction(retievedCreditCardBeanList,  nameOnCreditCard, cardNumber, amount);
-		    }
-		    
-		} catch (CreditCardDBAccessException e) { 
-			LOGGER.error(e);
-			request.setAttribute("failedDBConnection", true); 
-		} catch (CustomerDBAccessException e) { 
-			LOGGER.error(e);
-			request.setAttribute("failedDBConnection", true); 
-		} catch (CreditCardException e) {
-			LOGGER.error(e);
-		} catch (Exception e) {
-			request.setAttribute(INVALID_DETAILS, true);
-			LOGGER.error(e);
-		} 
-		try {
-		request = tempRequest;	
-		RequestDispatcher rd = request.getRequestDispatcher("creditCardTransactions.jsp");
-		rd.forward(request, response);
-		} catch (ServletException e) {
-			LOGGER.error(e);
-		}catch (IOException e) {
-			LOGGER.error(e);
-		}
-		
-	}
-    
+        
     /**
      * @author Dipanjan Sengupta 
      * @purpose - Perform Credit Card Transactions and set values for HttpServletRequest as per the outcome

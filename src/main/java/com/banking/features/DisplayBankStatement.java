@@ -54,8 +54,14 @@ public class DisplayBankStatement extends HttpServlet {
 		    parsedDate = dateFormat.parse(dateTo + DEFAULT_END_TIME);
 		    Timestamp timestampDateTo = new Timestamp(parsedDate.getTime());
 		    
-		    Cookie[] cookie = request.getCookies();
-		    int customerId = Integer.parseInt(cookie[0].getValue());
+		    Cookie[] allCookies = request.getCookies();
+			int customerId = 0 ;
+			
+			for (Cookie cookie : allCookies) {
+			   if (cookie.getName().equals("customerId")) {
+				   customerId = Integer.parseInt(cookie.getValue());
+			    }
+			  }
             AccountsDaoImpl accountsDaoImplLoggedInUser = ContextBeansFactory.getAcountsDaoImpl();
             int loggedInUsersAccountNumber =  accountsDaoImplLoggedInUser.getAccountWithCustomerId(customerId).getAccountNumber();
 	        

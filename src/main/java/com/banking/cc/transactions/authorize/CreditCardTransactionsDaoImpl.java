@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.banking.account.creation.Customer;
 import com.banking.exceptions.CreditCardDBAccessException;
 
 /**
@@ -26,6 +24,8 @@ public class CreditCardTransactionsDaoImpl implements CreditCardTransactions{
 		
 	private static final Logger LOGGER = Logger.getLogger(CreditCardTransactionsDaoImpl.class);
 
+	private static final String CREDIT_CARD_COL_NAME = "creditCardNumber";
+	
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
 		this.hibernateTemplate = hibernateTemplate;
 	}
@@ -34,7 +34,7 @@ public class CreditCardTransactionsDaoImpl implements CreditCardTransactions{
 	public CreditCard get(String creditCardNumber) throws CreditCardDBAccessException {
 		try {
 			DetachedCriteria criteria = DetachedCriteria.forClass(CreditCard.class);
-			criteria.add(Restrictions.eq("creditCardNumber", creditCardNumber));
+			criteria.add(Restrictions.eq(CREDIT_CARD_COL_NAME, creditCardNumber));
 			return ((List<CreditCard>)hibernateTemplate.findByCriteria(criteria)).get(0);
 
 			} catch(DataAccessException ex) {
@@ -49,7 +49,7 @@ public class CreditCardTransactionsDaoImpl implements CreditCardTransactions{
 		try {
 			
 		DetachedCriteria criteria = DetachedCriteria.forClass(CreditCard.class);
-		criteria.setProjection( Projections.max("creditCardNumber"));
+		criteria.setProjection( Projections.max(CREDIT_CARD_COL_NAME));
 		return ((List<BigInteger>)hibernateTemplate.findByCriteria(criteria)).get(0);	
 		
 		} catch(DataAccessException ex) {
@@ -109,7 +109,7 @@ public class CreditCardTransactionsDaoImpl implements CreditCardTransactions{
     public List<CreditCard> getCreditCardWithParam(BigInteger creditCardNumber, int cvvCode) throws CreditCardDBAccessException {
     	try {
 		DetachedCriteria criteria = DetachedCriteria.forClass(CreditCard.class);
-		criteria.add(Restrictions.eq("creditCardNumber", creditCardNumber));
+		criteria.add(Restrictions.eq(CREDIT_CARD_COL_NAME, creditCardNumber));
 		criteria.add(Restrictions.eq("cvvCode", cvvCode));
 
 		return (List<CreditCard>)hibernateTemplate.findByCriteria(criteria);

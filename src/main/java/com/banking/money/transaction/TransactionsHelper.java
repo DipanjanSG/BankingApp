@@ -18,8 +18,16 @@ public class TransactionsHelper {
 	private AccountsDaoImpl accountsDaoImplLoggedInUser ;
 	private Transaction transaction = new Transaction();
 	Account accountsBeanFromDatabase;
-	 Account loggedInUsersAccount;
+	Account loggedInUsersAccount;
 	
+	/**
+	 * @purpose - Performing money transfer from one account to another
+	 * @param - 
+	 *           accountsBean - Target account (entered by user)
+	 *           transactionType - Debit / Credit
+	 *           customerId - Logged in user's customerId
+	 * @return - TransactionStatus - Enum containing transaction messages 
+	 */
 	public TransactionStatus performTransaction(final Account accountsBean, final String transactionType, final int customerId ) throws TransactionDBAccessException, AccountsDBAccessException{
 	        accountsDaoImpl = ContextBeansFactory.getAcountsDaoImpl();
 	        accountsDaoImplLoggedInUser = ContextBeansFactory.getAcountsDaoImpl();
@@ -40,7 +48,14 @@ public class TransactionsHelper {
 	        return accountBalUpadationStatus;
 	}
 	
-	public TransactionStatus updateAccountBalance(final String transactionType, final Account accountsBean) throws TransactionDBAccessException, AccountsDBAccessException {
+	/**
+	 * @purpose - Performing money transfer (sub step) - Updates account balance
+	 * @param - 
+	 * 	         transactionType - Debit / Credit
+	 *           accountsBean - Target account (entered by user)
+	 * @return - TransactionStatus - Enum containing transaction messages 
+	 */
+	public TransactionStatus updateAccountBalance(final String transactionType, final Account accountsBean) throws AccountsDBAccessException {
 		
         if ( transactionType.equals("credit")) {
         	if (loggedInUsersAccount.getAccountBalance() >= accountsBean.getAccountBalance()) {
@@ -77,7 +92,14 @@ public class TransactionsHelper {
 	
 	}
 
-public TransactionStatus updateTransactions(final String transactionType, final Account accountsBean) throws TransactionDBAccessException, AccountsDBAccessException {
+	/**
+	 * @purpose - Performing money transfer (sub step) - Updates Transactions table
+	 * @param - 
+	 * 	         transactionType - Debit / Credit
+	 *           accountsBean - Target account (entered by user)
+	 * @return - TransactionStatus - Enum containing transaction messages 
+	 */
+public TransactionStatus updateTransactions(final String transactionType, final Account accountsBean) throws TransactionDBAccessException {
 	
     TransactionDaoImpl transactionDaoImpl = ContextBeansFactory.getTransactionDaoImpl();
     transaction.setTransactionType(transactionType);

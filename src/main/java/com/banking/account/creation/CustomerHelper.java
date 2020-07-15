@@ -13,6 +13,9 @@ import com.banking.spring.beans.ContextBeansFactory;
  */
 public class CustomerHelper {
 	
+	/**
+	 * @purpose - Used during customer creation, to find if "Name" and "Email-id" already present
+	 */
 	public Set<String> checkIfDetailsAlreadyPresent(final Customer customer) throws CustomerDBAccessException {
 		Set<String> existingFields = new HashSet<String>(); 
 		CustomerDaoImpl createAccountDaoImpl =  ContextBeansFactory.getCreateAccountDao();
